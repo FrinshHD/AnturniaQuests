@@ -1,0 +1,16 @@
+combat:
+  friendlyName: Combat
+  description: You want to kill mobs? Here are the right quests for you!
+  material: DIAMOND_SWORD
+mining:
+  friendlyName: Mining
+  description: Just mine some stuff
+  material: IRON_PICKAXE
+farming:
+  friendlyName: Farming
+  description: You also like potatoes?
+  material: GOLDEN_HOE
+foraging:
+  friendlyName: Foraging
+  description: Everything can be made out of wood!
+  material: JUNGLE_WOOD

@@ -1,0 +1,20 @@
+name: AnturniaQuests
+version: '${project.version}'
+main: de.frinshhd.anturniaquests.Main
+api-version: '1.16'
+softdepend: [ "Vault" ]
+
+commands:
+  quests:
+    description: open the quests menu,
+    aliases: [ "anturniaquests" ]
+
+permissions:
+  quests.open:
+    default: true
+  quests.admin.reload:
+    default: op
+  quests.help:
+    default: true
+  quests.admin.updateNotify:
+    default: op

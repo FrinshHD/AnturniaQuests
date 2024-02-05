@@ -1,0 +1,189 @@
+combat1:
+  friendlyName: Zombie Slayer
+  description: The zombie apocalypse is upon us! Eliminate 20 zombies and collect
+    their rotten flesh.
+  category: combat
+  oneTime: false
+  requirements:
+    ROTTEN_FLESH: 20
+  rewards:
+    items:
+      - material: IRON_SWORD
+        amount: 1
+      - material: GOLDEN_APPLE
+        amount: 2
+    commands:
+      - name: "1x Diamond Sword"
+        command: "/give %player% diamond_sword"
+    money: 2
+combat2:
+  friendlyName: Skeleton Archer
+  description: Archery skills are no match for you! Defeat 30 skeletons and gather
+    their bones for crafting purposes.
+  category: combat
+  requirements:
+    BONE: 30
+  rewards:
+    items:
+      - material: BOW
+        amount: 1
+      - material: ARROW
+        amount: 32
+    money: 60
+combat3:
+  friendlyName: Spider Exterminator
+  description: Arachnophobia be gone! Annihilate 25 spiders and retrieve their eyes
+    as trophies.
+  category: combat
+  announce: true
+  requirements:
+    SPIDER_EYE: 25
+  rewards:
+    items:
+      - material: IRON_CHESTPLATE
+        amount: 1
+    money: 20
+#--------------------------------------------------------------
+farming1:
+  friendlyName: Wheat Farmer
+  description: Become the master of agriculture! Cultivate and harvest 128 wheat to
+    fill your granary.
+  category: farming
+  requirements:
+    WHEAT: 128
+    IRON_HOE: 1
+  rewards:
+    items:
+      - material: IRON_HOE
+        amount: 1
+      - material: BREAD
+        amount: 64
+    money: 60
+farming2:
+  friendlyName: Melon Enthusiast
+  description: The thirst quencher! Gather a bountiful harvest of 64 melons for a
+    refreshing feast.
+  category: farming
+  requirements:
+    MELON_SLICE: 64
+  rewards:
+    items:
+      - material: GOLDEN_AXE
+        amount: 1
+      - material: GLISTERING_MELON_SLICE
+        amount: 16
+    money: 60
+farming3:
+  friendlyName: Carrot Harvest
+  description: Dig deep into the earth! Harvest 96 carrots to create a carrot paradise.
+  category: farming
+  requirements:
+    CARROT: 96
+    IRON_SHOVEL: 1
+  rewards:
+    items:
+      - material: IRON_SHOVEL
+        amount: 1
+      - material: GOLDEN_CARROT
+        amount: 16
+    money: 60
+#--------------------------------------------------------------
+foraging1:
+  friendlyName: Wood Collector
+  description: Embrace nature! Gather 256 logs of any type and become a master lumberjack.
+  category: foraging
+  requirements:
+    OAK_LOG: 128
+    SPRUCE_LOG: 64
+    BIRCH_LOG: 32
+    JUNGLE_LOG: 32
+    ACACIA_LOG: 16
+    DARK_OAK_LOG: 16
+  rewards:
+    items:
+      - material: DIAMOND_AXE
+        amount: 1
+      - material: OAK_PLANKS
+        amount: 512
+    money: 60
+foraging2:
+  friendlyName: Berry Picker
+  description: The forest is a treasure trove of delicious berries! Collect 128 sweet
+    berries for a tasty treat.
+  category: foraging
+  requirements:
+    SWEET_BERRIES: 128
+  rewards:
+    items:
+      - material: LEATHER_CHESTPLATE
+        amount: 1
+      - material: SWEET_BERRIES
+        amount: 64
+foraging3:
+  friendlyName: Flower Power
+  description: Embrace the beauty of nature! Collect 64 different flowers and create
+    a stunning garden.
+  category: foraging
+  requirements:
+    DANDELION: 4
+    POPPY: 4
+    BLUE_ORCHID: 4
+    ALLIUM: 4
+    AZURE_BLUET: 4
+    RED_TULIP: 4
+    ORANGE_TULIP: 4
+    WHITE_TULIP: 4
+    PINK_TULIP: 4
+    OXEYE_DAISY: 4
+    CORN_FLOWER: 4
+    LILY_OF_THE_VALLEY: 4
+    WITHER_ROSE: 4
+    SUNFLOWER: 4
+    LILAC: 4
+    ROSE_BUSH: 4
+    PEONY: 4
+  rewards:
+    items:
+      - material: BONE_MEAL
+        amount: 64
+      - material: FLOWER_POT
+        amount: 4
+#--------------------------------------------------------------
+mining1:
+  friendlyName: Coal Miner
+  description: Descend into the depths! Mine 128 blocks of coal ore to fuel your adventures.
+  category: mining
+  requirements:
+    COAL: 128
+  rewards:
+    items:
+      - material: TORCH
+        amount: 128
+      - material: COAL_BLOCK
+        amount: 8
+mining2:
+  friendlyName: Iron Seeker
+  description: Iron is the backbone of any thriving civilization. Mine 64 iron ore
+    to bolster your resources.
+  category: mining
+  requirements:
+    IRON_ORE: 64
+  rewards:
+    items:
+      - material: IRON_PICKAXE
+        amount: 1
+      - material: IRON_INGOT
+        amount: 64
+mining3:
+  friendlyName: Diamond Prospector
+  description: Diamonds are a miner's best friend. Unearth 16 diamonds to add sparkle
+    to your collection.
+  category: mining
+  requirements:
+    DIAMOND: 16
+  rewards:
+    items:
+      - material: DIAMOND_PICKAXE
+        amount: 1
+      - material: DIAMOND
+        amount: 16

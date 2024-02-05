@@ -1,0 +1,2 @@
+database:
+  type: sqlite #currently only sqlite is supported
