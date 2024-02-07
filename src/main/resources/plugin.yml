@@ -2,6 +2,7 @@ name: AnturniaQuests
 version: '${project.version}'
 main: de.frinshhd.anturniaquests.Main
 api-version: '1.16'
+author: "FrinshHD"
 softdepend: [ "Vault" ]
 
 commands:
