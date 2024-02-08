@@ -14,7 +14,7 @@ AnturniaQuests is a versatile quest plugin for Minecraft, allowing server admini
 1. Place the JAR file in your Spigot server's "plugins" folder.
 2. If you want to use the money feature please follow the instructions under "Special Note for Monetary Rewards".
 3. Start or restart your server.
-4. Adjust the configuration file as needed.
+4. Adjust the configuration file as needed. You can find help on our wiki (https://github.com/FrinshHD/AnturniaQuests/wiki).
 
 **Commands:**
 - `/quests`: Open the ingame quest menu.
