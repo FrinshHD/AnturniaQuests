@@ -1,5 +1,4 @@
-# AnturniaQuests  
-![Discord Banner](https://discordapp.com/api/guilds/926392739904495626/widget.png?style=banner3)  
+![AnturniaQuests](https://i.imgur.com/J5TQIJs.png)
 **Overview:**
 AnturniaQuests is a versatile quest plugin for Minecraft, allowing server administrators to create a personalized quest system. With this plugin, players can engage in captivating quests and earn exciting rewards. Configuration is straightforward, offering complete customization of quests and rewards.
 
@@ -34,7 +33,8 @@ If you intend to provide monetary rewards, ensure you have Vault and a compatibl
 Visit our [Discord server](https://discord.gg/89Dv8rqkpC) for assistance, feedback, and additional information.
 
 **Feedback:**
-We appreciate your feedback! Share your experiences, ideas, and suggestions on the [Discord server](https://discord.gg/89Dv8rqkpC).
+We appreciate your feedback! Share your experiences, ideas, and suggestions on the [Discord server](https://discord.gg/89Dv8rqkpC).  
+![Discord Banner](https://discordapp.com/api/guilds/926392739904495626/widget.png?style=banner3)
 
 **Images:**
 
