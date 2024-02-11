@@ -1,7 +1,9 @@
-# AnturniaQuests  
-![Discord Banner](https://discordapp.com/api/guilds/926392739904495626/widget.png?style=banner3)  
+![AnturniaQuests](https://i.imgur.com/J5TQIJs.png)
 **Overview:**
 AnturniaQuests is a versatile quest plugin for Minecraft, allowing server administrators to create a personalized quest system. With this plugin, players can engage in captivating quests and earn exciting rewards. Configuration is straightforward, offering complete customization of quests and rewards.
+
+**Trailer:**  
+[![](https://markdown-videos-api.jorgenkh.no/youtube/EeggEVhBkbY)](https://youtu.be/EeggEVhBkbY)
 
 **Features:**
 - **Custom Quests:** Effortlessly create your own quests through an intuitive configuration file.
@@ -14,7 +16,7 @@ AnturniaQuests is a versatile quest plugin for Minecraft, allowing server admini
 1. Place the JAR file in your Spigot server's "plugins" folder.
 2. If you want to use the money feature please follow the instructions under "Special Note for Monetary Rewards".
 3. Start or restart your server.
-4. Adjust the configuration file as needed.
+4. Adjust the configuration file as needed. You can find help on our wiki (https://github.com/FrinshHD/AnturniaQuests/wiki).
 
 **Commands:**
 - `/quests`: Open the ingame quest menu.
@@ -34,7 +36,8 @@ If you intend to provide monetary rewards, ensure you have Vault and a compatibl
 Visit our [Discord server](https://discord.gg/89Dv8rqkpC) for assistance, feedback, and additional information.
 
 **Feedback:**
-We appreciate your feedback! Share your experiences, ideas, and suggestions on the [Discord server](https://discord.gg/89Dv8rqkpC).
+We appreciate your feedback! Share your experiences, ideas, and suggestions on the [Discord server](https://discord.gg/89Dv8rqkpC).  
+![Discord Banner](https://discordapp.com/api/guilds/926392739904495626/widget.png?style=banner3)
 
 **Images:**
 
