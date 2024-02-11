@@ -17,12 +17,16 @@ public class ConfigManager {
         load();
 
         // connect to database
-        if (config.database.type.equals("sqlite")) {
-            try {
-                MysqlManager.connect();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        switch (this.config.database.getType()) {
+            case MYSQL:
+                MysqlManager.connect("jdbc:mysql://" + this.config.database.ip + ":" + this.config.database.port + "/" + this.config.database.database, this.config.database.username, this.config.database.password);
+                break;
+            case SQLITE:
+                MysqlManager.connect("jdbc:sqlite:plugins/AnturniaQuests/sqlite.db");
+                break;
+            case MONGODB:
+                break;
+            default:
         }
     }
 

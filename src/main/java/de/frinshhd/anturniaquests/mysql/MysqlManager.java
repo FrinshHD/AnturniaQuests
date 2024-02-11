@@ -10,10 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,15 +22,31 @@ public class MysqlManager implements Listener {
         return DaoManager.createDao(connectionSource, Quests.class);
     }
 
-    public static void connect() throws SQLException {
-        try {
-            connectionSource = new JdbcConnectionSource("jdbc:sqlite:plugins/AnturniaQuests/sqlite.db");
-        } catch (SQLException e) {
-            createNewDatabase();
-            connect();
+    public static void connect(String url) {
+        connect(url, null, null);
+    }
+
+    public static void connect(String url, String userName, String password) {
+        if (userName == null && password == null) {
+            try {
+                connectionSource = new JdbcConnectionSource(url);
+            } catch (SQLException e) {
+                createNewDatabase();
+                connect(url,userName,password);
+            }
+        } else {
+            try {
+                connectionSource = new JdbcConnectionSource(url, userName, password);
+            } catch (SQLException e) {
+                //Todo: logging
+            }
         }
 
-        TableUtils.createTableIfNotExists(connectionSource, Quests.class);
+        try {
+            TableUtils.createTableIfNotExists(connectionSource, Quests.class);
+        } catch (SQLException e) {
+            //Todo logging
+        }
     }
 
     public static Quests getQuestPlayer(UUID uuid) {
@@ -62,14 +75,14 @@ public class MysqlManager implements Listener {
         connectionSource.close();
     }
 
-    public static void checkConnection() throws Exception {
+    /*public static void checkConnection() throws Exception {
         if (connectionSource.isOpen("Quests")) {
             return;
         }
 
         disconnect();
         connect();
-    }
+    } */
 
     public static void createNewDatabase() {
 
