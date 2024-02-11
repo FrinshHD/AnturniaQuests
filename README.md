@@ -2,6 +2,9 @@
 **Overview:**
 AnturniaQuests is a versatile quest plugin for Minecraft, allowing server administrators to create a personalized quest system. With this plugin, players can engage in captivating quests and earn exciting rewards. Configuration is straightforward, offering complete customization of quests and rewards.
 
+**Trailer:**  
+[![](https://markdown-videos-api.jorgenkh.no/youtube/EeggEVhBkbY)](https://youtu.be/EeggEVhBkbY)
+
 **Features:**
 - **Custom Quests:** Effortlessly create your own quests through an intuitive configuration file.
 - **Rewards:** Define unique rewards for completed quests, ranging from items to experience points and currencies.
