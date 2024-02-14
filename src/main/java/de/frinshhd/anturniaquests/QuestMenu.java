@@ -31,7 +31,7 @@ public class QuestMenu extends Menu {
     public QuestMenu(PlayerMenuUtility playerMenuUtility) {
         super(playerMenuUtility);
 
-        this.category = Main.getDynamicCategories().getCategory("combat");
+        this.category = Main.getDynamicCategories().getCategory(Main.getDynamicCategories().categories.get(0).getID());
         this.questsPage = 0;
 
         int index = 0;
