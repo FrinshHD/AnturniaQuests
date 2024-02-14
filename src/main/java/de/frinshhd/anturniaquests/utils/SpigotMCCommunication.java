@@ -29,7 +29,7 @@ public class SpigotMCCommunication {
                 return null;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Main.getInstance().getLogger().warning("The plugin wasn't able to check for updates! Please check your internet connection.");
         }
 
         return null;

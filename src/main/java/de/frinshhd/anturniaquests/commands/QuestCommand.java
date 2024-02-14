@@ -2,6 +2,7 @@ package de.frinshhd.anturniaquests.commands;
 
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.QuestMenu;
+import de.frinshhd.anturniaquests.utils.Translator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,6 +16,20 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
+            if (args.length >= 1) {
+                if (args[0].equals("reload")) {
+                    if (!sender.hasPermission("quests.reload")) {
+                        sender.sendMessage(Translator.build("noPermission"));
+                        return false;
+                    }
+
+                    Main.reload();
+                    sender.sendMessage(Translator.build("quests.reload"));
+                    return true;
+                } else {
+                    return false;
+                }
+            }
             return false;
         }
         Player player = (Player) sender;
@@ -23,7 +38,7 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
             if (player.hasPermission("quests.open")) {
                 new QuestMenu(Main.getPlayerMenuUtility(player)).open(player);
             } else {
-                player.sendMessage("§cYou don't have permissions to execute this command!");
+                player.sendMessage(Translator.build("noPermission"));
             }
             return true;
         }
@@ -39,12 +54,12 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
             }
             if (args[0].equals("reload")) {
                 if (!player.hasPermission("quests.reload")) {
-                    player.sendMessage("§cYou don't have permissions to execute this command!");
+                    player.sendMessage(Translator.build("noPermission"));
                     return false;
                 }
 
                 Main.reload();
-                player.sendMessage("§aSuccessfully §7reloaded §2AnturniaQuests!");
+                player.sendMessage(Translator.build("quests.reload"));
                 return true;
             } else {
                 return false;
