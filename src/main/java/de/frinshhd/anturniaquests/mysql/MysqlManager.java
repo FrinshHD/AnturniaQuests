@@ -10,7 +10,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,7 +35,7 @@ public class MysqlManager implements Listener {
                 connectionSource = new JdbcConnectionSource(url);
             } catch (SQLException e) {
                 createNewDatabase();
-                connect(url,userName,password);
+                connect(url, userName, password);
             }
         } else {
             try {

@@ -1,42 +1,52 @@
 ![AnturniaQuests](https://i.imgur.com/J5TQIJs.png)
 **Overview:**
-AnturniaQuests is a versatile quest plugin for Minecraft, allowing server administrators to create a personalized quest system. With this plugin, players can engage in captivating quests and earn exciting rewards. Configuration is straightforward, offering complete customization of quests and rewards.
+AnturniaQuests is a versatile quest plugin for Minecraft, allowing server administrators to create a personalized quest
+system. With this plugin, players can engage in captivating quests and earn exciting rewards. Configuration is
+straightforward, offering complete customization of quests and rewards.
 
 **Trailer:**  
 [![](https://markdown-videos-api.jorgenkh.no/youtube/EeggEVhBkbY)](https://youtu.be/EeggEVhBkbY)
 
 **Features:**
+
 - **Custom Quests:** Effortlessly create your own quests through an intuitive configuration file.
 - **Rewards:** Define unique rewards for completed quests, ranging from items to experience points and currencies.
 - **Categories:** Organize quests into different categories for improved visibility.
 - **Menu System:** Players can view their available quests in-game and track their progress.
-- **Configuration-Friendly:** All aspects of the plugin are customizable via the configuration file to meet your server's needs.
+- **Configuration-Friendly:** All aspects of the plugin are customizable via the configuration file to meet your
+  server's needs.
 
 **Installation:**
+
 1. Place the JAR file in your Spigot server's "plugins" folder.
 2. If you want to use the money feature please follow the instructions under "Special Note for Monetary Rewards".
 3. Start or restart your server.
-4. Adjust the configuration file as needed. You can find help on our wiki (https://github.com/FrinshHD/AnturniaQuests/wiki).
+4. Adjust the configuration file as needed. You can find help on our
+   wiki (https://github.com/FrinshHD/AnturniaQuests/wiki).
 
 **Commands:**
+
 - `/quests`: Open the ingame quest menu.
 - `/quests reload`: Reload the plugin configurations
 - `/quests help`: Get a list of all commands
 
 **Permissions:**
+
 - `quests.open`: permission to execute the /quests command
 - `quests.admin.reload`: permission to execute the /quests reload command
 - `quests.help`: permission to execute the /quests help command
 - `quests.admin.updateNotify`: permission to get notified when a new update is avaliable
 
 **Special Note for Monetary Rewards:**
-If you intend to provide monetary rewards, ensure you have Vault and a compatible economy plugin installed on your server. This allows seamless integration with in-game currency systems.
+If you intend to provide monetary rewards, ensure you have Vault and a compatible economy plugin installed on your
+server. This allows seamless integration with in-game currency systems.
 
 **Help and Support:**
 Visit our [Discord server](https://discord.gg/89Dv8rqkpC) for assistance, feedback, and additional information.
 
 **Feedback:**
-We appreciate your feedback! Share your experiences, ideas, and suggestions on the [Discord server](https://discord.gg/89Dv8rqkpC).  
+We appreciate your feedback! Share your experiences, ideas, and suggestions on
+the [Discord server](https://discord.gg/89Dv8rqkpC).  
 ![Discord Banner](https://discordapp.com/api/guilds/926392739904495626/widget.png?style=banner3)
 
 **Images:**
@@ -50,11 +60,14 @@ We appreciate your feedback! Share your experiences, ideas, and suggestions on t
 **Configs:**
 
 `config.yml`:
+
 ``` yml
 database:
   type: sqlite #currently only sqlite is supported
 ```
+
 `messages.properties`:
+
 ``` properties
 quests.tip.useMultipleTimes=&6Tip: &7You can complete this quest multiple times!
 quest.announce=&2%player% &7has completed the Quest &2%questName%
@@ -70,7 +83,9 @@ inventory.heading.color=&2
 inventory.quest.color=&2
 updateAvailable=&7There is a new update available for the &2AnturniaQuests&7 plugin, version &2%newVersion%&7 You are currently running version %currentVersion% Get the newest version here: &2https://www.spigotmc.org/resources/anturniaquests.113784/
 ```
+
 `categories.yml`:
+
 ``` yml
 combat:
   friendlyName: Combat
@@ -91,6 +106,7 @@ foraging:
 ```
 
 `quests.yml`:
+
 ``` yml
 combat1:
   friendlyName: Zombie Slayer

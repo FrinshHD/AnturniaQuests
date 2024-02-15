@@ -7,7 +7,6 @@ import de.frinshhd.anturniaquests.mysql.MysqlManager;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class ConfigManager {
 

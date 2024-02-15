@@ -32,6 +32,7 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
             }
             return false;
         }
+
         Player player = (Player) sender;
 
         if (args.length == 0) {
