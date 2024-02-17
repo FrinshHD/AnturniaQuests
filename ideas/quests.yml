@@ -1,0 +1,20 @@
+bringPotato:
+  friendlyName: Bring me a potatoe
+  description: nice description
+  requirements:
+    items:
+      - material: POTATO
+        amount: 5
+    killedEntities: #only available for storylines quests
+      - entity: ZOMBIE
+        amount: 34
+  rewards:
+    items:
+      - material: IRON_SWORD
+        amount: 1
+      - material: GOLDEN_APPLE
+        amount: 2
+    commands:
+      - name: "1x Diamond Sword"
+        command: "/give %player% diamond_sword"
+    money: 2
