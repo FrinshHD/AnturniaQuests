@@ -5,6 +5,7 @@ import de.frinshhd.anturniaquests.commands.QuestCommand;
 import de.frinshhd.anturniaquests.config.ConfigManager;
 import de.frinshhd.anturniaquests.menusystem.PlayerMenuUtility;
 import de.frinshhd.anturniaquests.quests.QuestsManager;
+import de.frinshhd.anturniaquests.storylines.StorylinesManager;
 import de.frinshhd.anturniaquests.utils.SpigotMCCommunication;
 import de.frinshhd.anturniaquests.utils.Translator;
 import net.milkbowl.vault.economy.Economy;
@@ -23,6 +24,9 @@ import java.util.*;
 
 public final class Main extends JavaPlugin {
 
+    //Todo: implement storylinesEnabled bool
+    private static boolean storylinesEnabled;
+
     private static final HashMap<Player, PlayerMenuUtility> playerMenuUtilityMap = new HashMap<>();
     public static String version;
     private static Main INSTANCE;
@@ -30,7 +34,7 @@ public final class Main extends JavaPlugin {
     private static QuestsManager questsManager;
     private static ConfigManager configManager;
     private static CategoriesManager categoriesManager;
-
+    private static StorylinesManager storylinesManager;
     public static Main getInstance() {
         return INSTANCE;
     }
@@ -49,6 +53,13 @@ public final class Main extends JavaPlugin {
 
     public static Economy getEconomy() {
         return econ;
+    }
+    public static StorylinesManager getStorylinesManager() {
+        return storylinesManager;
+    }
+
+    public static boolean isStorylinesEnabled() {
+        return storylinesEnabled;
     }
 
     public static PlayerMenuUtility getPlayerMenuUtility(Player p) {
@@ -101,6 +112,15 @@ public final class Main extends JavaPlugin {
         setupEconomy();
 
         INSTANCE = this;
+
+        //check if a npc plugin is installed
+        if (getServer().getPluginManager().getPlugin("FancyNpcs") != null) {
+            storylinesEnabled = true;
+        } else {
+            storylinesEnabled = false;
+        }
+
+
         SpigotMCCommunication.init();
 
         int pluginId = 20180;
@@ -127,6 +147,10 @@ public final class Main extends JavaPlugin {
         categoriesManager = new CategoriesManager();
 
         configManager = new ConfigManager();
+
+        if (isStorylinesEnabled()) {
+            storylinesManager = new StorylinesManager();
+        }
 
         DynamicListeners.load(classNamesIterator, canonicalName);
 

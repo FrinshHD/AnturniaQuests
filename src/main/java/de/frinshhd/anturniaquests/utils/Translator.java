@@ -37,7 +37,7 @@ public class Translator {
     }
 
     public static String build(String messageKey, TranslatorPlaceholder... translatorPlaceholders) {
-        return ChatColor.translateAlternateColorCodes('&', buildRaw(messageKey, translatorPlaceholders));
+        return MessageFormat.build(buildRaw(messageKey, translatorPlaceholders));
     }
 
     public static String buildRaw(String messageKey, TranslatorPlaceholder... translatorPlaceholders) {

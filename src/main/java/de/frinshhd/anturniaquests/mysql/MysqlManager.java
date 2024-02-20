@@ -4,8 +4,10 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.mysql.entities.KilledEntities;
 import de.frinshhd.anturniaquests.mysql.entities.Quests;
+import de.frinshhd.anturniaquests.mysql.entities.Storylines;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -31,6 +33,10 @@ public class MysqlManager implements Listener {
         return DaoManager.createDao(connectionSource, KilledEntities.class);
     }
 
+    public static Dao<Storylines, Long> getStorylinesDao() throws SQLException {
+        return DaoManager.createDao(connectionSource, Storylines.class);
+    }
+
     public static void connect(String url) {
         connect(url, null, null);
     }
@@ -54,6 +60,7 @@ public class MysqlManager implements Listener {
         try {
             TableUtils.createTableIfNotExists(connectionSource, Quests.class);
             TableUtils.createTableIfNotExists(connectionSource, KilledEntities.class);
+            TableUtils.createTableIfNotExists(connectionSource, Storylines.class);
         } catch (SQLException e) {
             //Todo logging
         }
@@ -101,6 +108,28 @@ public class MysqlManager implements Listener {
         }
 
         return killedEntities.get(0);
+    }
+
+    public static Storylines getStorylinesPlayer(UUID uuid) {
+        Dao<Storylines, Long> storylinesDao  = null;
+        try {
+            storylinesDao = getStorylinesDao();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        List<Storylines> storylines = null;
+        try {
+            storylines = storylinesDao.queryForEq("uuid", uuid);
+        } catch (SQLException e) {
+            return null;
+        }
+
+        if (storylines.isEmpty()) {
+            return null;
+        }
+
+        return storylines.get(0);
     }
 
     public static void disconnect() throws Exception {
@@ -168,6 +197,25 @@ public class MysqlManager implements Listener {
                 killedEntitiesDao.create(killedEntities);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
+            }
+        }
+
+        //create storylines
+        if(Main.isStorylinesEnabled()) {
+            if (MysqlManager.getStorylinesPlayer(player.getUniqueId()) == null) {
+                Dao<Storylines, Long> storylinesDao = null;
+                try {
+                    storylinesDao = getStorylinesDao();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                Storylines storylines = new Storylines();
+                storylines.create(player.getUniqueId());
+                try {
+                    storylinesDao.create(storylines);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
