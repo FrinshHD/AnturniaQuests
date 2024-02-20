@@ -8,6 +8,7 @@ import de.frinshhd.anturniaquests.mysql.entities.KilledEntities;
 import de.frinshhd.anturniaquests.mysql.entities.Quests;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -52,6 +53,7 @@ public class MysqlManager implements Listener {
 
         try {
             TableUtils.createTableIfNotExists(connectionSource, Quests.class);
+            TableUtils.createTableIfNotExists(connectionSource, KilledEntities.class);
         } catch (SQLException e) {
             //Todo logging
         }
@@ -131,7 +133,7 @@ public class MysqlManager implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPLayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 

@@ -5,7 +5,7 @@ bringPotato:
     items:
       - material: POTATO
         amount: 5
-    killedEntities: #only available for storylines quests
+    killedEntities:
       - entity: ZOMBIE
         amount: 34
   rewards:

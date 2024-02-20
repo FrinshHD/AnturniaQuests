@@ -77,15 +77,17 @@ public class QuestsManager {
             playerKilledEntities.put(uuid, new HashMap<>());
         }
 
-        HashMap<String, Integer> killedEntities = playerKilledEntities.put(uuid, playerKilledEntities.get(uuid));
+        HashMap<String, Integer> killedEntities = playerKilledEntities.get(uuid);
         assert killedEntities != null;
 
         if (!killedEntities.containsKey(killedEntity.toString())) {
-            killedEntities.put(killedEntities.toString(), 1);
-            return;
+            killedEntities.put(killedEntity.toString(), 1);
+        } else {
+            killedEntities.put(killedEntity.toString(), killedEntities.get(killedEntity.toString()) + 1);
         }
+        playerKilledEntities.put(uuid, killedEntities);
 
-        killedEntities.put(killedEntity.toString(), killedEntities.get(killedEntity.toString()) + 1);
+        System.out.println(playerKilledEntities.get(uuid).keySet().toString());
     }
 
     public int getKilledEntityAmount(Player player, EntityType entityType) {

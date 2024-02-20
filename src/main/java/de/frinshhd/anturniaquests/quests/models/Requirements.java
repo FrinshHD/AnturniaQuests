@@ -1,5 +1,6 @@
 package de.frinshhd.anturniaquests.quests.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.frinshhd.anturniaquests.Main;
 import org.bukkit.entity.Player;
@@ -20,6 +21,7 @@ public class Requirements {
         return this.items;
     }
 
+    @JsonIgnore
     public ArrayList<KilledEntity> getKilledEntities() {
         return this.killedEntities;
     }
@@ -54,5 +56,15 @@ public class Requirements {
         }
 
         return true;
+    }
+
+    public void removeItems(Player player) {
+        for (Item item : getItems()) {
+            int index = 0;
+            while (item.getAmount() > index) {
+                player.getInventory().removeItem(item.getItem());
+                index++;
+            }
+        }
     }
 }

@@ -31,11 +31,8 @@ public class KilledEntities {
         return uuid;
     }
 
-    public void addKilledEntity(String killedEntity) {
-        addKilledEntity(killedEntity, 1);
-    }
 
-    public void addKilledEntity(String killedEntity, int amount) {
+    public void putKilledEntity(String killedEntity, int amount) {
         HashMap<String, Integer> killedEntities;
         if (this.killedEntities == null || this.killedEntities.isEmpty() || this.killedEntities.equals("{}")) {
             killedEntities = new HashMap<>();
@@ -44,7 +41,7 @@ public class KilledEntities {
         }
 
         if (killedEntities.containsKey(killedEntity)) {
-            killedEntities.put(killedEntity, killedEntities.get(killedEntity) + amount);
+            killedEntities.put(killedEntity, amount);
             this.killedEntities = hashMapToString(killedEntities);
             return;
         }
@@ -54,7 +51,7 @@ public class KilledEntities {
     }
 
     public HashMap<String, Integer> getKilledEntities() {
-        if (this.killedEntities == null) {
+        if (this.killedEntities == null || this.killedEntities.equals("{}") || this.killedEntities.isEmpty()) {
             return new HashMap<>();
         }
 

@@ -132,9 +132,12 @@ public class Quest {
 
             //killedEntities
             for (KilledEntity killedEntity : getRequirements().getKilledEntities()) {
-                Integer amount = Main.getQuestsManager().playerKilledEntities.get(player.getUniqueId()).get(killedEntity.toString());
-                if (amount == null) {
+                int amount;
+
+                if (Main.getQuestsManager().playerKilledEntities.get(player.getUniqueId()).get(killedEntity.getEntity().toString()) == null) {
                     amount = 0;
+                } else {
+                    amount = Main.getQuestsManager().playerKilledEntities.get(player.getUniqueId()).get(killedEntity.getEntity().toString());
                 }
 
                 if (amount >= killedEntity.getAmount()) {
@@ -192,6 +195,8 @@ public class Quest {
             SurvivalQuestSounds.questError(player);
             return;
         }
+
+        getRequirements().removeItems(player);
 
         Dao<Quests, Long> questsDao = null;
         try {

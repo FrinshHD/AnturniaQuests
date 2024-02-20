@@ -1,13 +1,10 @@
 package de.frinshhd.anturniaquests.listener;
 
-import com.google.common.util.concurrent.Service;
 import com.j256.ormlite.dao.Dao;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.mysql.MysqlManager;
 import de.frinshhd.anturniaquests.mysql.entities.KilledEntities;
-import de.frinshhd.anturniaquests.mysql.entities.Quests;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,6 +13,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PlayerKillEntityListener implements Listener {
 
@@ -34,6 +33,7 @@ public class PlayerKillEntityListener implements Listener {
         Player player = event.getEntity().getKiller();
 
         Main.getQuestsManager().addKilledEntity(player, event.getEntity().getType());
+        player.sendMessage(event.getEntity().getType().toString());
     }
 
     @EventHandler
@@ -44,6 +44,7 @@ public class PlayerKillEntityListener implements Listener {
         assert killedEntities != null;
 
         Main.getQuestsManager().playerKilledEntities.put(player.getUniqueId(), killedEntities.getKilledEntities());
+        System.out.println(Main.getQuestsManager().playerKilledEntities.get(player.getUniqueId()));
     }
 
     @EventHandler
@@ -60,7 +61,12 @@ public class PlayerKillEntityListener implements Listener {
         try {
             killedEntities = killedEntitiesDao.queryForEq("uuid", player.getUniqueId()).stream().toList().get(0);
 
-            Main.getQuestsManager().playerKilledEntities.get(player.getUniqueId()).forEach(killedEntities::addKilledEntity);
+            HashMap<String, Integer> map = Main.getQuestsManager().playerKilledEntities.get(player.getUniqueId());
+
+            for (Map.Entry<String, Integer> stringIntegerEntry : map.entrySet()) {
+                killedEntities.putKilledEntity(stringIntegerEntry.getKey(), stringIntegerEntry.getValue());
+            }
+
 
             killedEntitiesDao.update(killedEntities);
         } catch (SQLException e) {
