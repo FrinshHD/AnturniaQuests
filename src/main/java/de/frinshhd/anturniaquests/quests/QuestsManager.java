@@ -5,20 +5,26 @@ import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import de.frinshhd.anturniaquests.quests.models.Quest;
+import de.frinshhd.anturniaquests.utils.PlayerHashMap;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class QuestsManager {
 
     public LinkedHashMap<String, Quest> quests;
+    public PlayerHashMap<UUID, HashMap<String, Integer>> playerKilledEntities;
 
     public QuestsManager() {
         quests = new LinkedHashMap<>();
+        playerKilledEntities = new PlayerHashMap<>();
 
         this.load();
     }
@@ -62,5 +68,33 @@ public class QuestsManager {
         }
 
         return null;
+    }
+
+    public void addKilledEntity(Player player, EntityType killedEntity) {
+        UUID uuid = player.getUniqueId();
+
+        if (!playerKilledEntities.containsKey(uuid)) {
+            playerKilledEntities.put(uuid, new HashMap<>());
+        }
+
+        HashMap<String, Integer> killedEntities = playerKilledEntities.put(uuid, playerKilledEntities.get(uuid));
+        assert killedEntities != null;
+
+        if (!killedEntities.containsKey(killedEntity.toString())) {
+            killedEntities.put(killedEntities.toString(), 1);
+            return;
+        }
+
+        killedEntities.put(killedEntity.toString(), killedEntities.get(killedEntity.toString()) + 1);
+    }
+
+    public int getKilledEntityAmount(Player player, EntityType entityType) {
+        HashMap<String, Integer> map = playerKilledEntities.get(player.getUniqueId());
+
+        if (!map.containsKey(entityType.toString())) {
+            return 0;
+        }
+
+        return map.get(entityType.toString());
     }
 }

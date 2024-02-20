@@ -37,7 +37,7 @@ public class Quest {
     private String material;
 
     @JsonProperty
-    private LinkedHashMap<String, Integer> requirements;
+    private Requirements requirements;
 
     @JsonProperty
     private Rewards rewards;
@@ -49,7 +49,7 @@ public class Quest {
     private boolean announce;
 
     public Quest() {
-        this.requirements = new LinkedHashMap<>();
+        this.requirements = new Requirements();
         this.rewards = new Rewards();
         this.oneTime = true;
         this.announce = false;
@@ -76,17 +76,11 @@ public class Quest {
             return Material.getMaterial(this.material);
         }
 
-        for (Object o : getRequirements().keySet()) {
-            if (!(o instanceof ItemStack)) {
-                continue;
-            }
-
-            ItemStack item = (ItemStack) o;
-            return item.getType();
+        if (!getRequirements().getItems().isEmpty()) {
+            return getRequirements().getItems().get(0).getMaterial();
         }
 
-        Main.getQuestsManager().quests.remove(Main.getQuestsManager().getQuestID(this));
-        return null;
+        return Material.STONE;
     }
 
     @JsonIgnore
@@ -98,22 +92,8 @@ public class Quest {
         return this.rewards;
     }
 
-    public LinkedHashMap<Object, Integer> getRequirements() {
-        LinkedHashMap<Object, Integer> map = new LinkedHashMap<>();
-
-        requirements.forEach((k, v) -> {
-            // Todo: do tagged items and coins also
-
-            try {
-                Material material1 = Material.valueOf(k);
-
-                map.put(new ItemStack(material1), v);
-            } catch (IllegalArgumentException e) {
-                map.put(k, v);
-            }
-        });
-
-        return map;
+    public Requirements getRequirements() {
+        return this.requirements;
     }
 
     public ItemStack getItem(Player player, HashMap<String, Integer> finishedQuests) {
@@ -131,26 +111,38 @@ public class Quest {
         } else {
             lore.add(Translator.build("lore.requirements"));
 
-            getRequirements().forEach((key, value) -> {
-                if (key instanceof ItemStack) {
-                    ItemStack requirement = (ItemStack) key;
-                    int amount = 0;
-                    for (ItemStack content : player.getInventory().getContents()) {
-                        if (content == null) {
-                            continue;
-                        }
-
-                        if (content.isSimilar(requirement)) {
-                            amount += content.getAmount();
-                        }
+            //items
+            for (Item items : getRequirements().getItems()) {
+                int amount = 0;
+                for (ItemStack content : player.getInventory().getContents()) {
+                    if (content == null) {
+                        continue;
                     }
-                    if (amount >= value) {
-                        lore.add(Translator.build("lore.requirements.items.inInventory", new TranslatorPlaceholder("amountInInv", String.valueOf(amount)), new TranslatorPlaceholder("amount", value.toString()), new TranslatorPlaceholder("itemName", new TranslatableComponent(requirement.getType().getTranslationKey()).toPlainText())));
-                    } else {
-                        lore.add(Translator.build("lore.requirements.items.notInInventory", new TranslatorPlaceholder("amountInInv", String.valueOf(amount)), new TranslatorPlaceholder("amount", value.toString()), new TranslatorPlaceholder("itemName", new TranslatableComponent(requirement.getType().getTranslationKey()).toPlainText())));
+
+                    if (content.isSimilar(items.getItem())) {
+                        amount += content.getAmount();
                     }
                 }
-            });
+                if (amount >= items.getAmount()) {
+                    lore.add(Translator.build("lore.requirements.items.inInventory", new TranslatorPlaceholder("amountInInv", String.valueOf(amount)), new TranslatorPlaceholder("amount", String.valueOf(items.getAmount())), new TranslatorPlaceholder("itemName", items.getName())));
+                } else {
+                    lore.add(Translator.build("lore.requirements.items.notInInventory", new TranslatorPlaceholder("amountInInv", String.valueOf(amount)), new TranslatorPlaceholder("amount", String.valueOf(items.getAmount())), new TranslatorPlaceholder("itemName", items.getName())));
+                }
+            }
+
+            //killedEntities
+            for (KilledEntity killedEntity : getRequirements().getKilledEntities()) {
+                Integer amount = Main.getQuestsManager().playerKilledEntities.get(player.getUniqueId()).get(killedEntity.toString());
+                if (amount == null) {
+                    amount = 0;
+                }
+
+                if (amount >= killedEntity.getAmount()) {
+                    lore.add(Translator.build("lore.requirements.killedEntities.fulfilled", new TranslatorPlaceholder("amountKilled", String.valueOf(amount)), new TranslatorPlaceholder("amount", String.valueOf(killedEntity.getAmount())), new TranslatorPlaceholder("entityName", killedEntity.getName())));
+                } else {
+                    lore.add(Translator.build("lore.requirements.killedEntities.notFulfilled", new TranslatorPlaceholder("amountKilled", String.valueOf(amount)), new TranslatorPlaceholder("amount", String.valueOf(killedEntity.getAmount())), new TranslatorPlaceholder("entityName", killedEntity.getName())));
+                }
+            }
 
             lore.add(" ");
 
@@ -193,26 +185,12 @@ public class Quest {
             return;
         }
 
-        for (Map.Entry<Object, Integer> entry : getRequirements().entrySet()) {
-            if (entry.getKey() instanceof ItemStack) {
-                ItemStack requirementItem = (ItemStack) entry.getKey();
-                if (!player.getInventory().containsAtLeast(requirementItem, entry.getValue())) {
-                    // ToDo: tell player that he doesn't meet the requirements
-                    SurvivalQuestSounds.questError(player);
-                    return;
-                }
-            }
-        }
 
-        for (Map.Entry<Object, Integer> entry : getRequirements().entrySet()) {
-            if (entry.getKey() instanceof ItemStack) {
-                ItemStack requirementItem = (ItemStack) entry.getKey();
-                int index = 0;
-                while (entry.getValue() > index) {
-                    player.getInventory().removeItem(requirementItem);
-                    index++;
-                }
-            }
+
+        if (!getRequirements().check(player)) {
+            //Todo: tell player that he doesn't meet the requirements
+            SurvivalQuestSounds.questError(player);
+            return;
         }
 
         Dao<Quests, Long> questsDao = null;
