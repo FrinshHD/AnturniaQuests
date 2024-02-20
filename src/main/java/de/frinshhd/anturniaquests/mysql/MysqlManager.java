@@ -4,9 +4,11 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import de.frinshhd.anturniaquests.mysql.entities.KilledEntities;
 import de.frinshhd.anturniaquests.mysql.entities.Quests;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -23,6 +25,10 @@ public class MysqlManager implements Listener {
 
     public static Dao<Quests, Long> getQuestDao() throws SQLException {
         return DaoManager.createDao(connectionSource, Quests.class);
+    }
+
+    public static Dao<KilledEntities, Long> getKilledEntityDao() throws SQLException {
+        return DaoManager.createDao(connectionSource, KilledEntities.class);
     }
 
     public static void connect(String url) {
@@ -47,6 +53,7 @@ public class MysqlManager implements Listener {
 
         try {
             TableUtils.createTableIfNotExists(connectionSource, Quests.class);
+            TableUtils.createTableIfNotExists(connectionSource, KilledEntities.class);
         } catch (SQLException e) {
             //Todo logging
         }
@@ -72,6 +79,28 @@ public class MysqlManager implements Listener {
         }
 
         return quests.get(0);
+    }
+
+    public static KilledEntities getKilledEntitiesPlayer(UUID uuid) {
+        Dao<KilledEntities, Long> killedEntitiesDao = null;
+        try {
+            killedEntitiesDao = getKilledEntityDao();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        List<KilledEntities> killedEntities = null;
+        try {
+            killedEntities = killedEntitiesDao.queryForEq("uuid", uuid);
+        } catch (SQLException e) {
+            return null;
+        }
+
+        if (killedEntities.isEmpty()) {
+            return null;
+        }
+
+        return killedEntities.get(0);
     }
 
     public static void disconnect() throws Exception {
@@ -104,10 +133,11 @@ public class MysqlManager implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPLayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
+        //create quests
         if (MysqlManager.getQuestPlayer(player.getUniqueId()) == null) {
             Dao<Quests, Long> questDao = null;
             try {
@@ -119,6 +149,23 @@ public class MysqlManager implements Listener {
             quest.create(player.getUniqueId());
             try {
                 questDao.create(quest);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        //create killedEntities
+        if (MysqlManager.getKilledEntitiesPlayer(player.getUniqueId()) == null) {
+            Dao<KilledEntities, Long> killedEntitiesDao = null;
+            try {
+                killedEntitiesDao = getKilledEntityDao();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            KilledEntities killedEntities = new KilledEntities();
+            killedEntities.create(player.getUniqueId());
+            try {
+                killedEntitiesDao.create(killedEntities);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }

@@ -1,11 +1,15 @@
 combat1:
   friendlyName: Zombie Slayer
-  description: The zombie apocalypse is upon us! Eliminate 20 zombies and collect
-    their rotten flesh.
+  description: The zombie apocalypse is upon us! Eliminate 20 zombies and collect their rotten flesh.
   category: combat
   oneTime: false
   requirements:
-    ROTTEN_FLESH: 20
+    items:
+      - material: ROTTEN_FLESH
+        amount: 20
+    killedEntities:
+      - entity: ZOMBIE
+        amount: 2
   rewards:
     items:
       - material: IRON_SWORD
@@ -16,13 +20,15 @@ combat1:
       - name: "1x Diamond Sword"
         command: "/give %player% diamond_sword"
     money: 2
+
 combat2:
   friendlyName: Skeleton Archer
-  description: Archery skills are no match for you! Defeat 30 skeletons and gather
-    their bones for crafting purposes.
+  description: Archery skills are no match for you! Defeat 30 skeletons and gather their bones for crafting purposes.
   category: combat
   requirements:
-    BONE: 30
+    items:
+      - material: BONE
+        amount: 30
   rewards:
     items:
       - material: BOW
@@ -30,28 +36,32 @@ combat2:
       - material: ARROW
         amount: 32
     money: 60
+
 combat3:
   friendlyName: Spider Exterminator
-  description: Arachnophobia be gone! Annihilate 25 spiders and retrieve their eyes
-    as trophies.
+  description: Arachnophobia be gone! Annihilate 25 spiders and retrieve their eyes as trophies.
   category: combat
   announce: true
   requirements:
-    SPIDER_EYE: 25
+    items:
+      - material: SPIDER_EYE
+        amount: 25
   rewards:
     items:
       - material: IRON_CHESTPLATE
         amount: 1
     money: 20
-#--------------------------------------------------------------
+
 farming1:
   friendlyName: Wheat Farmer
-  description: Become the master of agriculture! Cultivate and harvest 128 wheat to
-    fill your granary.
+  description: Become the master of agriculture! Cultivate and harvest 128 wheat to fill your granary.
   category: farming
   requirements:
-    WHEAT: 128
-    IRON_HOE: 1
+    items:
+      - material: WHEAT
+        amount: 128
+      - material: IRON_HOE
+        amount: 1
   rewards:
     items:
       - material: IRON_HOE
@@ -59,13 +69,15 @@ farming1:
       - material: BREAD
         amount: 64
     money: 60
+
 farming2:
   friendlyName: Melon Enthusiast
-  description: The thirst quencher! Gather a bountiful harvest of 64 melons for a
-    refreshing feast.
+  description: The thirst quencher! Gather a bountiful harvest of 64 melons for a refreshing feast.
   category: farming
   requirements:
-    MELON_SLICE: 64
+    items:
+      - material: MELON_SLICE
+        amount: 64
   rewards:
     items:
       - material: GOLDEN_AXE
@@ -73,13 +85,17 @@ farming2:
       - material: GLISTERING_MELON_SLICE
         amount: 16
     money: 60
+
 farming3:
   friendlyName: Carrot Harvest
   description: Dig deep into the earth! Harvest 96 carrots to create a carrot paradise.
   category: farming
   requirements:
-    CARROT: 96
-    IRON_SHOVEL: 1
+    items:
+      - material: CARROT
+        amount: 96
+      - material: IRON_SHOVEL
+        amount: 1
   rewards:
     items:
       - material: IRON_SHOVEL
@@ -87,18 +103,25 @@ farming3:
       - material: GOLDEN_CARROT
         amount: 16
     money: 60
-#--------------------------------------------------------------
+
 foraging1:
   friendlyName: Wood Collector
   description: Embrace nature! Gather 256 logs of any type and become a master lumberjack.
   category: foraging
   requirements:
-    OAK_LOG: 128
-    SPRUCE_LOG: 64
-    BIRCH_LOG: 32
-    JUNGLE_LOG: 32
-    ACACIA_LOG: 16
-    DARK_OAK_LOG: 16
+    items:
+      - material: OAK_LOG
+        amount: 128
+      - material: SPRUCE_LOG
+        amount: 64
+      - material: BIRCH_LOG
+        amount: 32
+      - material: JUNGLE_LOG
+        amount: 32
+      - material: ACACIA_LOG
+        amount: 16
+      - material: DARK_OAK_LOG
+        amount: 16
   rewards:
     items:
       - material: DIAMOND_AXE
@@ -106,81 +129,107 @@ foraging1:
       - material: OAK_PLANKS
         amount: 512
     money: 60
+
 foraging2:
   friendlyName: Berry Picker
-  description: The forest is a treasure trove of delicious berries! Collect 128 sweet
-    berries for a tasty treat.
+  description: The forest is a treasure trove of delicious berries! Collect 128 sweet berries for a tasty treat.
   category: foraging
   requirements:
-    SWEET_BERRIES: 128
+    items:
+      - material: SWEET_BERRIES
+        amount: 128
   rewards:
     items:
       - material: LEATHER_CHESTPLATE
         amount: 1
       - material: SWEET_BERRIES
         amount: 64
+
 foraging3:
   friendlyName: Flower Power
-  description: Embrace the beauty of nature! Collect 64 different flowers and create
-    a stunning garden.
+  description: Embrace the beauty of nature! Collect 64 different flowers and create a stunning garden.
   category: foraging
   requirements:
-    DANDELION: 4
-    POPPY: 4
-    BLUE_ORCHID: 4
-    ALLIUM: 4
-    AZURE_BLUET: 4
-    RED_TULIP: 4
-    ORANGE_TULIP: 4
-    WHITE_TULIP: 4
-    PINK_TULIP: 4
-    OXEYE_DAISY: 4
-    CORN_FLOWER: 4
-    LILY_OF_THE_VALLEY: 4
-    WITHER_ROSE: 4
-    SUNFLOWER: 4
-    LILAC: 4
-    ROSE_BUSH: 4
-    PEONY: 4
+    items:
+      - material: DANDELION
+        amount: 4
+      - material: POPPY
+        amount: 4
+      - material: BLUE_ORCHID
+        amount: 4
+      - material: ALLIUM
+        amount: 4
+      - material: AZURE_BLUET
+        amount: 4
+      - material: RED_TULIP
+        amount: 4
+      - material: ORANGE_TULIP
+        amount: 4
+      - material: WHITE_TULIP
+        amount: 4
+      - material: PINK_TULIP
+        amount: 4
+      - material: OXEYE_DAISY
+        amount: 4
+      - material: CORNFLOWER
+        amount: 4
+      - material: LILY_OF_THE_VALLEY
+        amount: 4
+      - material: WITHER_ROSE
+        amount: 4
+      - material: SUNFLOWER
+        amount: 4
+      - material: LILAC
+        amount: 4
+      - material: ROSE_BUSH
+        amount: 4
+      - material: PEONY
+        amount: 4
   rewards:
     items:
       - material: BONE_MEAL
         amount: 64
       - material: FLOWER_POT
         amount: 4
-#--------------------------------------------------------------
+
 mining1:
   friendlyName: Coal Miner
   description: Descend into the depths! Mine 128 blocks of coal ore to fuel your adventures.
   category: mining
   requirements:
-    COAL: 128
+    items:
+      - material: COAL
+        amount: 128
   rewards:
     items:
       - material: TORCH
         amount: 128
       - material: COAL_BLOCK
         amount: 8
+
 mining2:
   friendlyName: Iron Seeker
-  description: Iron is the backbone of any thriving civilization. Mine 64 iron ore
-    to bolster your resources.
+  description: Iron is the backbone of any thriving civilization. Mine 64 iron ore to bolster your resources.
   category: mining
   requirements:
-    IRON_ORE: 64
+    items:
+      - material: IRON_ORE
+        amount: 64
   rewards:
     items:
       - material: IRON_PICKAXE
         amount: 1
       - material: IRON_INGOT
         amount: 64
+
 mining3:
   friendlyName: Diamond Prospector
-  description: Diamonds are a miner's best friend. Unearth 16 diamonds to add sparkle
-    to your collection.
+  description: Diamonds are a miner's best friend. Unearth 16 diamonds to add sparkle to your collection.
   category: mining
   requirements:
-    DIAMOND: 16
+    items:
+      - material: DIAMOND
+        amount: 16
   rewards:
     items:
       - material: DIAMOND_PICKAXE
