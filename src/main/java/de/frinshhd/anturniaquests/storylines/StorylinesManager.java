@@ -4,7 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.j256.ormlite.dao.Dao;
 import de.frinshhd.anturniaquests.Main;
+import de.frinshhd.anturniaquests.mysql.MysqlManager;
+import de.frinshhd.anturniaquests.mysql.entities.Storylines;
 import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.storylines.listener.CitizensNpcsListener;
 import de.frinshhd.anturniaquests.storylines.listener.FancyNpcsListener;
@@ -19,10 +22,7 @@ import org.json.JSONObject;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class StorylinesManager {
 
@@ -237,6 +237,43 @@ public class StorylinesManager {
 
         object.put(storylineID, storylineObject);
         playerStats.put(uuid, object);
+    }
+
+    public void playerJoin(Player player) {
+        putPlayerPlayerStatsMap(player);
+    }
+
+    public void playerQuit(Player player) {
+        savePlayerStatsToDB(player);
+    }
+
+    public void putPlayerPlayerStatsMap(Player player) {
+        UUID uuid = player.getUniqueId();
+
+        JSONObject object = Objects.requireNonNull(MysqlManager.getStorylinesPlayer(uuid)).getStoryline();
+
+        Main.getStorylinesManager().playerStats.put(uuid, object);
+    }
+
+    public void savePlayerStatsToDB(Player player) {
+        Dao<Storylines, Long> storylinesDao;
+        try {
+            storylinesDao = MysqlManager.getStorylinesDao();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        Storylines storylines;
+        try {
+            storylines = storylinesDao.queryForEq("uuid", player.getUniqueId()).stream().toList().get(0);
+
+            JSONObject object = Main.getStorylinesManager().playerStats.get(player.getUniqueId());
+
+            storylines.putStorylines(object);
+
+            storylinesDao.update(storylines);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

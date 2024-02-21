@@ -4,6 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.j256.ormlite.dao.Dao;
+import de.frinshhd.anturniaquests.Main;
+import de.frinshhd.anturniaquests.mysql.MysqlManager;
+import de.frinshhd.anturniaquests.mysql.entities.KilledEntities;
 import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.utils.PlayerHashMap;
 import org.bukkit.entity.EntityType;
@@ -12,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -98,5 +103,44 @@ public class QuestsManager {
         }
 
         return map.get(entityType.toString());
+    }
+
+    public void playerJoin(Player player) {
+        putPlayerKilledEntitiesToMap(player);
+    }
+
+    public void playerQuit(Player player) {
+        savePlayerKilledEntitiesToDB(player);
+    }
+
+    public void putPlayerKilledEntitiesToMap(Player player) {
+        KilledEntities killedEntities = MysqlManager.getKilledEntitiesPlayer(player.getUniqueId());
+        assert killedEntities != null;
+
+        Main.getQuestsManager().playerKilledEntities.put(player.getUniqueId(), killedEntities.getKilledEntities());
+    }
+
+    public void savePlayerKilledEntitiesToDB(Player player) {
+        Dao<KilledEntities, Long> killedEntitiesDao = null;
+        try {
+            killedEntitiesDao = MysqlManager.getKilledEntityDao();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        KilledEntities killedEntities = null;
+        try {
+            killedEntities = killedEntitiesDao.queryForEq("uuid", player.getUniqueId()).stream().toList().get(0);
+
+            HashMap<String, Integer> map = Main.getQuestsManager().playerKilledEntities.get(player.getUniqueId());
+
+            for (Map.Entry<String, Integer> stringIntegerEntry : map.entrySet()) {
+                killedEntities.putKilledEntity(stringIntegerEntry.getKey(), stringIntegerEntry.getValue());
+            }
+
+
+            killedEntitiesDao.update(killedEntities);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

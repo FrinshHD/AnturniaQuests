@@ -11,8 +11,6 @@ import de.frinshhd.anturniaquests.utils.Translator;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
@@ -162,10 +160,11 @@ public final class Main extends JavaPlugin {
 
         this.registerCommands();
 
-        //run playerJoinEvent for all online players in case of server reload
+        //run playerJoinLogic for all online players in case of server reload
         if (!getServer().getOnlinePlayers().isEmpty()) {
             getServer().getOnlinePlayers().forEach(player -> {
-                getServer().getPluginManager().callEvent(new PlayerJoinEvent(player, ""));
+                getQuestsManager().playerJoin(player);
+                getStorylinesManager().playerJoin(player);
             });
         }
     }
@@ -184,9 +183,11 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        //run player quit logic on server reload
         if (!getServer().getOnlinePlayers().isEmpty()) {
             getServer().getOnlinePlayers().forEach(player -> {
-                getServer().getPluginManager().callEvent(new PlayerQuitEvent(player, ""));
+                getQuestsManager().playerQuit(player);
+                getStorylinesManager().playerQuit(player);
             });
         }
     }
