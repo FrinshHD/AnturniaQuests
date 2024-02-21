@@ -7,7 +7,9 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.Metrics;
 import de.frinshhd.anturniaquests.quests.models.Quest;
+import de.frinshhd.anturniaquests.storylines.listener.CitizensNpcsListener;
 import de.frinshhd.anturniaquests.storylines.listener.FancyNpcsListener;
+import de.frinshhd.anturniaquests.storylines.listener.StorylinesListener;
 import de.frinshhd.anturniaquests.storylines.models.NPC;
 import de.frinshhd.anturniaquests.storylines.models.Storyline;
 import de.frinshhd.anturniaquests.utils.MessageFormat;
@@ -28,7 +30,16 @@ public class StorylinesManager {
 
 
     public StorylinesManager() {
-        new FancyNpcsListener(true);
+        if (Main.getInstance().getServer().getPluginManager().getPlugin("Citizens") != null && Main.getInstance().getServer().getPluginManager().getPlugin("Citizens").isEnabled()) {
+
+            new CitizensNpcsListener(true);
+        }
+
+        if (Main.getInstance().getServer().getPluginManager().getPlugin("FancyNpcs") != null && Main.getInstance().getServer().getPluginManager().getPlugin("FancyNpcs").isEnabled()) {
+            new FancyNpcsListener(true);
+        }
+
+        new StorylinesListener(true);
         load();
     }
 

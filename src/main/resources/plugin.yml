@@ -3,7 +3,7 @@ version: '${project.version}'
 main: de.frinshhd.anturniaquests.Main
 api-version: '1.16'
 author: "FrinshHD"
-softdepend: [ "Vault", "FancyNpcs" ]
+softdepend: [ "Vault", "FancyNpcs", "Citizens" ]
 
 commands:
   quests:

@@ -6,6 +6,8 @@ import de.frinshhd.anturniaquests.config.ConfigManager;
 import de.frinshhd.anturniaquests.menusystem.PlayerMenuUtility;
 import de.frinshhd.anturniaquests.quests.QuestsManager;
 import de.frinshhd.anturniaquests.storylines.StorylinesManager;
+import de.frinshhd.anturniaquests.storylines.listener.CitizensNpcsListener;
+import de.frinshhd.anturniaquests.storylines.listener.FancyNpcsListener;
 import de.frinshhd.anturniaquests.utils.SpigotMCCommunication;
 import de.frinshhd.anturniaquests.utils.Translator;
 import net.milkbowl.vault.economy.Economy;
@@ -80,6 +82,7 @@ public final class Main extends JavaPlugin {
         getConfigManager().load();
         getQuestsManager().load();
         getDynamicCategories().load();
+        getStorylinesManager().load();
         try {
             Translator.register("plugins/AnturniaQuests/messages.properties");
         } catch (IOException e) {
@@ -93,7 +96,7 @@ public final class Main extends JavaPlugin {
         new File("plugins/AnturniaQuests").mkdir();
 
         List<String> files = new ArrayList<>();
-        files.addAll(List.of("categories.yml", "config.yml", "quests.yml", "messages.properties"));
+        files.addAll(List.of("categories.yml", "config.yml", "quests.yml", "storylines.yml", "messages.properties"));
 
         for (String fileRaw : files) {
             File file = new File("plugins/AnturniaQuests/" + fileRaw);
@@ -114,9 +117,11 @@ public final class Main extends JavaPlugin {
         INSTANCE = this;
 
         //check if a npc plugin is installed
-        if (getServer().getPluginManager().getPlugin("FancyNpcs") != null) {
+        if (Main.getInstance().getServer().getPluginManager().getPlugin("Citizens") != null && Main.getInstance().getServer().getPluginManager().getPlugin("Citizens").isEnabled()) {
             storylinesEnabled = true;
-        } else {
+        } else if (Main.getInstance().getServer().getPluginManager().getPlugin("FancyNpcs") != null && Main.getInstance().getServer().getPluginManager().getPlugin("FancyNpcs").isEnabled()) {
+            storylinesEnabled = true;
+        } else  {
             storylinesEnabled = false;
         }
 

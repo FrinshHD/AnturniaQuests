@@ -26,13 +26,8 @@ public class DynamicListeners {
 
                         getServer().getPluginManager().registerEvents(listener, Main.getInstance());
                     }
-                } catch (ClassNotFoundException e) {
-                    Main.getInstance().getLogger().warning("Error loading listeners in class " + className + " " + e);
-                } catch (InvocationTargetException e) {
-                    Main.getInstance().getLogger().warning("Error loading listeners in class " + className + " " + e);
-                } catch (InstantiationException e) {
-                    Main.getInstance().getLogger().warning("Error loading listeners in class " + className + " " + e);
-                } catch (IllegalAccessException e) {
+                } catch (ClassNotFoundException | IllegalAccessException | InstantiationException |
+                         InvocationTargetException | IllegalArgumentException e) {
                     Main.getInstance().getLogger().warning("Error loading listeners in class " + className + " " + e);
                 }
             }

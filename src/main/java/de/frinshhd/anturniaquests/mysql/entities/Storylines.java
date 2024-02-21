@@ -41,6 +41,10 @@ public class Storylines {
         this.storylines = storylines.toString();
     }
 
+    public void putStorylines(JSONObject object) {
+        this.storylines = object.toString();
+    }
+
     public JSONObject getStoryline() {
         if (this.storylines == null || this.storylines.isEmpty() || this.storylines.equals("{}")) {
             return new JSONObject();
