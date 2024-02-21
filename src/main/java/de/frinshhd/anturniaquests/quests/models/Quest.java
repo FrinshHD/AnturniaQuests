@@ -185,11 +185,11 @@ public class Quest {
         playerClick(player, false);
     }
 
-    public void playerClick(Player player, boolean message) throws SQLException {
+    public boolean playerClick(Player player, boolean message) throws SQLException {
         if (isOneTimeUse() && MysqlManager.getQuestPlayer(player.getUniqueId()).getFinishedQuests().containsKey(Main.getQuestsManager().getQuestID(this))) {
             // Todo: say player he has already this quest
             SurvivalQuestSounds.questError(player);
-            return;
+            return false;
         }
 
 
@@ -197,7 +197,7 @@ public class Quest {
         if (!getRequirements().check(player)) {
             //Todo: tell player that he doesn't meet the requirements
             SurvivalQuestSounds.questError(player);
-            return;
+            return false;
         }
 
         getRequirements().removeItems(player);
@@ -215,6 +215,8 @@ public class Quest {
         questsDao.update(quest);
 
         claim(player, message);
+
+        return true;
     }
 
     public void claim(Player player, boolean message) {

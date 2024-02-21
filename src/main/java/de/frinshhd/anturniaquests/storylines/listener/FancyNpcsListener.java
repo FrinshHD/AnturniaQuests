@@ -16,7 +16,7 @@ public class FancyNpcsListener implements Listener {
 
     @EventHandler
     public void onNpcInteract(NpcInteractEvent event) {
-        String npcID = event.getNpc().getData().getId();
+        String npcID = event.getNpc().getData().getName();
 
         Main.getStorylinesManager().npcClick(event.getPlayer(), npcID);
     }

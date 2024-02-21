@@ -13,6 +13,8 @@ import de.frinshhd.anturniaquests.utils.Translator;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
@@ -160,6 +162,13 @@ public final class Main extends JavaPlugin {
         DynamicListeners.load(classNamesIterator, canonicalName);
 
         this.registerCommands();
+
+        //run playerJoinEvent for all online players in case of server reload
+        if (!getServer().getOnlinePlayers().isEmpty()) {
+            getServer().getOnlinePlayers().forEach(player -> {
+                getServer().getPluginManager().callEvent(new PlayerJoinEvent(player, ""));
+            });
+        }
     }
 
     private boolean setupEconomy() {
@@ -176,7 +185,11 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        if (!getServer().getOnlinePlayers().isEmpty()) {
+            getServer().getOnlinePlayers().forEach(player -> {
+                getServer().getPluginManager().callEvent(new PlayerQuitEvent(player, ""));
+            });
+        }
     }
 
     public void registerCommands() {

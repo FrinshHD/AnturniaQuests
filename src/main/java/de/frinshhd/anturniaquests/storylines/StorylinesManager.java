@@ -118,6 +118,13 @@ public class StorylinesManager {
             return;
         }
 
+        //check if counter has to start //Todo
+        if (storyline.timeToComplete() > -1) {
+            if (getPlayerStartTime(player, storylineID) == -1){
+                putPlayerStartTime(player, storylineID, System.currentTimeMillis());
+            }
+        }
+
         int playerCurrentMessage = playerStorylineStats.getInt("currentMessage");
         ArrayList<String> messages = npc.getMessages();
 
@@ -125,10 +132,15 @@ public class StorylinesManager {
             //Todo: tell player the quest he has to do
             Quest quest = npc.getQuest();
 
+            boolean completedQuest;
             try {
-                quest.playerClick(player, true);
+                completedQuest = quest.playerClick(player, true);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
+            }
+
+            if (!completedQuest) {
+                return;
             }
 
             //check if player has Completed the storyline
@@ -157,10 +169,15 @@ public class StorylinesManager {
             putPlayerCurrentStage(player, storylineID, 0);
             putPlayerCompletions(player, storylineID, playerCompletions + 1);
             putPlayerLastCompletion(player, storylineID, System.currentTimeMillis());
+            putPlayerStartTime(player, storylineID, -1);
         } else {
             putPlayerCurrentMessage(player, storylineID, 0);
             putPlayerCurrentStage(player, storylineID, playerStageID);
         }
+    }
+
+    public JSONObject getPlayerStats(Player player) {
+        return playerStats.get(player.getUniqueId());
     }
 
     public JSONObject getPlayerStoryline(Player player, String storylineID) {
@@ -170,14 +187,24 @@ public class StorylinesManager {
             object.put("lastCompletion", 0);
             object.put("currentStage", 0);
             object.put("currentMessage", 0);
+            object.put("currentStartTime", -1);
             return object;
         }
 
         return getPlayerStats(player).getJSONObject(storylineID);
     }
 
-    public JSONObject getPlayerStats(Player player) {
-        return playerStats.get(player.getUniqueId());
+    public long getPlayerStartTime(Player player, String storylineID) {
+        return (long) getStorylineStats(player, storylineID, "currentStartTime", -1L);
+    }
+
+    public Object getStorylineStats(Player player, String storylineID, String key, Object defaultValue) {
+        JSONObject object = getPlayerStoryline(player, storylineID);
+        if (!object.has(key)) {
+            return defaultValue;
+        }
+
+        return object.get(key);
     }
 
     public void putPlayerCurrentMessage(Player player, String storylineID, int currentMessage) {
@@ -193,7 +220,11 @@ public class StorylinesManager {
     }
 
     public void putPlayerLastCompletion(Player player, String storylineID, long lastCompletion) {
-        putStorylineStats(player, storylineID, "lastCompletion", lastCompletion);
+        putStorylineStats(player, storylineID, "currentStartTime", lastCompletion);
+    }
+
+    public void putPlayerStartTime(Player player, String storylineID, long startTime) {
+        putStorylineStats(player, storylineID, "lastCompletion", startTime);
     }
 
     public void putStorylineStats(Player player, String storylineID, String key, Object value) {

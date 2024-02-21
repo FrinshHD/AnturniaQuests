@@ -33,6 +33,7 @@ public class StorylinesListener implements Listener {
         JSONObject object = Objects.requireNonNull(MysqlManager.getStorylinesPlayer(uuid)).getStoryline();
 
         Main.getStorylinesManager().playerStats.put(uuid, object);
+        System.out.println("6");
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -57,6 +58,8 @@ public class StorylinesListener implements Listener {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+        System.out.println("5");
     }
 
 }
