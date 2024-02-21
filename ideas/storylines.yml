@@ -3,15 +3,15 @@ storyline1:
   maxCompletions: 4
   timeToComplete: 43
   npcs:
-    - npcID: npcID
+    - npcID: 0
       messages:
         - "hi"
         - "hi2"
-    - npcID: npcID2
+    - npcID: 0
       messages:
         - "hi"
         - "hi3"
-    - npcID: npcID
+    - npcID: 0
       quest: bringPotato
       messages:
         - "hi"

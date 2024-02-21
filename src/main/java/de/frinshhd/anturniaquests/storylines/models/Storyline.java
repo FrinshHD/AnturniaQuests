@@ -22,6 +22,16 @@ public class Storyline {
         return this.npcs;
     }
 
+    public NPC getNPCStageID(int stageID) {
+        for (NPC npc : npcs) {
+            if (getNpcs().indexOf(npc) == stageID) {
+                return npc;
+            }
+        }
+
+        return null;
+    }
+
     public NPC getNPC(String npcID) {
         for (NPC npc : getNpcs()) {
             if (npc.getNpcID().equals(npcID)) {

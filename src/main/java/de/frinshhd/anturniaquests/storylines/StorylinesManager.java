@@ -21,6 +21,7 @@ import org.json.JSONObject;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.sql.SQLException;
 import java.util.*;
 
 public class StorylinesManager {
@@ -88,7 +89,6 @@ public class StorylinesManager {
 
         Storyline storyline = getStoryline(storylineID);
         JSONObject playerStorylineStats = getPlayerStoryline(player, storylineID);
-        NPC npc = storyline.getNPC(npcID);
 
         int playerCompletions = playerStorylineStats.getInt("completions");
         int storylineMaxCompletions = storyline.getMaxCompletions();
@@ -109,11 +109,11 @@ public class StorylinesManager {
         }
 
 
-        int npcStageID = storyline.getNpcs().indexOf(npc);
         int playerStageID = playerStorylineStats.getInt("currentStage");
+        NPC npc = storyline.getNPCStageID(playerStageID);
 
         //check if currentStage of the player is the same as the one of the npc
-        if (npcStageID != playerStageID) {
+        if (!npc.getNpcID().equals(npcID)) {
             //Todo: tell player that he can't access the current npc because he needs to talk to other npcs before
             return;
         }
@@ -121,8 +121,19 @@ public class StorylinesManager {
         int playerCurrentMessage = playerStorylineStats.getInt("currentMessage");
         ArrayList<String> messages = npc.getMessages();
 
-        if (messages.size() < playerCurrentMessage && npc.getQuest() != null) {
+        if (messages.size() - 1 < playerCurrentMessage && npc.getQuest() != null) {
             //Todo: tell player the quest he has to do
+            Quest quest = npc.getQuest();
+
+            try {
+                quest.playerClick(player, true);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
+            //check if player has Completed the storyline
+            playerStageID += 1;
+            checkPlayerCompletedStoryline(player, storylineID, storyline, playerCompletions, playerStageID);
             return;
         }
 
@@ -130,26 +141,36 @@ public class StorylinesManager {
         playerCurrentMessage += 1;
 
         //check if player has completed this npc
-        if (messages.size() < playerCurrentMessage && npc.getQuest() == null) {
+        if (messages.size() - 1 < playerCurrentMessage && npc.getQuest() == null) {
             playerStageID += 1;
 
             //check if player has Completed the storyline
-            if (storyline.getNpcs().size() < playerStageID) {
-                putPlayerCurrentStage(player, storylineID, 0);
-                putPlayerCompletions(player, storylineID, playerCompletions + 1);
-                putPlayerLastCompletion(player, storylineID, System.currentTimeMillis());
-            } else {
-                putPlayerCurrentMessage(player, storylineID, 0);
-                putPlayerCurrentStage(player, storylineID, playerStageID);
-            }
+            checkPlayerCompletedStoryline(player, storylineID, storyline, playerCompletions, playerStageID);
         } else {
             putPlayerCurrentMessage(player, storylineID, playerCurrentMessage);
         }
     }
 
+    private void checkPlayerCompletedStoryline(Player player, String storylineID, Storyline storyline, int playerCompletions, int playerStageID) {
+        if (storyline.getNpcs().size() - 1 < playerStageID) {
+            putPlayerCurrentMessage(player, storylineID, 0);
+            putPlayerCurrentStage(player, storylineID, 0);
+            putPlayerCompletions(player, storylineID, playerCompletions + 1);
+            putPlayerLastCompletion(player, storylineID, System.currentTimeMillis());
+        } else {
+            putPlayerCurrentMessage(player, storylineID, 0);
+            putPlayerCurrentStage(player, storylineID, playerStageID);
+        }
+    }
+
     public JSONObject getPlayerStoryline(Player player, String storylineID) {
-        if (getPlayerStats(player).get(storylineID) == null) {
-            return null;
+        if (!getPlayerStats(player).has(storylineID)) {
+            JSONObject object = new JSONObject();
+            object.put("completions", 0);
+            object.put("lastCompletion", 0);
+            object.put("currentStage", 0);
+            object.put("currentMessage", 0);
+            return object;
         }
 
         return getPlayerStats(player).getJSONObject(storylineID);
@@ -179,7 +200,7 @@ public class StorylinesManager {
         UUID uuid = player.getUniqueId();
 
         JSONObject object = playerStats.get(uuid);
-        JSONObject storylineObject = object.getJSONObject(storylineID);
+        JSONObject storylineObject = getPlayerStoryline(player, storylineID);
 
         storylineObject.put(key, value);
 

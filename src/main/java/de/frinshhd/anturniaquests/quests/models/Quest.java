@@ -182,6 +182,10 @@ public class Quest {
     }
 
     public void playerClick(Player player) throws SQLException {
+        playerClick(player, false);
+    }
+
+    public void playerClick(Player player, boolean message) throws SQLException {
         if (isOneTimeUse() && MysqlManager.getQuestPlayer(player.getUniqueId()).getFinishedQuests().containsKey(Main.getQuestsManager().getQuestID(this))) {
             // Todo: say player he has already this quest
             SurvivalQuestSounds.questError(player);
@@ -210,10 +214,10 @@ public class Quest {
         quest.addFinishedQuest(Main.getQuestsManager().getQuestID(this));
         questsDao.update(quest);
 
-        claim(player);
+        claim(player, message);
     }
 
-    public void claim(Player player) {
+    public void claim(Player player, boolean message) {
 
         SurvivalQuestSounds.questComplete(player);
 
