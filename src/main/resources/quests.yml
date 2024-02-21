@@ -236,3 +236,17 @@ mining3:
         amount: 1
       - material: DIAMOND
         amount: 16
+
+bringPotato:
+  friendlyName: Bring Potato
+  oneTime: false
+  requirements:
+    items:
+      - material: POTATO
+        amount: 16
+  rewards:
+    items:
+      - material: DIAMOND_PICKAXE
+        amount: 1
+      - material: DIAMOND
+        amount: 16

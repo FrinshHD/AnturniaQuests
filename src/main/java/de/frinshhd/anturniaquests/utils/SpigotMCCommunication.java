@@ -3,6 +3,7 @@ package de.frinshhd.anturniaquests.utils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import de.frinshhd.anturniaquests.Main;
+import org.apache.maven.artifact.versioning.ComparableVersion;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -21,14 +22,24 @@ public class SpigotMCCommunication {
         try {
             String latestVersion = getLatestReleaseVersion();
 
-            if (latestVersion != null && latestVersion.equals(currentVersion)) {
+            if (latestVersion.toLowerCase().startsWith("beta-")) {
                 return currentVersion;
-            } else if (latestVersion != null) {
-                return latestVersion;
-            } else {
-                return null;
             }
-        } catch (IOException e) {
+
+            ComparableVersion latestComparableVersion = new ComparableVersion(latestVersion);
+            ComparableVersion currentComparableVersion = new ComparableVersion(currentVersion);
+
+            int compare = currentComparableVersion.compareTo(latestComparableVersion);
+            if (compare < 0) {
+                return currentVersion;
+            }
+            if (compare == 0) {
+                return currentVersion;
+            }
+            if (compare > 0) {
+                return latestVersion;
+            }
+        } catch (IOException | NullPointerException e) {
             Main.getInstance().getLogger().warning("The plugin wasn't able to check for updates! Please check your internet connection.");
         }
 

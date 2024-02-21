@@ -6,7 +6,7 @@
 
     <groupId>net.frinshhd</groupId>
     <artifactId>AnturniaQuests</artifactId>
-    <version>Beta-1.1.1</version>
+    <version>0.2.0</version>
     <packaging>jar</packaging>
 
     <name>AnturniaQuests</name>
@@ -157,6 +157,11 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20231013</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-artifact</artifactId>
+            <version>3.6.3</version>
         </dependency>
     </dependencies>
 </project>
