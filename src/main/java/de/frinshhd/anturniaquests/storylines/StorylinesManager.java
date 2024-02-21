@@ -64,7 +64,7 @@ public class StorylinesManager {
     public String getStorylineID(Storyline storyline) {
 
         for (Map.Entry<String, Storyline> stringStorylineEntry : storylines.entrySet()) {
-            if (stringStorylineEntry.getValue().equals(storylines)) {
+            if (stringStorylineEntry.getValue().equals(storyline)) {
                 return stringStorylineEntry.getKey();
             }
         }

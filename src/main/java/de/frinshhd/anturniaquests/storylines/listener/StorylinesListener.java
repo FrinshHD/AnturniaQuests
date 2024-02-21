@@ -37,13 +37,13 @@ public class StorylinesListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        Dao<Storylines, Long> storylinesDao = null;
+        Dao<Storylines, Long> storylinesDao;
         try {
             storylinesDao = MysqlManager.getStorylinesDao();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        Storylines storylines = null;
+        Storylines storylines;
         try {
             storylines = storylinesDao.queryForEq("uuid", player.getUniqueId()).stream().toList().get(0);
 

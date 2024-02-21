@@ -198,7 +198,7 @@ public class Quest {
 
         getRequirements().removeItems(player);
 
-        Dao<Quests, Long> questsDao = null;
+        Dao<Quests, Long> questsDao;
         try {
             questsDao = MysqlManager.getQuestDao();
         } catch (SQLException e) {

@@ -25,7 +25,7 @@ public class KilledEntities {
 
     public void create(UUID uuid) {
         this.uuid = uuid;
-        killedEntities = hashMapToString(new HashMap<String, Integer>());
+        killedEntities = hashMapToString(new HashMap<>());
     }
 
     public UUID getUUID() {

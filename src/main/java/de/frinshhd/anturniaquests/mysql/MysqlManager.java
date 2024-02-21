@@ -67,14 +67,14 @@ public class MysqlManager implements Listener {
     }
 
     public static Quests getQuestPlayer(UUID uuid) {
-        Dao<Quests, Long> questsDao = null;
+        Dao<Quests, Long> questsDao;
         try {
             questsDao = getQuestDao();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        List<Quests> quests = null;
+        List<Quests> quests;
         try {
             quests = questsDao.queryForEq("uuid", uuid);
         } catch (SQLException e) {
@@ -89,14 +89,14 @@ public class MysqlManager implements Listener {
     }
 
     public static KilledEntities getKilledEntitiesPlayer(UUID uuid) {
-        Dao<KilledEntities, Long> killedEntitiesDao = null;
+        Dao<KilledEntities, Long> killedEntitiesDao;
         try {
             killedEntitiesDao = getKilledEntityDao();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        List<KilledEntities> killedEntities = null;
+        List<KilledEntities> killedEntities;
         try {
             killedEntities = killedEntitiesDao.queryForEq("uuid", uuid);
         } catch (SQLException e) {
@@ -111,14 +111,14 @@ public class MysqlManager implements Listener {
     }
 
     public static Storylines getStorylinesPlayer(UUID uuid) {
-        Dao<Storylines, Long> storylinesDao = null;
+        Dao<Storylines, Long> storylinesDao;
         try {
             storylinesDao = getStorylinesDao();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        List<Storylines> storylines = null;
+        List<Storylines> storylines;
         try {
             storylines = storylinesDao.queryForEq("uuid", uuid);
         } catch (SQLException e) {
@@ -168,7 +168,7 @@ public class MysqlManager implements Listener {
 
         //create quests
         if (MysqlManager.getQuestPlayer(player.getUniqueId()) == null) {
-            Dao<Quests, Long> questDao = null;
+            Dao<Quests, Long> questDao;
             try {
                 questDao = getQuestDao();
             } catch (SQLException e) {
@@ -185,7 +185,7 @@ public class MysqlManager implements Listener {
 
         //create killedEntities
         if (MysqlManager.getKilledEntitiesPlayer(player.getUniqueId()) == null) {
-            Dao<KilledEntities, Long> killedEntitiesDao = null;
+            Dao<KilledEntities, Long> killedEntitiesDao;
             try {
                 killedEntitiesDao = getKilledEntityDao();
             } catch (SQLException e) {
@@ -203,7 +203,7 @@ public class MysqlManager implements Listener {
         //create storylines
         if (Main.isStorylinesEnabled()) {
             if (MysqlManager.getStorylinesPlayer(player.getUniqueId()) == null) {
-                Dao<Storylines, Long> storylinesDao = null;
+                Dao<Storylines, Long> storylinesDao;
                 try {
                     storylinesDao = getStorylinesDao();
                 } catch (SQLException e) {
