@@ -220,11 +220,11 @@ public class StorylinesManager {
     }
 
     public void putPlayerLastCompletion(Player player, String storylineID, long lastCompletion) {
-        putStorylineStats(player, storylineID, "currentStartTime", lastCompletion);
+        putStorylineStats(player, storylineID, "lastCompletion", lastCompletion);
     }
 
     public void putPlayerStartTime(Player player, String storylineID, long startTime) {
-        putStorylineStats(player, storylineID, "lastCompletion", startTime);
+        putStorylineStats(player, storylineID, "currentStartTime", startTime);
     }
 
     public void putStorylineStats(Player player, String storylineID, String key, Object value) {
