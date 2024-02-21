@@ -1,7 +1,6 @@
 package de.frinshhd.anturniaquests.storylines.listener;
 
 import de.frinshhd.anturniaquests.Main;
-import de.oliver.fancynpcs.api.events.NpcInteractEvent;
 import net.citizensnpcs.api.event.NPCLeftClickEvent;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.bukkit.event.EventHandler;

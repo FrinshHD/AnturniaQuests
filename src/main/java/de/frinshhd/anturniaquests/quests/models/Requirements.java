@@ -6,7 +6,6 @@ import de.frinshhd.anturniaquests.Main;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class Requirements {
 

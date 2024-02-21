@@ -20,7 +20,8 @@ public class KilledEntities {
     @DatabaseField
     private String killedEntities;
 
-    public KilledEntities() {}
+    public KilledEntities() {
+    }
 
     public void create(UUID uuid) {
         this.uuid = uuid;

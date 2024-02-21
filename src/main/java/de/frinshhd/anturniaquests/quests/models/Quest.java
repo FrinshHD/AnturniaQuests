@@ -8,7 +8,6 @@ import de.frinshhd.anturniaquests.mysql.MysqlManager;
 import de.frinshhd.anturniaquests.mysql.entities.Quests;
 import de.frinshhd.anturniaquests.quests.QuestsManager;
 import de.frinshhd.anturniaquests.utils.*;
-import net.md_5.bungee.api.chat.TranslatableComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -19,8 +18,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class Quest {
 
@@ -191,7 +188,6 @@ public class Quest {
             SurvivalQuestSounds.questError(player);
             return false;
         }
-
 
 
         if (!getRequirements().check(player)) {

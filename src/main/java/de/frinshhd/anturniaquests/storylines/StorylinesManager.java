@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import de.frinshhd.anturniaquests.Main;
-import de.frinshhd.anturniaquests.Metrics;
 import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.storylines.listener.CitizensNpcsListener;
 import de.frinshhd.anturniaquests.storylines.listener.FancyNpcsListener;
@@ -15,14 +14,15 @@ import de.frinshhd.anturniaquests.storylines.models.Storyline;
 import de.frinshhd.anturniaquests.utils.MessageFormat;
 import de.frinshhd.anturniaquests.utils.PlayerHashMap;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.json.JSONObject;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class StorylinesManager {
 
@@ -120,7 +120,7 @@ public class StorylinesManager {
 
         //check if counter has to start //Todo
         if (storyline.timeToComplete() > -1) {
-            if (getPlayerStartTime(player, storylineID) == -1){
+            if (getPlayerStartTime(player, storylineID) == -1) {
                 putPlayerStartTime(player, storylineID, System.currentTimeMillis());
             }
         }

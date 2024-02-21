@@ -6,8 +6,6 @@ import de.frinshhd.anturniaquests.config.ConfigManager;
 import de.frinshhd.anturniaquests.menusystem.PlayerMenuUtility;
 import de.frinshhd.anturniaquests.quests.QuestsManager;
 import de.frinshhd.anturniaquests.storylines.StorylinesManager;
-import de.frinshhd.anturniaquests.storylines.listener.CitizensNpcsListener;
-import de.frinshhd.anturniaquests.storylines.listener.FancyNpcsListener;
 import de.frinshhd.anturniaquests.utils.SpigotMCCommunication;
 import de.frinshhd.anturniaquests.utils.Translator;
 import net.milkbowl.vault.economy.Economy;
@@ -28,17 +26,17 @@ import java.util.*;
 
 public final class Main extends JavaPlugin {
 
-    //Todo: implement storylinesEnabled bool
-    private static boolean storylinesEnabled;
-
     private static final HashMap<Player, PlayerMenuUtility> playerMenuUtilityMap = new HashMap<>();
     public static String version;
+    //Todo: implement storylinesEnabled bool
+    private static boolean storylinesEnabled;
     private static Main INSTANCE;
     private static Economy econ = null;
     private static QuestsManager questsManager;
     private static ConfigManager configManager;
     private static CategoriesManager categoriesManager;
     private static StorylinesManager storylinesManager;
+
     public static Main getInstance() {
         return INSTANCE;
     }
@@ -58,6 +56,7 @@ public final class Main extends JavaPlugin {
     public static Economy getEconomy() {
         return econ;
     }
+
     public static StorylinesManager getStorylinesManager() {
         return storylinesManager;
     }
@@ -123,7 +122,7 @@ public final class Main extends JavaPlugin {
             storylinesEnabled = true;
         } else if (Main.getInstance().getServer().getPluginManager().getPlugin("FancyNpcs") != null && Main.getInstance().getServer().getPluginManager().getPlugin("FancyNpcs").isEnabled()) {
             storylinesEnabled = true;
-        } else  {
+        } else {
             storylinesEnabled = false;
         }
 

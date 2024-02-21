@@ -17,7 +17,8 @@ public class Storylines {
     @DatabaseField
     private String storylines;
 
-    public Storylines() {}
+    public Storylines() {
+    }
 
     public void create(UUID uuid) {
         this.uuid = uuid;

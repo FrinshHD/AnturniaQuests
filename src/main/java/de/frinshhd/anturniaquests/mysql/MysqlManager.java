@@ -111,7 +111,7 @@ public class MysqlManager implements Listener {
     }
 
     public static Storylines getStorylinesPlayer(UUID uuid) {
-        Dao<Storylines, Long> storylinesDao  = null;
+        Dao<Storylines, Long> storylinesDao = null;
         try {
             storylinesDao = getStorylinesDao();
         } catch (SQLException e) {
@@ -201,7 +201,7 @@ public class MysqlManager implements Listener {
         }
 
         //create storylines
-        if(Main.isStorylinesEnabled()) {
+        if (Main.isStorylinesEnabled()) {
             if (MysqlManager.getStorylinesPlayer(player.getUniqueId()) == null) {
                 Dao<Storylines, Long> storylinesDao = null;
                 try {

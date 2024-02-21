@@ -1,7 +1,6 @@
 package de.frinshhd.anturniaquests.utils;
 
 import de.frinshhd.anturniaquests.Main;
-import org.bukkit.ChatColor;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
