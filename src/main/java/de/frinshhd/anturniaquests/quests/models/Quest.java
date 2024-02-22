@@ -185,6 +185,11 @@ public class Quest {
     public boolean playerClick(Player player, boolean message) throws SQLException {
         if (isOneTimeUse() && MysqlManager.getQuestPlayer(player.getUniqueId()).getFinishedQuests().containsKey(Main.getQuestsManager().getQuestID(this))) {
             // Todo: say player he has already this quest
+
+            if (message) {
+                player.sendMessage(Translator.build("quest.alreadyCompleted"));
+            }
+
             SurvivalQuestSounds.questError(player);
             return false;
         }
@@ -192,6 +197,9 @@ public class Quest {
 
         if (!getRequirements().check(player)) {
             //Todo: tell player that he doesn't meet the requirements
+            if (message) {
+                player.sendMessage(Translator.build("quest.missingRequirements"));
+            }
             SurvivalQuestSounds.questError(player);
             return false;
         }
@@ -217,16 +225,28 @@ public class Quest {
 
     public void claim(Player player, boolean message) {
 
+        if (message) {
+            player.sendMessage(Translator.build("quest.complete"));
+        }
+
         SurvivalQuestSounds.questComplete(player);
 
         //money
         if (getRewards().getMoney() > 0.0) {
             Main.getEconomy().depositPlayer(player, getRewards().getMoney());
+
+            if (message) {
+                player.sendMessage(Translator.build("quest.addMoney", new TranslatorPlaceholder("amount", String.valueOf(getRewards().getMoney()))));
+            }
         }
 
         //items
         for (Item rewardItem : getRewards().getItems()) {
             QuestsManager.addItem(player, rewardItem.getItem(), rewardItem.getAmount());
+
+            if (message) {
+                player.sendMessage(Translator.build("quest.addItem", new TranslatorPlaceholder("itemName", rewardItem.getName())));
+            }
         }
 
         //commands
@@ -240,6 +260,10 @@ public class Quest {
             commandString = commandString.replace("%player%", player.getName());
 
             Main.getInstance().getServer().dispatchCommand(Main.getInstance().getServer().getConsoleSender(), commandString);
+
+            if (message) {
+                player.sendMessage(Translator.build("quest.addCommand", new TranslatorPlaceholder("commandName", command.getName())));
+            }
         }
 
         if (this.announce) {

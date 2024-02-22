@@ -119,11 +119,11 @@ public class StorylinesManager {
         }
 
         //check if counter has to start //Todo
-        if (storyline.timeToComplete() > -1) {
+        /*if (storyline.timeToComplete() > -1) {
             if (getPlayerStartTime(player, storylineID) == -1) {
                 putPlayerStartTime(player, storylineID, System.currentTimeMillis());
             }
-        }
+        } */
 
         int playerCurrentMessage = playerStorylineStats.getInt("currentMessage");
         ArrayList<String> messages = npc.getMessages();
@@ -195,7 +195,8 @@ public class StorylinesManager {
     }
 
     public long getPlayerStartTime(Player player, String storylineID) {
-        return (long) getStorylineStats(player, storylineID, "currentStartTime", -1L);
+        long defaultValue = -1L;
+        return (long) getStorylineStats(player, storylineID, "currentStartTime", defaultValue);
     }
 
     public Object getStorylineStats(Player player, String storylineID, String key, Object defaultValue) {
