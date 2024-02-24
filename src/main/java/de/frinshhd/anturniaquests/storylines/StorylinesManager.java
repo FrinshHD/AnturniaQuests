@@ -16,6 +16,8 @@ import de.frinshhd.anturniaquests.storylines.models.NPC;
 import de.frinshhd.anturniaquests.storylines.models.Storyline;
 import de.frinshhd.anturniaquests.utils.MessageFormat;
 import de.frinshhd.anturniaquests.utils.PlayerHashMap;
+import de.frinshhd.anturniaquests.utils.Translator;
+import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
 import org.bukkit.entity.Player;
 import org.json.JSONObject;
 
@@ -96,6 +98,7 @@ public class StorylinesManager {
         //check if player already completed the quest for the max amount
         if (storylineMaxCompletions > -1 && playerCompletions >= storylineMaxCompletions) {
             //Todo: tell player that he can't complete the quests any longer
+            player.sendMessage(Translator.build("quest.alreadyCompleted"));
             return;
         }
 
@@ -105,6 +108,7 @@ public class StorylinesManager {
         //check if a cooldown for this quest is active
         if (playerLastCompletion + storylineCooldown > System.currentTimeMillis()) {
             //Todo: tell player that he needs to wait until he can start the quest next
+            player.sendMessage(Translator.build("storyline.cooldownActive", new TranslatorPlaceholder("cooldown", String.valueOf((playerLastCompletion + storylineCooldown - System.currentTimeMillis()) / 1000))));
             return;
         }
 
@@ -115,6 +119,7 @@ public class StorylinesManager {
         //check if currentStage of the player is the same as the one of the npc
         if (!npc.getNpcID().equals(npcID)) {
             //Todo: tell player that he can't access the current npc because he needs to talk to other npcs before
+            player.sendMessage(Translator.build("storyline.falseStageNPC"));
             return;
         }
 
