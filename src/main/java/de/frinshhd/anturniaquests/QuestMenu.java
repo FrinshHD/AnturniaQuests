@@ -261,7 +261,7 @@ public class QuestMenu extends Menu {
         {
             ArrayList<Quest> quests = new ArrayList<>();
             Main.getQuestsManager().quests.values().forEach(quest -> {
-                if (quest.getCategory().equals(this.category.getID())) {
+                if (quest.getCategory() != null && quest.getCategory().equals(this.category.getID())) {
                     quests.add(quest);
                 }
             });

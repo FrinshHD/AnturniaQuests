@@ -20,12 +20,16 @@ public class Quests {
     @DatabaseField
     private String quests;
 
+    @DatabaseField
+    private String cooldowns;
+
     public Quests() {
     }
 
     public void create(UUID uuid) {
         this.uuid = uuid;
         quests = hashMapToString(new HashMap<String, Integer>());
+        cooldowns = hashMapToStringLong(new HashMap<String, Long>());
     }
 
     public UUID getUUID() {
@@ -50,8 +54,24 @@ public class Quests {
         this.quests = hashMapToString(quests);
     }
 
+    public void putCooldown(String questID, long lastCompletion) {
+        HashMap<String, Long> cooldown;
+        if (this.cooldowns == null || this.cooldowns.isEmpty() || this.cooldowns.equals("{}")) {
+            cooldown = new HashMap<>();
+        } else {
+            cooldown = (HashMap<String, Long>) stringToHashMapLong(this.cooldowns);
+        }
+
+        cooldown.put(questID, lastCompletion);
+        this.cooldowns = hashMapToStringLong(cooldown);
+    }
+
     public HashMap<String, Integer> getFinishedQuests() {
         return (HashMap<String, Integer>) stringToHashMap(quests);
+    }
+
+    public HashMap<String, Long> getCooldown() {
+        return (HashMap<String, Long>) stringToHashMapLong(this.cooldowns);
     }
 
     public Map<String, Integer> stringToHashMap(String jsonString) {
@@ -65,7 +85,28 @@ public class Quests {
         return resultMap;
     }
 
+    public Map<String, Long> stringToHashMapLong(String jsonString) {
+        Map<String, Long> resultMap = null;
+        try {
+            resultMap = objectMapper.readValue(jsonString, new TypeReference<HashMap<String, Long>>() {
+            });
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return resultMap;
+    }
+
     public String hashMapToString(Map<String, Integer> map) {
+        String jsonString = null;
+        try {
+            jsonString = objectMapper.writeValueAsString(map);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return jsonString;
+    }
+
+    public String hashMapToStringLong(Map<String, Long> map) {
         String jsonString = null;
         try {
             jsonString = objectMapper.writeValueAsString(map);

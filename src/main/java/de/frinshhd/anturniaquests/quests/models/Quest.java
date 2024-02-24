@@ -25,7 +25,7 @@ public class Quest {
     private String friendlyName;
 
     @JsonProperty
-    private String category;
+    private String category = null;
 
     @JsonProperty
     private String description;
@@ -44,6 +44,9 @@ public class Quest {
 
     @JsonProperty
     private boolean announce;
+
+    @JsonProperty
+    private Integer cooldown = null;
 
     public Quest() {
         this.requirements = new Requirements();
@@ -80,6 +83,14 @@ public class Quest {
         return Material.STONE;
     }
 
+    public Long getCooldown() {
+        if (this.cooldown == null) {
+            return null;
+        }
+
+        return this.cooldown * 1000L;
+    }
+
     @JsonIgnore
     public boolean isOneTimeUse() {
         return this.oneTime;
@@ -105,6 +116,10 @@ public class Quest {
 
         if (isOneTimeUse() && finishedQuests.containsKey(Main.getQuestsManager().getQuestID(this))) {
             lore.add(Translator.build("lore.alreadyCompleted"));
+        } else if (getCooldown() != null &&
+                MysqlManager.getQuestPlayer(player.getUniqueId()).getCooldown().containsKey(Main.getQuestsManager().getQuestID(this)) &&
+                MysqlManager.getQuestPlayer(player.getUniqueId()).getCooldown().get(Main.getQuestsManager().getQuestID(this)) + getCooldown() >= System.currentTimeMillis()) {
+            lore.addAll(LoreBuilder.build(Translator.build("lore.cooldown", new TranslatorPlaceholder("cooldown", String.valueOf((MysqlManager.getQuestPlayer(player.getUniqueId()).getCooldown().get(Main.getQuestsManager().getQuestID(this)) + getCooldown() - System.currentTimeMillis()) / 1000))), ChatColor.GRAY));
         } else {
             lore.add(Translator.build("lore.requirements"));
 
@@ -194,6 +209,18 @@ public class Quest {
             return false;
         }
 
+        //check if player has a cooldown for this quest
+        if (getCooldown() != null &&
+                MysqlManager.getQuestPlayer(player.getUniqueId()).getCooldown().containsKey(Main.getQuestsManager().getQuestID(this)) &&
+                MysqlManager.getQuestPlayer(player.getUniqueId()).getCooldown().get(Main.getQuestsManager().getQuestID(this)) + getCooldown() >= System.currentTimeMillis()) {
+
+            if (message) {
+                player.sendMessage(Translator.build("quest.cooldown", new TranslatorPlaceholder("cooldown", String.valueOf((MysqlManager.getQuestPlayer(player.getUniqueId()).getCooldown().get(Main.getQuestsManager().getQuestID(this)) + getCooldown() - System.currentTimeMillis()) / 1000))));
+            }
+
+            return false;
+        }
+
 
         if (!getRequirements().check(player)) {
             //Todo: tell player that he doesn't meet the requirements
@@ -249,6 +276,11 @@ public class Quest {
 
 
         quest.addFinishedQuest(Main.getQuestsManager().getQuestID(this));
+
+        if (getCooldown() != null) {
+            quest.putCooldown(Main.getQuestsManager().getQuestID(this), System.currentTimeMillis());
+        }
+
         questsDao.update(quest);
 
         claim(player, message);
