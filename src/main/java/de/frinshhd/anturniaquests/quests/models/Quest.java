@@ -199,6 +199,39 @@ public class Quest {
             //Todo: tell player that he doesn't meet the requirements
             if (message) {
                 player.sendMessage(Translator.build("quest.missingRequirements"));
+
+                //items
+                for (Item items : getRequirements().getItems()) {
+                    int amount = 0;
+                    for (ItemStack content : player.getInventory().getContents()) {
+                        if (content == null) {
+                            continue;
+                        }
+
+                        if (content.isSimilar(items.getItem())) {
+                            amount += content.getAmount();
+                        }
+                    }
+
+                    if (amount < items.getAmount()) {
+                        player.sendMessage(Translator.build("quest.missingRequirements.item", new TranslatorPlaceholder("amountInInv", String.valueOf(amount)), new TranslatorPlaceholder("amount", String.valueOf(items.getAmount())), new TranslatorPlaceholder("itemName", items.getName())));
+                    }
+                }
+
+                //killedEntities
+                for (KilledEntity killedEntity : getRequirements().getKilledEntities()) {
+                    int amount;
+
+                    if (Main.getQuestsManager().playerKilledEntities.get(player.getUniqueId()).get(killedEntity.getEntity().toString()) == null) {
+                        amount = 0;
+                    } else {
+                        amount = Main.getQuestsManager().playerKilledEntities.get(player.getUniqueId()).get(killedEntity.getEntity().toString());
+                    }
+
+                    if (amount < killedEntity.getAmount()) {
+                        player.sendMessage(Translator.build("quest.missingRequirements.killedEntity", new TranslatorPlaceholder("amountKilled", String.valueOf(amount)), new TranslatorPlaceholder("amount", String.valueOf(killedEntity.getAmount())), new TranslatorPlaceholder("entityName", killedEntity.getName())));
+                    }
+                }
             }
             SurvivalQuestSounds.questError(player);
             return false;
@@ -226,7 +259,7 @@ public class Quest {
     public void claim(Player player, boolean message) {
 
         if (message) {
-            player.sendMessage(Translator.build("quest.complete"));
+            player.sendMessage(Translator.build("quest.complete", new TranslatorPlaceholder("questName", getFriendlyName())));
         }
 
         SurvivalQuestSounds.questComplete(player);
