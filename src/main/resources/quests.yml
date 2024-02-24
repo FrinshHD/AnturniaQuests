@@ -3,6 +3,7 @@ combat1:
   description: The zombie apocalypse is upon us! Eliminate 20 zombies and collect their rotten flesh.
   category: combat
   oneTime: false
+  cooldown: 120
   requirements:
     items:
       - material: ROTTEN_FLESH
