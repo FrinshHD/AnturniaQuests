@@ -299,6 +299,6 @@ mining3:
         amount: 16
 #--------------------------------------------------------------
 ```
-   
+
 **bStats:**
 ![Bstats](https://bstats.org/signatures/bukkit/AnturniaQuests.svg)
