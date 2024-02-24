@@ -14,6 +14,9 @@ public class NPC {
     private String quest = null;
 
     @JsonProperty
+    private int timeToComplete = -1;
+
+    @JsonProperty
     private ArrayList<String> messages = new ArrayList<>();
 
     public String getNpcID() {
@@ -30,6 +33,14 @@ public class NPC {
 
     public ArrayList<String> getMessages() {
         return this.messages;
+    }
+
+    public long getTimeToComplete() {
+        if (timeToComplete == -1) {
+            return -1;
+        }
+
+        return timeToComplete * 1000L;
     }
 
 }

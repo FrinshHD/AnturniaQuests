@@ -43,6 +43,10 @@ public class Storyline {
     }
 
     public long getCooldown() {
+        if (cooldown == -1) {
+            return -1;
+        }
+
         return this.cooldown * 1000L;
     }
 
@@ -51,6 +55,10 @@ public class Storyline {
     }
 
     public long timeToComplete() {
+        if (timeToComplete == -1) {
+            return -1;
+        }
+
         return this.timeToComplete * 1000L;
     }
 }

@@ -107,7 +107,6 @@ public class StorylinesManager {
 
         //check if a cooldown for this quest is active
         if (playerLastCompletion + storylineCooldown > System.currentTimeMillis()) {
-            //Todo: tell player that he needs to wait until he can start the quest next
             player.sendMessage(Translator.build("storyline.cooldownActive", new TranslatorPlaceholder("cooldown", String.valueOf((playerLastCompletion + storylineCooldown - System.currentTimeMillis()) / 1000))));
             return;
         }
@@ -118,7 +117,6 @@ public class StorylinesManager {
 
         //check if currentStage of the player is the same as the one of the npc
         if (!npc.getNpcID().equals(npcID)) {
-            //Todo: tell player that he can't access the current npc because he needs to talk to other npcs before
             player.sendMessage(Translator.build("storyline.falseStageNPC"));
             return;
         }
@@ -134,7 +132,6 @@ public class StorylinesManager {
         ArrayList<String> messages = npc.getMessages();
 
         if (messages.size() - 1 < playerCurrentMessage && npc.getQuest() != null) {
-            //Todo: tell player the quest he has to do
             Quest quest = npc.getQuest();
 
             boolean completedQuest;

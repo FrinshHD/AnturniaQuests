@@ -310,7 +310,7 @@ public class Quest {
             QuestsManager.addItem(player, rewardItem.getItem(), rewardItem.getAmount());
 
             if (message) {
-                player.sendMessage(Translator.build("quest.addItem", new TranslatorPlaceholder("itemName", rewardItem.getName())));
+                player.sendMessage(Translator.build("quest.addItem", new TranslatorPlaceholder("amount", String.valueOf(rewardItem.getAmount())), new TranslatorPlaceholder("itemName", rewardItem.getName())));
             }
         }
 
