@@ -26,6 +26,8 @@ combat2:
   friendlyName: Skeleton Archer
   description: Archery skills are no match for you! Defeat 30 skeletons and gather their bones for crafting purposes.
   category: combat
+  requiredQuests:
+    - combat1
   requirements:
     items:
       - material: BONE

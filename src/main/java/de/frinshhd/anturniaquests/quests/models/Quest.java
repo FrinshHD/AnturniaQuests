@@ -18,6 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Quest {
 
@@ -47,6 +48,9 @@ public class Quest {
 
     @JsonProperty
     private Integer cooldown = null;
+
+    @JsonProperty
+    private ArrayList<String> requiredQuests = new ArrayList<>();
 
     public Quest() {
         this.requirements = new Requirements();
@@ -91,6 +95,20 @@ public class Quest {
         return this.cooldown * 1000L;
     }
 
+    public ArrayList<Quest> getRequiredQuests() {
+        ArrayList<Quest> quests = new ArrayList<>();
+
+        for (String requiredQuest : this.requiredQuests) {
+            Quest quest = Main.getQuestsManager().getQuest(requiredQuest);
+
+            if (quest != null) {
+                quests.add(quest);
+            }
+        }
+
+        return quests;
+    }
+
     @JsonIgnore
     public boolean isOneTimeUse() {
         return this.oneTime;
@@ -120,6 +138,12 @@ public class Quest {
                 MysqlManager.getQuestPlayer(player.getUniqueId()).getCooldown().containsKey(Main.getQuestsManager().getQuestID(this)) &&
                 MysqlManager.getQuestPlayer(player.getUniqueId()).getCooldown().get(Main.getQuestsManager().getQuestID(this)) + getCooldown() >= System.currentTimeMillis()) {
             lore.addAll(LoreBuilder.build(Translator.build("lore.cooldown", new TranslatorPlaceholder("cooldown", String.valueOf((MysqlManager.getQuestPlayer(player.getUniqueId()).getCooldown().get(Main.getQuestsManager().getQuestID(this)) + getCooldown() - System.currentTimeMillis()) / 1000))), ChatColor.GRAY));
+        } else if (!checkCanCompleteQuest(player)) {
+            lore.addAll(LoreBuilder.build(Translator.build("lore.requiredQuests"), ChatColor.RED));
+
+            for (Quest quest : getQuestsToCompletePlayer(player)) {
+                lore.add(Translator.build("lore.requiredQuests.quest", new TranslatorPlaceholder("questName", quest.getFriendlyName())));
+            }
         } else {
             lore.add(Translator.build("lore.requirements"));
 
@@ -193,6 +217,34 @@ public class Quest {
         return item;
     }
 
+    public boolean checkCanCompleteQuest(Player player) {
+        if (getQuestsToCompletePlayer(player).isEmpty()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public ArrayList<Quest> getQuestsToCompletePlayer(Player player) {
+        ArrayList<Quest> quests = new ArrayList<>();
+
+        Quests playerQuests = MysqlManager.getQuestPlayer(player.getUniqueId());
+
+        if (playerQuests == null) {
+            return getRequiredQuests();
+        }
+
+        for (Quest requiredQuest : getRequiredQuests()) {
+            String questID = Main.getQuestsManager().getQuestID(requiredQuest);
+
+            if (!playerQuests.getFinishedQuests().containsKey(questID) || playerQuests.getFinishedQuests().get(questID) < 1) {
+                quests.add(requiredQuest);
+            }
+        }
+
+        return quests;
+    }
+
     public void playerClick(Player player) throws SQLException {
         playerClick(player, false);
     }
@@ -218,12 +270,27 @@ public class Quest {
                 player.sendMessage(Translator.build("quest.cooldown", new TranslatorPlaceholder("cooldown", String.valueOf((MysqlManager.getQuestPlayer(player.getUniqueId()).getCooldown().get(Main.getQuestsManager().getQuestID(this)) + getCooldown() - System.currentTimeMillis()) / 1000))));
             }
 
+            SurvivalQuestSounds.questError(player);
             return false;
         }
 
 
+        //check if player needs to complete other quests before he can complete this one
+        if (!checkCanCompleteQuest(player)) {
+
+            if (message) {
+                player.sendMessage(Translator.build("quest.requiredQuests"));
+
+                for (Quest quest : getQuestsToCompletePlayer(player)) {
+                    player.sendMessage(Translator.build("quest.requiredQuests.quest", new TranslatorPlaceholder("questName", quest.getFriendlyName())));
+                }
+            }
+
+            SurvivalQuestSounds.questError(player);
+            return false;
+        }
+
         if (!getRequirements().check(player)) {
-            //Todo: tell player that he doesn't meet the requirements
             if (message) {
                 player.sendMessage(Translator.build("quest.missingRequirements"));
 

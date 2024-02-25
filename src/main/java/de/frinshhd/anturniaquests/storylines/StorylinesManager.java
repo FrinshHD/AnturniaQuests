@@ -19,6 +19,8 @@ import de.frinshhd.anturniaquests.utils.PlayerHashMap;
 import de.frinshhd.anturniaquests.utils.Translator;
 import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.json.JSONObject;
 
 import java.io.FileInputStream;
@@ -30,6 +32,8 @@ public class StorylinesManager {
 
     public LinkedHashMap<String, Storyline> storylines;
     public PlayerHashMap<UUID, JSONObject> playerStats = new PlayerHashMap<>();
+
+    private BukkitTask runnable = null;
 
 
     public StorylinesManager() {
@@ -121,10 +125,17 @@ public class StorylinesManager {
             return;
         }
 
-        //check if counter has to start //Todo
-        /*if (storyline.timeToComplete() > -1) {
+        /*//check if counter has to start //Todo
+        if (storyline.timeToComplete() > -1) {
             if (getPlayerStartTime(player, storylineID) == -1) {
                 putPlayerStartTime(player, storylineID, System.currentTimeMillis());
+            }
+        } */
+
+        /*//check if counter for the stage has to start //Todo
+        if (npc.getTimeToComplete() > -1) {
+            if (getPlayerStageStartTime(player, storylineID) == -1) {
+                putPlayerStageStartTime(player, storylineID, System.currentTimeMillis());
             }
         } */
 
@@ -182,6 +193,16 @@ public class StorylinesManager {
         return playerStats.get(player.getUniqueId());
     }
 
+    public List<JSONObject> getPlayerAllStorylines(Player player) {
+        List<JSONObject> object = new ArrayList<>();
+
+        for (String storylineID : this.playerStats.get(player.getUniqueId()).keySet()) {
+            object.add(getPlayerStoryline(player ,storylineID));
+        }
+
+        return object;
+    }
+
     public JSONObject getPlayerStoryline(Player player, String storylineID) {
         if (!getPlayerStats(player).has(storylineID)) {
             JSONObject object = new JSONObject();
@@ -190,6 +211,7 @@ public class StorylinesManager {
             object.put("currentStage", 0);
             object.put("currentMessage", 0);
             object.put("currentStartTime", -1);
+            object.put("currentStageStartTime", -1);
             return object;
         }
 
@@ -201,9 +223,18 @@ public class StorylinesManager {
         return (long) getStorylineStats(player, storylineID, "currentStartTime", defaultValue);
     }
 
+    public long getPlayerStageStartTime(Player player, String storylineID) {
+        long defaultValue = -1L;
+        return (long) getStorylineStats(player, storylineID, "currentStageStartTime", defaultValue);
+    }
+
     public Object getStorylineStats(Player player, String storylineID, String key, Object defaultValue) {
         JSONObject object = getPlayerStoryline(player, storylineID);
         if (!object.has(key)) {
+            return defaultValue;
+        }
+
+        if (object.get(key) == null) {
             return defaultValue;
         }
 
@@ -228,6 +259,10 @@ public class StorylinesManager {
 
     public void putPlayerStartTime(Player player, String storylineID, long startTime) {
         putStorylineStats(player, storylineID, "currentStartTime", startTime);
+    }
+
+    public void putPlayerStageStartTime(Player player, String storylineID, long startTime) {
+        putStorylineStats(player, storylineID, "currentStageStartTime", startTime);
     }
 
     public void putStorylineStats(Player player, String storylineID, String key, Object value) {
@@ -277,6 +312,27 @@ public class StorylinesManager {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void startRunnable() {
+        this.runnable = new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (Main.getInstance().getServer().getOnlinePlayers().isEmpty()) {
+                    cancel();
+                    runnable = null;
+                    return;
+                }
+
+                for (UUID uuid : playerStats.keySet()) {
+                    Player player = Main.getInstance().getServer().getPlayer(uuid);
+
+
+
+
+                }
+            }
+        }.runTaskTimer(Main.getInstance(), 0, 20);
     }
 
 }
