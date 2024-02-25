@@ -54,7 +54,7 @@ public class Storyline {
         return this.maxCompletions;
     }
 
-    public long timeToComplete() {
+    public long getTimeToComplete() {
         if (timeToComplete == -1) {
             return -1;
         }

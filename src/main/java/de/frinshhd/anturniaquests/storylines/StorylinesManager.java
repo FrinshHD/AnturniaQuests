@@ -101,7 +101,6 @@ public class StorylinesManager {
 
         //check if player already completed the quest for the max amount
         if (storylineMaxCompletions > -1 && playerCompletions >= storylineMaxCompletions) {
-            //Todo: tell player that he can't complete the quests any longer
             player.sendMessage(Translator.build("quest.alreadyCompleted"));
             return;
         }
@@ -197,7 +196,7 @@ public class StorylinesManager {
         List<JSONObject> object = new ArrayList<>();
 
         for (String storylineID : this.playerStats.get(player.getUniqueId()).keySet()) {
-            object.add(getPlayerStoryline(player ,storylineID));
+            object.add(getPlayerStoryline(player, storylineID));
         }
 
         return object;
@@ -226,6 +225,11 @@ public class StorylinesManager {
     public long getPlayerStageStartTime(Player player, String storylineID) {
         long defaultValue = -1L;
         return (long) getStorylineStats(player, storylineID, "currentStageStartTime", defaultValue);
+    }
+
+    public int getPlayerStageID(Player player, String storylineID) {
+        int defaultValue = 0;
+        return (int) getStorylineStats(player, storylineID, "currentStage", defaultValue);
     }
 
     public Object getStorylineStats(Player player, String storylineID, String key, Object defaultValue) {
@@ -314,6 +318,7 @@ public class StorylinesManager {
         }
     }
 
+    //Todo: start runnable logic
     public void startRunnable() {
         this.runnable = new BukkitRunnable() {
             @Override
@@ -327,9 +332,38 @@ public class StorylinesManager {
                 for (UUID uuid : playerStats.keySet()) {
                     Player player = Main.getInstance().getServer().getPlayer(uuid);
 
+                    assert player != null;
+                    for (String storylineID : playerStats.get(player.getUniqueId()).keySet()) {
+                        Storyline storyline = getStoryline(storylineID);
 
+                        if (getPlayerStartTime(player, storylineID) == -1) {
+                            continue;
+                        } else {
+                            long playerStartTime = getPlayerStartTime(player, storylineID);
+                            long storylineTimeToComplete = storyline.getTimeToComplete();
 
+                            if (storylineTimeToComplete > -1) {
+                                if (playerStartTime + storylineTimeToComplete < System.currentTimeMillis()) {
+                                    //Todo: tell player that he didn't completed the storyline in the required time; cancel / reset the storyline
 
+                                }
+                            }
+                        }
+
+                        if (getPlayerStageStartTime(player, storylineID) == -1) {
+                            continue;
+                        } else {
+                            long playerStageStartTime = getPlayerStartTime(player, storylineID);
+                            long stageTimeToComplete = storyline.getNPCStageID(getPlayerStageID(player, storylineID)).getTimeToComplete();
+
+                            if (stageTimeToComplete > -1) {
+                                if (playerStageStartTime + stageTimeToComplete < System.currentTimeMillis()) {
+                                    //Todo: tell player that he didn't completed the stage in the required time; cancel / reset the storyline
+
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }.runTaskTimer(Main.getInstance(), 0, 20);
