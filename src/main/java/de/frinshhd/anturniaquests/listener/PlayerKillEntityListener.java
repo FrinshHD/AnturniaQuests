@@ -26,7 +26,6 @@ public class PlayerKillEntityListener implements Listener {
         Player player = event.getEntity().getKiller();
 
         Main.getQuestsManager().addKilledEntity(player, event.getEntity().getType());
-        player.sendMessage(event.getEntity().getType().toString());
     }
 
     @EventHandler
