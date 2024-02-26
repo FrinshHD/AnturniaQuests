@@ -30,7 +30,7 @@ public class StorylinesManager {
     public LinkedHashMap<String, Storyline> storylines;
     public PlayerHashMap<UUID, JSONObject> playerStats = new PlayerHashMap<>();
 
-    private BukkitTask runnable = null;
+    public BukkitTask runnable = null;
 
 
     public StorylinesManager() {
@@ -121,19 +121,19 @@ public class StorylinesManager {
             return;
         }
 
-        /*//check if counter has to start //Todo
-        if (storyline.timeToComplete() > -1) {
+        //check if counter has to start //Todo
+        if (storyline.getTimeToComplete() > -1) {
             if (getPlayerStartTime(player, storylineID) == -1) {
                 putPlayerStartTime(player, storylineID, System.currentTimeMillis());
             }
-        } */
+        }
 
-        /*//check if counter for the stage has to start //Todo
+        //check if counter for the stage has to start //Todo
         if (npc.getTimeToComplete() > -1) {
             if (getPlayerStageStartTime(player, storylineID) == -1) {
                 putPlayerStageStartTime(player, storylineID, System.currentTimeMillis());
             }
-        } */
+        }
 
         int playerCurrentMessage = playerStorylineStats.getInt("currentMessage");
         ArrayList<String> messages = npc.getMessages();
@@ -185,6 +185,14 @@ public class StorylinesManager {
         }
     }
 
+    private void resetPlayerStoryline(Player player, String storylineID) {
+        putPlayerCurrentStage(player, storylineID, 0);
+        putPlayerCurrentMessage(player, storylineID, 0);
+        putPlayerStartTime(player, storylineID, -1);
+        putPlayerStageStartTime(player, storylineID, -1);
+        putPlayerLastCompletion(player, storylineID, System.currentTimeMillis());
+    }
+
     public JSONObject getPlayerStats(Player player) {
         return playerStats.get(player.getUniqueId());
     }
@@ -215,18 +223,26 @@ public class StorylinesManager {
     }
 
     public long getPlayerStartTime(Player player, String storylineID) {
-        long defaultValue = -1L;
-        return (long) getStorylineStats(player, storylineID, "currentStartTime", defaultValue);
+        return getStorylineStats(player, storylineID, "currentStartTime", -1L);
     }
 
     public long getPlayerStageStartTime(Player player, String storylineID) {
-        long defaultValue = -1L;
-        return (long) getStorylineStats(player, storylineID, "currentStageStartTime", defaultValue);
+        return getStorylineStats(player, storylineID, "currentStageStartTime", -1L);
     }
 
     public int getPlayerStageID(Player player, String storylineID) {
         int defaultValue = 0;
-        return (int) getStorylineStats(player, storylineID, "currentStage", defaultValue);
+        return (int) getStorylineStats(player, storylineID, "currentStage", 0);
+    }
+
+    public long getStorylineStats(Player player, String storylineID, String key, long defaultLong) {
+        Object defaultValue = defaultLong;
+        return Long.parseLong(getStorylineStats(player, storylineID, key, defaultValue).toString());
+    }
+
+    public int getStorylineStats(Player player, String storylineID, String key, int defaultInt) {
+        Object defaultValue = defaultInt;
+        return (Integer) getStorylineStats(player, storylineID, key, defaultValue);
     }
 
     public Object getStorylineStats(Player player, String storylineID, String key, Object defaultValue) {
@@ -280,6 +296,10 @@ public class StorylinesManager {
 
     public void playerJoin(Player player) {
         putPlayerPlayerStatsMap(player);
+
+        if (Main.getStorylinesManager().runnable == null) {
+            Main.getStorylinesManager().startRunnable();
+        }
     }
 
     public void playerQuit(Player player) {
@@ -342,7 +362,8 @@ public class StorylinesManager {
                             if (storylineTimeToComplete > -1) {
                                 if (playerStartTime + storylineTimeToComplete < System.currentTimeMillis()) {
                                     //Todo: tell player that he didn't completed the storyline in the required time; cancel / reset the storyline
-
+                                    ChatManager.sendMessage(player, Translator.build("storyline.timeOut", new TranslatorPlaceholder("questName", storylineID)));
+                                    resetPlayerStoryline(player, storylineID);
                                 }
                             }
                         }

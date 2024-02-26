@@ -1,4 +1,5 @@
 storyline1:
+  friendlyName: Nice storyline name
   cooldown: 2
   maxCompletions: 4
   timeToComplete: 43
