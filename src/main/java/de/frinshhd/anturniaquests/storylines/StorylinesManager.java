@@ -14,10 +14,7 @@ import de.frinshhd.anturniaquests.storylines.listener.FancyNpcsListener;
 import de.frinshhd.anturniaquests.storylines.listener.StorylinesListener;
 import de.frinshhd.anturniaquests.storylines.models.NPC;
 import de.frinshhd.anturniaquests.storylines.models.Storyline;
-import de.frinshhd.anturniaquests.utils.MessageFormat;
-import de.frinshhd.anturniaquests.utils.PlayerHashMap;
-import de.frinshhd.anturniaquests.utils.Translator;
-import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
+import de.frinshhd.anturniaquests.utils.*;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -101,7 +98,7 @@ public class StorylinesManager {
 
         //check if player already completed the quest for the max amount
         if (storylineMaxCompletions > -1 && playerCompletions >= storylineMaxCompletions) {
-            player.sendMessage(Translator.build("quest.alreadyCompleted"));
+            ChatManager.sendMessage(player, Translator.build("quest.alreadyCompleted"));
             return;
         }
 
@@ -110,7 +107,7 @@ public class StorylinesManager {
 
         //check if a cooldown for this quest is active
         if (playerLastCompletion + storylineCooldown > System.currentTimeMillis()) {
-            player.sendMessage(Translator.build("storyline.cooldownActive", new TranslatorPlaceholder("cooldown", String.valueOf((playerLastCompletion + storylineCooldown - System.currentTimeMillis()) / 1000))));
+            ChatManager.sendMessage(player, Translator.build("storyline.cooldownActive", new TranslatorPlaceholder("cooldown", String.valueOf((playerLastCompletion + storylineCooldown - System.currentTimeMillis()) / 1000))));
             return;
         }
 
@@ -120,7 +117,7 @@ public class StorylinesManager {
 
         //check if currentStage of the player is the same as the one of the npc
         if (!npc.getNpcID().equals(npcID)) {
-            player.sendMessage(Translator.build("storyline.falseStageNPC"));
+            ChatManager.sendMessage(player, Translator.build("storyline.falseStageNPC"));
             return;
         }
 
@@ -161,7 +158,7 @@ public class StorylinesManager {
             return;
         }
 
-        player.sendMessage(MessageFormat.build(messages.get(playerCurrentMessage)));
+        ChatManager.sendMessage(player, messages.get(playerCurrentMessage));
         playerCurrentMessage += 1;
 
         //check if player has completed this npc
