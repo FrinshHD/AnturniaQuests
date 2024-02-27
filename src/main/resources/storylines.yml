@@ -5,6 +5,7 @@ storyline1:
   timeToComplete: 43
   npcs:
     - npcID: 0
+      friendlyName: Bob
       messages:
         - "hi1"
         - "hi2"

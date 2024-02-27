@@ -11,6 +11,9 @@ public class NPC {
     private String npcID = null;
 
     @JsonProperty
+    private String friendlyName = null;
+
+    @JsonProperty
     private String quest = null;
 
     @JsonProperty
@@ -43,4 +46,11 @@ public class NPC {
         return timeToComplete * 1000L;
     }
 
+    public String getName() {
+        if (this.friendlyName == null) {
+            return npcID;
+        }
+
+        return this.friendlyName;
+    }
 }

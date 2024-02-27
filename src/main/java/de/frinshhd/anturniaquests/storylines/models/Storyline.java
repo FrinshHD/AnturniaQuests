@@ -1,10 +1,14 @@
 package de.frinshhd.anturniaquests.storylines.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import de.frinshhd.anturniaquests.Main;
 
 import java.util.ArrayList;
 
 public class Storyline {
+
+    @JsonProperty
+    private String friendlyName = null;
 
     @JsonProperty
     private int cooldown = -1;
@@ -60,5 +64,13 @@ public class Storyline {
         }
 
         return this.timeToComplete * 1000L;
+    }
+
+    public String getName() {
+        if (this.friendlyName == null) {
+            return Main.getStorylinesManager().getStorylineID(this);
+        }
+
+        return this.friendlyName;
     }
 }

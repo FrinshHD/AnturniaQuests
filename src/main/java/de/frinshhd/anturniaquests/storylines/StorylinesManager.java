@@ -362,7 +362,7 @@ public class StorylinesManager {
                             if (storylineTimeToComplete > -1) {
                                 if (playerStartTime + storylineTimeToComplete < System.currentTimeMillis()) {
                                     //Todo: tell player that he didn't completed the storyline in the required time; cancel / reset the storyline
-                                    ChatManager.sendMessage(player, Translator.build("storyline.timeOut", new TranslatorPlaceholder("questName", storylineID)));
+                                    ChatManager.sendMessage(player, Translator.build("storyline.timeOut", new TranslatorPlaceholder("storylineName", storyline.getName())));
                                     resetPlayerStoryline(player, storylineID);
                                 }
                             }
@@ -372,12 +372,13 @@ public class StorylinesManager {
                             continue;
                         } else {
                             long playerStageStartTime = getPlayerStartTime(player, storylineID);
-                            long stageTimeToComplete = storyline.getNPCStageID(getPlayerStageID(player, storylineID)).getTimeToComplete();
+                            NPC npc = storyline.getNPCStageID(getPlayerStageID(player, storylineID));
+                            long stageTimeToComplete = npc.getTimeToComplete();
 
                             if (stageTimeToComplete > -1) {
                                 if (playerStageStartTime + stageTimeToComplete < System.currentTimeMillis()) {
                                     //Todo: tell player that he didn't completed the stage in the required time; cancel / reset the storyline
-                                    ChatManager.sendMessage(player, Translator.build("storyline.timeOut", new TranslatorPlaceholder("questName", storylineID)));
+                                    ChatManager.sendMessage(player, Translator.build("storyline.timeOut.npc", new TranslatorPlaceholder("npcName", npc.getName()), new TranslatorPlaceholder("storylineName", storylineID)));
                                     resetPlayerStoryline(player, storylineID);
                                 }
                             }
