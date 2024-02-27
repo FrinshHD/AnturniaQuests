@@ -377,7 +377,8 @@ public class StorylinesManager {
                             if (stageTimeToComplete > -1) {
                                 if (playerStageStartTime + stageTimeToComplete < System.currentTimeMillis()) {
                                     //Todo: tell player that he didn't completed the stage in the required time; cancel / reset the storyline
-
+                                    ChatManager.sendMessage(player, Translator.build("storyline.timeOut", new TranslatorPlaceholder("questName", storylineID)));
+                                    resetPlayerStoryline(player, storylineID);
                                 }
                             }
                         }
