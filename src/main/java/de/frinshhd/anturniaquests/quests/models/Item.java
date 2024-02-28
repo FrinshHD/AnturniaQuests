@@ -23,7 +23,7 @@ public class Item {
     private Material material = Material.AIR;
 
     @JsonProperty
-    private List<String> nbtTags = new ArrayList<>();
+    private ArrayList<String> lore = new ArrayList<>();
 
     @JsonIgnore
     public String getName() {
@@ -45,8 +45,8 @@ public class Item {
     }
 
     @JsonIgnore
-    public List<String> getNbtTags() {
-        return this.nbtTags;
+    public ArrayList<String> getLore(){
+        return this.lore;
     }
 
     public ItemStack getItem() {
