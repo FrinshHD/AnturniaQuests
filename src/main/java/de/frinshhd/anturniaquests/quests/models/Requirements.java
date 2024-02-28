@@ -3,7 +3,9 @@ package de.frinshhd.anturniaquests.quests.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.frinshhd.anturniaquests.Main;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 
@@ -27,6 +29,29 @@ public class Requirements {
 
     public boolean checkItems(Player player) {
         for (Item item : getItems()) {
+            if (!item.getLore().isEmpty()) {
+                for (ItemStack content : player.getInventory().getContents()) {
+                    if (content == null && content.getType().equals(Material.AIR)) {
+                        continue;
+                    }
+
+                    if (!content.hasItemMeta() && !content.getItemMeta().hasLore()) {
+                        continue;
+                    }
+
+                    if (!content.getItemMeta().getLore().equals(item.getLore()) &&
+                            !content.getItemMeta().getDisplayName().equals(item.getName())) {
+                        continue;
+                    }
+
+                    if (!player.getInventory().containsAtLeast(content, item.getAmount())) {
+                        return false;
+                    }
+
+                    break;
+                }
+            }
+
             if (!player.getInventory().containsAtLeast(item.getItem(), item.getAmount())) {
                 return false;
             }

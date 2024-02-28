@@ -129,7 +129,7 @@ public class Quest {
         itemMeta.setDisplayName(Translator.build("inventory.quest.color") + getFriendlyName());
 
         ArrayList<String> lore = new ArrayList<>();
-        lore.addAll(LoreBuilder.build(description, ChatColor.GRAY));
+        lore.addAll(LoreBuilder.build(getDescription(), ChatColor.GRAY));
         lore.add(" ");
 
         if (isOneTimeUse() && finishedQuests.containsKey(Main.getQuestsManager().getQuestID(this))) {
