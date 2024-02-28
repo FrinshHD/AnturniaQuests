@@ -1,9 +1,11 @@
 storyline1:
+  friendlyName: Nice storyline name
   cooldown: 2
   maxCompletions: 4
   timeToComplete: 43
   npcs:
     - npcID: 0
+      friendlyName: Bob
       messages:
         - "hi1"
         - "hi2"

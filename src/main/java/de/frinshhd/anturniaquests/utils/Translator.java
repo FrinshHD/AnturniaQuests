@@ -47,7 +47,7 @@ public class Translator {
         String message = messages.get(messageKey).toString();
 
         if (message.isEmpty()) {
-            return messageKey;
+            return message;
         }
 
         for (TranslatorPlaceholder translatorPlaceholder : translatorPlaceholders) {

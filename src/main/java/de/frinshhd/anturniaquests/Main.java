@@ -115,15 +115,6 @@ public final class Main extends JavaPlugin {
 
         INSTANCE = this;
 
-        //check if a npc plugin is installed
-        if (Main.getInstance().getServer().getPluginManager().getPlugin("Citizens") != null && Main.getInstance().getServer().getPluginManager().getPlugin("Citizens").isEnabled()) {
-            storylinesEnabled = true;
-        } else if (Main.getInstance().getServer().getPluginManager().getPlugin("FancyNpcs") != null && Main.getInstance().getServer().getPluginManager().getPlugin("FancyNpcs").isEnabled()) {
-            storylinesEnabled = true;
-        } else {
-            storylinesEnabled = false;
-        }
-
 
         SpigotMCCommunication.init();
 
@@ -151,6 +142,19 @@ public final class Main extends JavaPlugin {
         categoriesManager = new CategoriesManager();
 
         configManager = new ConfigManager();
+
+        //check if a npc plugin is installed
+        if (!Main.getConfigManager().getConfig().storylinesEnabled) {
+            storylinesEnabled = false;
+        } else {
+            if (Main.getInstance().getServer().getPluginManager().getPlugin("Citizens") != null && Main.getInstance().getServer().getPluginManager().getPlugin("Citizens").isEnabled()) {
+                storylinesEnabled = true;
+            } else if (Main.getInstance().getServer().getPluginManager().getPlugin("FancyNpcs") != null && Main.getInstance().getServer().getPluginManager().getPlugin("FancyNpcs").isEnabled()) {
+                storylinesEnabled = true;
+            } else {
+                storylinesEnabled = false;
+            }
+        }
 
         if (isStorylinesEnabled()) {
             storylinesManager = new StorylinesManager();

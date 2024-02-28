@@ -254,7 +254,7 @@ public class Quest {
             // Todo: say player he has already this quest
 
             if (message) {
-                player.sendMessage(Translator.build("quest.alreadyCompleted"));
+                ChatManager.sendMessage(player, Translator.build("quest.alreadyCompleted"));
             }
 
             SurvivalQuestSounds.questError(player);
@@ -267,7 +267,7 @@ public class Quest {
                 MysqlManager.getQuestPlayer(player.getUniqueId()).getCooldown().get(Main.getQuestsManager().getQuestID(this)) + getCooldown() >= System.currentTimeMillis()) {
 
             if (message) {
-                player.sendMessage(Translator.build("quest.cooldown", new TranslatorPlaceholder("cooldown", String.valueOf((MysqlManager.getQuestPlayer(player.getUniqueId()).getCooldown().get(Main.getQuestsManager().getQuestID(this)) + getCooldown() - System.currentTimeMillis()) / 1000))));
+                ChatManager.sendMessage(player, Translator.build("quest.cooldown", new TranslatorPlaceholder("cooldown", String.valueOf((MysqlManager.getQuestPlayer(player.getUniqueId()).getCooldown().get(Main.getQuestsManager().getQuestID(this)) + getCooldown() - System.currentTimeMillis()) / 1000))));
             }
 
             SurvivalQuestSounds.questError(player);
@@ -279,10 +279,10 @@ public class Quest {
         if (!checkCanCompleteQuest(player)) {
 
             if (message) {
-                player.sendMessage(Translator.build("quest.requiredQuests"));
+                ChatManager.sendMessage(player, Translator.build("quest.requiredQuests"));
 
                 for (Quest quest : getQuestsToCompletePlayer(player)) {
-                    player.sendMessage(Translator.build("quest.requiredQuests.quest", new TranslatorPlaceholder("questName", quest.getFriendlyName())));
+                    ChatManager.sendMessage(player, Translator.build("quest.requiredQuests.quest", new TranslatorPlaceholder("questName", quest.getFriendlyName())));
                 }
             }
 
@@ -292,7 +292,7 @@ public class Quest {
 
         if (!getRequirements().check(player)) {
             if (message) {
-                player.sendMessage(Translator.build("quest.missingRequirements"));
+                ChatManager.sendMessage(player, Translator.build("quest.missingRequirements"));
 
                 //items
                 for (Item items : getRequirements().getItems()) {
@@ -308,7 +308,7 @@ public class Quest {
                     }
 
                     if (amount < items.getAmount()) {
-                        player.sendMessage(Translator.build("quest.missingRequirements.item", new TranslatorPlaceholder("amountInInv", String.valueOf(amount)), new TranslatorPlaceholder("amount", String.valueOf(items.getAmount())), new TranslatorPlaceholder("itemName", items.getName())));
+                        ChatManager.sendMessage(player, Translator.build("quest.missingRequirements.item", new TranslatorPlaceholder("amountInInv", String.valueOf(amount)), new TranslatorPlaceholder("amount", String.valueOf(items.getAmount())), new TranslatorPlaceholder("itemName", items.getName())));
                     }
                 }
 
@@ -323,7 +323,7 @@ public class Quest {
                     }
 
                     if (amount < killedEntity.getAmount()) {
-                        player.sendMessage(Translator.build("quest.missingRequirements.killedEntity", new TranslatorPlaceholder("amountKilled", String.valueOf(amount)), new TranslatorPlaceholder("amount", String.valueOf(killedEntity.getAmount())), new TranslatorPlaceholder("entityName", killedEntity.getName())));
+                        ChatManager.sendMessage(player, Translator.build("quest.missingRequirements.killedEntity", new TranslatorPlaceholder("amountKilled", String.valueOf(amount)), new TranslatorPlaceholder("amount", String.valueOf(killedEntity.getAmount())), new TranslatorPlaceholder("entityName", killedEntity.getName())));
                     }
                 }
             }
@@ -358,7 +358,7 @@ public class Quest {
     public void claim(Player player, boolean message) {
 
         if (message) {
-            player.sendMessage(Translator.build("quest.complete", new TranslatorPlaceholder("questName", getFriendlyName())));
+            ChatManager.sendMessage(player, Translator.build("quest.complete", new TranslatorPlaceholder("questName", getFriendlyName())));
         }
 
         SurvivalQuestSounds.questComplete(player);
@@ -368,7 +368,7 @@ public class Quest {
             Main.getEconomy().depositPlayer(player, getRewards().getMoney());
 
             if (message) {
-                player.sendMessage(Translator.build("quest.addMoney", new TranslatorPlaceholder("amount", String.valueOf(getRewards().getMoney()))));
+                ChatManager.sendMessage(player, Translator.build("quest.addMoney", new TranslatorPlaceholder("amount", String.valueOf(getRewards().getMoney()))));
             }
         }
 
@@ -377,7 +377,7 @@ public class Quest {
             QuestsManager.addItem(player, rewardItem.getItem(), rewardItem.getAmount());
 
             if (message) {
-                player.sendMessage(Translator.build("quest.addItem", new TranslatorPlaceholder("amount", String.valueOf(rewardItem.getAmount())), new TranslatorPlaceholder("itemName", rewardItem.getName())));
+                ChatManager.sendMessage(player, Translator.build("quest.addItem", new TranslatorPlaceholder("amount", String.valueOf(rewardItem.getAmount())), new TranslatorPlaceholder("itemName", rewardItem.getName())));
             }
         }
 
@@ -394,13 +394,13 @@ public class Quest {
             Main.getInstance().getServer().dispatchCommand(Main.getInstance().getServer().getConsoleSender(), commandString);
 
             if (message) {
-                player.sendMessage(Translator.build("quest.addCommand", new TranslatorPlaceholder("commandName", command.getName())));
+                ChatManager.sendMessage(player, Translator.build("quest.addCommand", new TranslatorPlaceholder("commandName", command.getName())));
             }
         }
 
         if (this.announce) {
             Bukkit.getOnlinePlayers().forEach(players -> {
-                players.sendMessage(Translator.build("quest.announce", new TranslatorPlaceholder("player", player.getName()), new TranslatorPlaceholder("questName", getFriendlyName())));
+                ChatManager.sendMessage(player, Translator.build("quest.announce", new TranslatorPlaceholder("player", player.getName()), new TranslatorPlaceholder("questName", getFriendlyName())));
             });
         }
     }

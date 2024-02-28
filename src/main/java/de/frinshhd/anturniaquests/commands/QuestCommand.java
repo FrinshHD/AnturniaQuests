@@ -2,6 +2,7 @@ package de.frinshhd.anturniaquests.commands;
 
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.QuestMenu;
+import de.frinshhd.anturniaquests.utils.ChatManager;
 import de.frinshhd.anturniaquests.utils.Translator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,12 +20,12 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
             if (args.length >= 1) {
                 if (args[0].equals("reload")) {
                     if (!sender.hasPermission("quests.reload")) {
-                        sender.sendMessage(Translator.build("noPermission"));
+                        ChatManager.sendMessage(sender, Translator.build("noPermission"));
                         return false;
                     }
 
                     Main.reload();
-                    sender.sendMessage(Translator.build("quests.reload"));
+                    ChatManager.sendMessage(sender, Translator.build("quests.reload"));
                     return true;
                 } else {
                     return false;
@@ -39,7 +40,7 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
             if (player.hasPermission("quests.open")) {
                 new QuestMenu(Main.getPlayerMenuUtility(player)).open(player);
             } else {
-                player.sendMessage(Translator.build("noPermission"));
+                ChatManager.sendMessage(player, Translator.build("noPermission"));
             }
             return true;
         }
@@ -55,12 +56,12 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
             }
             if (args[0].equals("reload")) {
                 if (!player.hasPermission("quests.reload")) {
-                    player.sendMessage(Translator.build("noPermission"));
+                    ChatManager.sendMessage(player, Translator.build("noPermission"));
                     return false;
                 }
 
                 Main.reload();
-                player.sendMessage(Translator.build("quests.reload"));
+                ChatManager.sendMessage(player, Translator.build("quests.reload"));
                 return true;
             } else {
                 return false;
@@ -83,7 +84,7 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
 
         stringBuilder.append("§7If you need more help join our discord at §2https://discord.gg/89Dv8rqkpC");
 
-        player.sendMessage(stringBuilder.toString());
+        ChatManager.sendMessage(player, stringBuilder.toString());
     }
 
     @Override

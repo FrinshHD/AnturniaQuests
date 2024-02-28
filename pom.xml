@@ -6,7 +6,7 @@
 
     <groupId>net.frinshhd</groupId>
     <artifactId>AnturniaQuests</artifactId>
-    <version>0.2.5</version>
+    <version>0.2.8</version>
     <packaging>jar</packaging>
 
     <name>AnturniaQuests</name>
@@ -14,12 +14,11 @@
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!-- Default build number is 0 -->
-        <BUILD_NUMBER>0</BUILD_NUMBER>
+        <BUILD_NUMBER/>
     </properties>
 
     <build>
-        <finalName>${project.artifactId}-${project.version}.${BUILD_NUMBER}</finalName>
+        <finalName>${project.artifactId}-${project.version}${BUILD_NUMBER}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
