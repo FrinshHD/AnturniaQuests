@@ -23,28 +23,28 @@ import java.util.List;
 public class Quest {
 
     @JsonProperty
-    private String friendlyName;
+    private String friendlyName = "";
 
     @JsonProperty
     private String category = null;
 
     @JsonProperty
-    private String description;
+    private String description = "";
 
     @JsonProperty
-    private String material;
+    private String material = null;
 
     @JsonProperty
-    private Requirements requirements;
+    private Requirements requirements = new Requirements();
 
     @JsonProperty
-    private Rewards rewards;
+    private Rewards rewards = new Rewards();
 
     @JsonProperty
-    private boolean oneTime;
+    private boolean oneTime = false;
 
     @JsonProperty
-    private boolean announce;
+    private boolean announce = false;
 
     @JsonProperty
     private Integer cooldown = null;
