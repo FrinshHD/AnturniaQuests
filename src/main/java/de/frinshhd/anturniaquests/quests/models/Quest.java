@@ -251,7 +251,6 @@ public class Quest {
 
     public boolean playerClick(Player player, boolean message) throws SQLException {
         if (isOneTimeUse() && MysqlManager.getQuestPlayer(player.getUniqueId()).getFinishedQuests().containsKey(Main.getQuestsManager().getQuestID(this))) {
-            // Todo: say player he has already this quest
 
             if (message) {
                 ChatManager.sendMessage(player, Translator.build("quest.alreadyCompleted"));

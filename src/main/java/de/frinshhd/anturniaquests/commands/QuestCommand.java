@@ -4,6 +4,7 @@ import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.QuestMenu;
 import de.frinshhd.anturniaquests.utils.ChatManager;
 import de.frinshhd.anturniaquests.utils.Translator;
+import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -27,8 +28,11 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
                     Main.reload();
                     ChatManager.sendMessage(sender, Translator.build("quests.reload"));
                     return true;
-                } else {
-                    return false;
+                }
+
+                if (args[0].equals("version")) {
+                    ChatManager.sendMessage(sender, Translator.build("quests.currentVersion", new TranslatorPlaceholder("version", Main.getInstance().getDescription().getVersion())));
+                    return true;
                 }
             }
             return false;
@@ -54,6 +58,7 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
                     return false;
                 }
             }
+
             if (args[0].equals("reload")) {
                 if (!player.hasPermission("quests.reload")) {
                     ChatManager.sendMessage(player, Translator.build("noPermission"));
@@ -63,8 +68,11 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
                 Main.reload();
                 ChatManager.sendMessage(player, Translator.build("quests.reload"));
                 return true;
-            } else {
-                return false;
+            }
+
+            if (args[0].equals("version")) {
+                ChatManager.sendMessage(player, Translator.build("quests.currentVersion", new TranslatorPlaceholder("version", Main.getInstance().getDescription().getVersion())));
+                return true;
             }
         }
 
@@ -82,7 +90,7 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
             stringBuilder.append("§7- §2/quests reload §7- Reload the plugin's configurations\n");
         }
 
-        stringBuilder.append("§7If you need more help join our discord at §2https://discord.gg/89Dv8rqkpC");
+        stringBuilder.append("§7If you need more help join our discord at §2https://logic.frinshy.me/discord");
 
         ChatManager.sendMessage(player, stringBuilder.toString());
     }
@@ -97,6 +105,8 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
 
         // Possible completions
         List<String> commands = new ArrayList<>(List.of(new String[]{}));
+
+        commands.add("version");
 
         if (sender.hasPermission("quests.help")) {
             commands.add("help");
