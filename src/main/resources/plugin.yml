@@ -11,11 +11,13 @@ commands:
     aliases: [ "anturniaquests" ]
 
 permissions:
-  quests.open:
+  anturniaquests.command.open:
     default: true
-  quests.admin.reload:
+  anturniaquests.command.help:
+    default: true
+  anturniaquests.command.version:
+    default: true
+  anturniaquests.command.admin.reload:
     default: op
-  quests.help:
-    default: true
-  quests.admin.updateNotify:
+  anturniaquests.admin.updateNotify:
     default: op

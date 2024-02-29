@@ -35,9 +35,9 @@ Get the latest dev version here: https://jenkins.frinshy.me/job/AnturniaQuests/
 **Permissions:**
 
 - `quests.open`: permission to execute the /quests command
-- `quests.admin.reload`: permission to execute the /quests reload command
+- `anturniaquests.admin.reload`: permission to execute the /quests reload command
 - `quests.help`: permission to execute the /quests help command
-- `quests.admin.updateNotify`: permission to get notified when a new update is avaliable
+- `anturniaquests.admin.updateNotify`: permission to get notified when a new update is avaliable
 
 **Special Note for Monetary Rewards:**
 If you intend to provide monetary rewards, ensure you have Vault and a compatible economy plugin installed on your

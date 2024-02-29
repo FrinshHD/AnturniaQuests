@@ -1,4 +1,4 @@
-package de.frinshhd.anturniaquests.commands;
+package de.frinshhd.anturniaanturniaquests.commands;
 
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.QuestMenu;
@@ -20,7 +20,7 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
         if (!(sender instanceof Player)) {
             if (args.length >= 1) {
                 if (args[0].equals("reload")) {
-                    if (!sender.hasPermission("quests.reload")) {
+                    if (!sender.hasPermission("anturniaquests.command.admin.reload")) {
                         ChatManager.sendMessage(sender, Translator.build("noPermission"));
                         return false;
                     }
@@ -31,8 +31,10 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
                 }
 
                 if (args[0].equals("version")) {
-                    ChatManager.sendMessage(sender, Translator.build("quests.currentVersion", new TranslatorPlaceholder("version", Main.getInstance().getDescription().getVersion())));
-                    return true;
+                    if (sender.hasPermission("anturniaquests.command.version")) {
+                        ChatManager.sendMessage(sender, Translator.build("quests.currentVersion", new TranslatorPlaceholder("version", Main.getInstance().getDescription().getVersion())));
+                        return true;
+                    }
                 }
             }
             return false;
@@ -41,7 +43,7 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
         Player player = (Player) sender;
 
         if (args.length == 0) {
-            if (player.hasPermission("quests.open")) {
+            if (player.hasPermission("anturniaquests.command.open")) {
                 new QuestMenu(Main.getPlayerMenuUtility(player)).open(player);
             } else {
                 ChatManager.sendMessage(player, Translator.build("noPermission"));
@@ -51,7 +53,7 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
 
         if (args.length >= 1) {
             if (args[0].equals("help")) {
-                if (player.hasPermission("quests.help")) {
+                if (player.hasPermission("anturniaquests.command.help")) {
                     sendHelpMessage(player);
                     return true;
                 } else {
@@ -60,7 +62,7 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
             }
 
             if (args[0].equals("reload")) {
-                if (!player.hasPermission("quests.reload")) {
+                if (!player.hasPermission("anturniaquests.command.admin.reload")) {
                     ChatManager.sendMessage(player, Translator.build("noPermission"));
                     return false;
                 }
@@ -71,8 +73,10 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
             }
 
             if (args[0].equals("version")) {
-                ChatManager.sendMessage(player, Translator.build("quests.currentVersion", new TranslatorPlaceholder("version", Main.getInstance().getDescription().getVersion())));
-                return true;
+                if (player.hasPermission("anturniaquests.command.version")) {
+                    ChatManager.sendMessage(player, Translator.build("quests.currentVersion", new TranslatorPlaceholder("version", Main.getInstance().getDescription().getVersion())));
+                    return true;
+                }
             }
         }
 
@@ -86,7 +90,7 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
         stringBuilder.append("§7- §2/quests §7- Open the quests menu\n");
         stringBuilder.append("§7- §2/quests help §7- Take a look at this message\n");
 
-        if (player.hasPermission("quests.reload")) {
+        if (player.hasPermission("anturniaquests.command.admin.reload")) {
             stringBuilder.append("§7- §2/quests reload §7- Reload the plugin's configurations\n");
         }
 
@@ -108,11 +112,11 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
 
         commands.add("version");
 
-        if (sender.hasPermission("quests.help")) {
+        if (sender.hasPermission("anturniaquests.command.help")) {
             commands.add("help");
         }
 
-        if (sender.hasPermission("quests.reload")) {
+        if (sender.hasPermission("anturniaquests.command.admin.reload")) {
             commands.add("reload");
         }
 
