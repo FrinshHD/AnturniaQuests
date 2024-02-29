@@ -11,6 +11,7 @@ import de.frinshhd.anturniaquests.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -54,6 +55,12 @@ public class Quest {
 
     @JsonProperty
     private ArrayList<String> requiredQuests = new ArrayList<>();
+
+    @JsonProperty
+    private Sound completionSound = null;
+
+    @JsonProperty
+    private Sound errorSound = null;
 
     public Quest() {
         this.requirements = new Requirements();

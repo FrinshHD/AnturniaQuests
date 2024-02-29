@@ -2,7 +2,7 @@ package de.frinshhd.anturniaquests.storylines.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.frinshhd.anturniaquests.Main;
-import de.frinshhd.anturniaquests.utils.ChatManager;
+import de.frinshhd.anturniaquests.utils.ChatManager;import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -15,6 +15,9 @@ public class NPCAction {
     private String command = null;
 
     @JsonProperty
+    private Sound sound = null;
+
+    @JsonProperty
     private Long delay = null;
 
     public String getMessage() {
@@ -25,10 +28,15 @@ public class NPCAction {
         return this.command;
     }
 
+    public Sound getSound() {
+        return this.sound;
+    }
+
     public void execute(Player player) {
         if (delay == null || delay <= 0L) {
             sendMessage(player);
             executeCommand(player);
+            playSound(player);
             return;
         }
 
@@ -42,6 +50,7 @@ public class NPCAction {
 
                 sendMessage(player);
                 executeCommand(player);
+                playSound(player);
                 cancel();
             }
         }.runTaskLater(Main.getInstance(), delay);
@@ -69,6 +78,14 @@ public class NPCAction {
         commandString = commandString.replace("%player%", player.getName());
 
         Main.getInstance().getServer().dispatchCommand(Main.getInstance().getServer().getConsoleSender(), commandString);
+    }
+
+    public void playSound(Player player) {
+        if (getSound() == null) {
+            return;
+        }
+
+        player.playSound(player.getLocation(), getSound(), 50, 1);
     }
 
 }
