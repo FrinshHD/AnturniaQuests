@@ -8,6 +8,7 @@ import com.j256.ormlite.dao.Dao;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.mysql.MysqlManager;
 import de.frinshhd.anturniaquests.mysql.entities.KilledEntities;
+import de.frinshhd.anturniaquests.mysql.entities.Quests;
 import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.utils.PlayerHashMap;
 import org.bukkit.entity.EntityType;
@@ -142,5 +143,15 @@ public class QuestsManager {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public int getPlayerQuestCompletions(Player player, String questID) {
+        Quests playerQuest = MysqlManager.getQuestPlayer(player.getUniqueId());
+
+        if (!playerQuest.getFinishedQuests().containsKey(questID)) {
+            return 0;
+        }
+
+        return playerQuest.getFinishedQuests().get(questID);
     }
 }

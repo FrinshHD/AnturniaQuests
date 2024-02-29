@@ -50,6 +50,9 @@ public class Quest {
     private Integer cooldown = null;
 
     @JsonProperty
+    private Boolean showCompletions = null;
+
+    @JsonProperty
     private ArrayList<String> requiredQuests = new ArrayList<>();
 
     public Quest() {
@@ -95,6 +98,14 @@ public class Quest {
         return this.cooldown * 1000L;
     }
 
+    public boolean isShowCompletions() {
+        if (showCompletions == null) {
+            return !isOneTimeUse();
+        }
+
+        return showCompletions;
+    }
+
     public ArrayList<Quest> getRequiredQuests() {
         ArrayList<Quest> quests = new ArrayList<>();
 
@@ -138,6 +149,11 @@ public class Quest {
                 MysqlManager.getQuestPlayer(player.getUniqueId()).getCooldown().containsKey(Main.getQuestsManager().getQuestID(this)) &&
                 MysqlManager.getQuestPlayer(player.getUniqueId()).getCooldown().get(Main.getQuestsManager().getQuestID(this)) + getCooldown() >= System.currentTimeMillis()) {
             lore.addAll(LoreBuilder.build(Translator.build("lore.cooldown", new TranslatorPlaceholder("cooldown", String.valueOf((MysqlManager.getQuestPlayer(player.getUniqueId()).getCooldown().get(Main.getQuestsManager().getQuestID(this)) + getCooldown() - System.currentTimeMillis()) / 1000))), ChatColor.GRAY));
+
+            if (isShowCompletions()) {
+                lore.add(" ");
+                lore.add(Translator.build("lore.completions", new TranslatorPlaceholder("completions", String.valueOf(Main.getQuestsManager().getPlayerQuestCompletions(player, Main.getQuestsManager().getQuestID(this))))));
+            }
         } else if (!checkCanCompleteQuest(player)) {
             lore.addAll(LoreBuilder.build(Translator.build("lore.requiredQuests"), ChatColor.RED));
 
@@ -200,6 +216,11 @@ public class Quest {
             //commands
             for (Command command : getRewards().getCommands()) {
                 lore.add(Translator.build("lore.rewards.commands", new TranslatorPlaceholder("name", command.getName())));
+            }
+
+            if (isShowCompletions()) {
+                lore.add(" ");
+                lore.add(Translator.build("lore.completions", new TranslatorPlaceholder("completions", String.valueOf(Main.getQuestsManager().getPlayerQuestCompletions(player, Main.getQuestsManager().getQuestID(this))))));
             }
 
             if (!isOneTimeUse()) {

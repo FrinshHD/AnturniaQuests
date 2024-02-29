@@ -4,6 +4,7 @@ combat1:
   category: combat
   oneTime: false
   cooldown: 120
+  showCompletions: true
   requirements:
     items:
       - material: ROTTEN_FLESH
