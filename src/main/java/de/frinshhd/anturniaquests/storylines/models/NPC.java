@@ -20,7 +20,7 @@ public class NPC {
     private int timeToComplete = -1;
 
     @JsonProperty
-    private ArrayList<String> messages = new ArrayList<>();
+    private ArrayList<NPCAction> actions = new ArrayList<>();
 
     public String getNpcID() {
         return this.npcID;
@@ -34,8 +34,8 @@ public class NPC {
         return Main.getQuestsManager().getQuest(this.quest);
     }
 
-    public ArrayList<String> getMessages() {
-        return this.messages;
+    public ArrayList<NPCAction> getActions() {
+        return this.actions;
     }
 
     public long getTimeToComplete() {

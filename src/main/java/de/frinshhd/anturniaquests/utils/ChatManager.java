@@ -10,11 +10,15 @@ public class ChatManager {
     }
 
     public static boolean sendMessageRaw(CommandSender sender, String message) {
+        if (message == null) {
+            return false;
+        }
+
         if (message.isEmpty()) {
             return false;
         }
 
         sender.sendMessage(message);
-        return false;
+        return true;
     }
 }

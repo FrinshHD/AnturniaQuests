@@ -13,6 +13,7 @@ import de.frinshhd.anturniaquests.storylines.listener.CitizensNpcsListener;
 import de.frinshhd.anturniaquests.storylines.listener.FancyNpcsListener;
 import de.frinshhd.anturniaquests.storylines.listener.StorylinesListener;
 import de.frinshhd.anturniaquests.storylines.models.NPC;
+import de.frinshhd.anturniaquests.storylines.models.NPCAction;
 import de.frinshhd.anturniaquests.storylines.models.Storyline;
 import de.frinshhd.anturniaquests.utils.*;
 import org.bukkit.entity.Player;
@@ -135,10 +136,10 @@ public class StorylinesManager {
             }
         }
 
-        int playerCurrentMessage = playerStorylineStats.getInt("currentMessage");
-        ArrayList<String> messages = npc.getMessages();
+        int playerCurrentActionID = playerStorylineStats.getInt("currentAction");
+        ArrayList<NPCAction> actions = npc.getActions();
 
-        if (messages.size() - 1 < playerCurrentMessage && npc.getQuest() != null) {
+        if (actions.size() - 1 < playerCurrentActionID && npc.getQuest() != null) {
             Quest quest = npc.getQuest();
 
             boolean completedQuest;
@@ -158,36 +159,39 @@ public class StorylinesManager {
             return;
         }
 
-        ChatManager.sendMessage(player, messages.get(playerCurrentMessage));
-        playerCurrentMessage += 1;
+        NPCAction playerCurrentAction = actions.get(playerCurrentActionID);
+
+        playerCurrentAction.execute(player);
+
+        playerCurrentActionID += 1;
 
         //check if player has completed this npc
-        if (messages.size() - 1 < playerCurrentMessage && npc.getQuest() == null) {
+        if (actions.size() - 1 < playerCurrentActionID && npc.getQuest() == null) {
             playerStageID += 1;
 
             //check if player has Completed the storyline
             checkPlayerCompletedStoryline(player, storylineID, storyline, playerCompletions, playerStageID);
         } else {
-            putPlayerCurrentMessage(player, storylineID, playerCurrentMessage);
+            putPlayerCurrentAction(player, storylineID, playerCurrentActionID);
         }
     }
 
     private void checkPlayerCompletedStoryline(Player player, String storylineID, Storyline storyline, int playerCompletions, int playerStageID) {
         if (storyline.getNpcs().size() - 1 < playerStageID) {
-            putPlayerCurrentMessage(player, storylineID, 0);
+            putPlayerCurrentAction(player, storylineID, 0);
             putPlayerCurrentStage(player, storylineID, 0);
             putPlayerCompletions(player, storylineID, playerCompletions + 1);
             putPlayerLastCompletion(player, storylineID, System.currentTimeMillis());
             putPlayerStartTime(player, storylineID, -1);
         } else {
-            putPlayerCurrentMessage(player, storylineID, 0);
+            putPlayerCurrentAction(player, storylineID, 0);
             putPlayerCurrentStage(player, storylineID, playerStageID);
         }
     }
 
     private void resetPlayerStoryline(Player player, String storylineID) {
         putPlayerCurrentStage(player, storylineID, 0);
-        putPlayerCurrentMessage(player, storylineID, 0);
+        putPlayerCurrentAction(player, storylineID, 0);
         putPlayerStartTime(player, storylineID, -1);
         putPlayerStageStartTime(player, storylineID, -1);
         putPlayerLastCompletion(player, storylineID, System.currentTimeMillis());
@@ -213,7 +217,7 @@ public class StorylinesManager {
             object.put("completions", 0);
             object.put("lastCompletion", 0);
             object.put("currentStage", 0);
-            object.put("currentMessage", 0);
+            object.put("currentAction", 0);
             object.put("currentStartTime", -1);
             object.put("currentStageStartTime", -1);
             return object;
@@ -258,8 +262,8 @@ public class StorylinesManager {
         return object.get(key);
     }
 
-    public void putPlayerCurrentMessage(Player player, String storylineID, int currentMessage) {
-        putStorylineStats(player, storylineID, "currentMessage", currentMessage);
+    public void putPlayerCurrentAction(Player player, String storylineID, int currentAction) {
+        putStorylineStats(player, storylineID, "currentAction", currentAction);
     }
 
     public void putPlayerCurrentStage(Player player, String storylineID, int currentStage) {

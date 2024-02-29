@@ -6,15 +6,18 @@ storyline1:
   npcs:
     - npcID: 0
       friendlyName: Bob
-      messages:
-        - "hi1"
-        - "hi2"
+      actions:
+        - message: "hi1"
+        - message: "hi2"
+        - command: "give %player% emerald 1"
+          delay: 20 #in ticks (one second is equal to 20 ticks)
     - npcID: bob
-      messages:
-        - "hi3"
-        - "hi4"
+      actions:
+        - message: "hi3"
+        - message: "hi4"
     - npcID: 0
       quest: bringPotato
-      messages:
-        - "h5"
-        - "thx"
+      actions:
+        - message: "h5"
+          command: "give %player% diamond 2"
+        - message: "thx"
