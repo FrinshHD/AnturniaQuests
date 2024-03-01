@@ -5,6 +5,7 @@ system. With this plugin, players can engage in captivating quests and earn exci
 straightforward, offering complete customization of quests and rewards.
 
 Get the latest dev version here: https://jenkins.frinshy.me/job/AnturniaQuests/
+**Wiki**: https://github.com/FrinshHD/AnturniaQuests/wiki
 
 **Trailer:**  
 [![](https://markdown-videos-api.jorgenkh.no/youtube/EeggEVhBkbY)](https://youtu.be/EeggEVhBkbY)
