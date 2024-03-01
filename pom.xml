@@ -6,7 +6,7 @@
 
     <groupId>net.frinshhd</groupId>
     <artifactId>AnturniaQuests</artifactId>
-    <version>0.2.8</version>
+    <version>0.2.8${BUILD_NUMBER}</version>
     <packaging>jar</packaging>
 
     <name>AnturniaQuests</name>
@@ -18,7 +18,6 @@
     </properties>
 
     <build>
-        <finalName>${project.artifactId}-${project.version}${BUILD_NUMBER}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

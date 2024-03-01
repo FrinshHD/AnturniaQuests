@@ -8,6 +8,9 @@ storyline1:
       friendlyName: Bob
       actions:
         - message: "hi1"
+          clickSound: ENTITY_EXPERIENCE_ORB_PICKUP
+          volume: 50
+          pitch: 1
         - message: "hi2"
         - command: "give %player% emerald 1"
           delay: 20 #in ticks (one second is equal to 20 ticks)
