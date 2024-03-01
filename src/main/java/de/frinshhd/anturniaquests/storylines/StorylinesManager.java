@@ -99,7 +99,7 @@ public class StorylinesManager {
 
         //check if player already completed the quest for the max amount
         if (storylineMaxCompletions > -1 && playerCompletions >= storylineMaxCompletions) {
-            ChatManager.sendMessage(player, Translator.build("quest.alreadyCompleted"));
+            ChatManager.sendMessage(player, Translator.build("storyline.alreadyCompleted", new TranslatorPlaceholder("storylineName", storyline.getName())));
             return;
         }
 

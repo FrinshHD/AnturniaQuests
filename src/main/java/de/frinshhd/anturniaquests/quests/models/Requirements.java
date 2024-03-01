@@ -29,26 +29,29 @@ public class Requirements {
 
     public boolean checkItems(Player player) {
         for (Item item : getItems()) {
-            if (!item.getLore().isEmpty()) {
-                for (ItemStack content : player.getInventory().getContents()) {
-                    if (content == null && content.getType().equals(Material.AIR)) {
-                        continue;
-                    }
+            if (item.getName() != null) {
 
-                    if (!content.hasItemMeta() && !content.getItemMeta().hasLore()) {
-                        continue;
-                    }
+                if (!item.getLore().isEmpty()) {
+                    for (ItemStack content : player.getInventory().getContents()) {
+                        if (content == null && content.getType().equals(Material.AIR)) {
+                            continue;
+                        }
 
-                    if (!content.getItemMeta().getLore().equals(item.getLore()) &&
-                            !content.getItemMeta().getDisplayName().equals(item.getName())) {
-                        continue;
-                    }
+                        if (!content.hasItemMeta() && !content.getItemMeta().hasLore()) {
+                            continue;
+                        }
 
-                    if (!player.getInventory().containsAtLeast(content, item.getAmount())) {
-                        return false;
-                    }
+                        if (!content.getItemMeta().getLore().equals(item.getLore()) &&
+                                !content.getItemMeta().getDisplayName().equals(item.getName())) {
+                            continue;
+                        }
 
-                    break;
+                        if (!player.getInventory().containsAtLeast(content, item.getAmount())) {
+                            return false;
+                        }
+
+                        break;
+                    }
                 }
             }
 
