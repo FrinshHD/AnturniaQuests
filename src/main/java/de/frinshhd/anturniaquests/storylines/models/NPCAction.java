@@ -2,6 +2,7 @@ package de.frinshhd.anturniaquests.storylines.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.frinshhd.anturniaquests.Main;
+import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.quests.models.Sound;
 import de.frinshhd.anturniaquests.utils.ChatManager;
 import org.bukkit.entity.Player;
@@ -14,6 +15,9 @@ public class NPCAction {
 
     @JsonProperty
     private String command = null;
+
+    @JsonProperty
+    private String quest = null;
 
     @JsonProperty
     private Sound clickSound = new Sound();
@@ -33,7 +37,20 @@ public class NPCAction {
         return this.clickSound;
     }
 
+    public Quest getQuest() {
+        if (Main.getQuestsManager().getQuest(this.quest) == null) {
+            return null;
+        }
+
+        return Main.getQuestsManager().getQuest(this.quest);
+    }
+
     public void execute(Player player) {
+        if (getQuest() != null) {
+
+            return;
+        }
+
         if (delay == null || delay <= 0L) {
             sendMessage(player);
             executeCommand(player);

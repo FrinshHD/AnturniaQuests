@@ -1,5 +1,6 @@
 package de.frinshhd.anturniaquests;
 
+import com.j256.ormlite.logger.Logger;
 import de.frinshhd.anturniaquests.categories.CategoriesManager;
 import de.frinshhd.anturniaanturniaquests.commands.QuestCommand;
 import de.frinshhd.anturniaquests.config.ConfigManager;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.logging.Level;
 
 public final class Main extends JavaPlugin {
 
@@ -137,11 +139,11 @@ public final class Main extends JavaPlugin {
 
         Iterator<String> classNamesIterator = classNames.iterator();
 
+        configManager = new ConfigManager();
+
         questsManager = new QuestsManager();
 
         categoriesManager = new CategoriesManager();
-
-        configManager = new ConfigManager();
 
         //check if a npc plugin is installed
         if (!Main.getConfigManager().getConfig().storylinesEnabled) {

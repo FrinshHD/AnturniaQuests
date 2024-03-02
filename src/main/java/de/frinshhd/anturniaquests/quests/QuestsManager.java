@@ -92,8 +92,6 @@ public class QuestsManager {
             killedEntities.put(killedEntity.toString(), killedEntities.get(killedEntity.toString()) + 1);
         }
         playerKilledEntities.put(uuid, killedEntities);
-
-        System.out.println(playerKilledEntities.get(uuid).keySet().toString());
     }
 
     public int getKilledEntityAmount(Player player, EntityType entityType) {
