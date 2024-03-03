@@ -80,10 +80,10 @@ public final class Main extends JavaPlugin {
     }
 
     public static void reload() {
-        getConfigManager().load();
-        getQuestsManager().load();
-        getDynamicCategories().load();
-        getStorylinesManager().load();
+        Main.getConfigManager().load();
+        Main.getQuestsManager().load();
+        Main.getDynamicCategories().load();
+        Main.getStorylinesManager().load();
         try {
             Translator.register("plugins/AnturniaQuests/messages.properties");
         } catch (IOException e) {

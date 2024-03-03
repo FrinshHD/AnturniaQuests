@@ -58,6 +58,10 @@ public class Requirements {
                 if (amountInInv < item.getAmount()) {
                     return false;
                 }
+
+                if (item.getLore().isEmpty()) {
+                    continue;
+                }
             }
 
             if (!item.getLore().isEmpty()) {
@@ -98,6 +102,8 @@ public class Requirements {
                 if (amountInInv < item.getAmount()) {
                     return false;
                 }
+
+                continue;
             }
 
             if (!player.getInventory().containsAtLeast(item.getItem(), item.getAmount())) {
