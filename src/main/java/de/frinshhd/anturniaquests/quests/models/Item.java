@@ -50,15 +50,6 @@ public class Item {
     }
 
     public ItemStack getItem() {
-        ItemStack item = new ItemStack(getMaterial());
-
-        ItemMeta itemMeta = item.getItemMeta();
-
-        if (name != null) {
-            itemMeta.setDisplayName(MessageFormat.build(getName()));
-        }
-
-        item.setItemMeta(itemMeta);
-        return item;
+        return new ItemStack(getMaterial());
     }
 }

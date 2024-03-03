@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Requirements {
 
@@ -30,28 +31,72 @@ public class Requirements {
     public boolean checkItems(Player player) {
         for (Item item : getItems()) {
             if (item.getName() != null) {
+                int amountInInv = 0;
 
-                if (!item.getLore().isEmpty()) {
-                    for (ItemStack content : player.getInventory().getContents()) {
-                        if (content == null && content.getType().equals(Material.AIR)) {
-                            continue;
-                        }
-
-                        if (!content.hasItemMeta() && !content.getItemMeta().hasLore()) {
-                            continue;
-                        }
-
-                        if (!content.getItemMeta().getLore().equals(item.getLore()) &&
-                                !content.getItemMeta().getDisplayName().equals(item.getName())) {
-                            continue;
-                        }
-
-                        if (!player.getInventory().containsAtLeast(content, item.getAmount())) {
-                            return false;
-                        }
-
-                        break;
+                for (ItemStack content : player.getInventory().getContents()) {
+                    if (content == null || content.getType().equals(Material.AIR) || !content.getType().equals(item.getMaterial())) {
+                        continue;
                     }
+
+                    if (!content.hasItemMeta() || !Objects.requireNonNull(content.getItemMeta()).hasDisplayName()) {
+                        continue;
+                    }
+
+                    if (!Objects.requireNonNull(content.getItemMeta()).getDisplayName().equals(item.getName())) {
+                        continue;
+                    }
+
+                    amountInInv += content.getAmount();
+
+                    if (item.getAmount() < amountInInv) {
+                        continue;
+                    }
+
+                    break;
+                }
+
+                if (amountInInv < item.getAmount()) {
+                    return false;
+                }
+            }
+
+            if (!item.getLore().isEmpty()) {
+                int amountInInv = 0;
+
+                for (ItemStack content : player.getInventory().getContents()) {
+                    if (content == null || content.getType().equals(Material.AIR) || !content.getType().equals(item.getMaterial())) {
+                        continue;
+                    }
+
+                    if (!content.hasItemMeta() || !Objects.requireNonNull(content.getItemMeta()).hasLore()) {
+                        continue;
+                    }
+
+                    if (!Objects.equals(content.getItemMeta().getLore(), item.getLore())) {
+                        continue;
+                    }
+
+                    if (item.getName() != null) {
+                        if (!content.getItemMeta().hasDisplayName()) {
+                            continue;
+                        }
+
+                        if (!content.getItemMeta().getDisplayName().equals(item.getName())) {
+                            continue;
+                        }
+                    }
+
+                    amountInInv += content.getAmount();
+
+                    if (amountInInv < item.getAmount()) {
+                        continue;
+                    }
+
+                    break;
+                }
+
+                if (amountInInv < item.getAmount()) {
+                    return false;
                 }
             }
 
