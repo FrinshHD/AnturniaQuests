@@ -41,7 +41,7 @@ public class Translator {
 
     public static String buildRaw(String messageKey, TranslatorPlaceholder... translatorPlaceholders) {
         if (!messages.containsKey(messageKey)) {
-            throw new RuntimeException(messageKey + " is not a valid message key!");
+            return messageKey;
         }
 
         String message = messages.get(messageKey).toString();

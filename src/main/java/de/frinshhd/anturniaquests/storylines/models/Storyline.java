@@ -20,6 +20,9 @@ public class Storyline {
     private int timeToComplete = -1;
 
     @JsonProperty
+    private int maxCurrentPlayers = -1;
+
+    @JsonProperty
     private ArrayList<NPC> npcs = new ArrayList<>();
 
     public ArrayList<NPC> getNpcs() {
@@ -44,6 +47,14 @@ public class Storyline {
         }
 
         return null;
+    }
+
+    public int getMaxCurrentPlayers() {
+        if (this.maxCurrentPlayers <= -1) {
+            return -1;
+        }
+
+        return this.maxCurrentPlayers;
     }
 
     public long getCooldown() {

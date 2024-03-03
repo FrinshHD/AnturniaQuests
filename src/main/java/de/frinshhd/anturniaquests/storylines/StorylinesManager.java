@@ -31,6 +31,9 @@ public class StorylinesManager {
     public LinkedHashMap<String, Storyline> storylines;
     public PlayerHashMap<UUID, JSONObject> playerStats = new PlayerHashMap<>();
 
+    //key: storylineID, value: list of current players completing this storyline
+    public HashMap<String, PlayerArrayList<UUID>> storylineCurrentPlayers = new HashMap<>();
+
     public BukkitTask runnable = null;
 
 
@@ -74,6 +77,45 @@ public class StorylinesManager {
         }
 
         return null;
+    }
+
+    public ArrayList<Player> getStorylineCurrentPlayers(String storylineID) {
+        if (!this.storylineCurrentPlayers.containsKey(storylineID)) {
+            return new ArrayList<>();
+        }
+
+        ArrayList<Player> players = new ArrayList<>();
+
+        this.storylineCurrentPlayers.get(storylineID).forEach(uuid -> {
+            Player player = Main.getInstance().getServer().getPlayer(uuid);
+
+            if (player == null || !player.isOnline()) {
+                return;
+            }
+
+            players.add(player);
+        });
+
+        return players;
+    }
+    public void addPlayerCurrentStoryline(String storylineID, Player player) {
+        PlayerArrayList<UUID> players = new PlayerArrayList<>();
+
+        if (this.storylineCurrentPlayers.containsKey(storylineID)) {
+            players = this.storylineCurrentPlayers.get(storylineID);
+        }
+
+        players.add(player.getUniqueId());
+    }
+
+    public void removePlayerCurrentStoryline(String storylineID, Player player) {
+        PlayerArrayList<UUID> players = new PlayerArrayList<>();
+
+        if (this.storylineCurrentPlayers.containsKey(storylineID)) {
+            players = this.storylineCurrentPlayers.get(storylineID);
+        }
+
+        players.remove(player.getUniqueId());
     }
 
     public void npcClick(Player player, String npcID) {
@@ -136,6 +178,18 @@ public class StorylinesManager {
             }
         }
 
+        //check if player needs to be added to the list of current players completing this quest
+        if (storyline.getMaxCurrentPlayers() > -1) {
+            //already too much players completing
+            if (getStorylineCurrentPlayers(storylineID).size() >= storyline.getMaxCurrentPlayers()) {
+                ChatManager.sendMessage(player, Translator.build("storyline.tooManyCurrentPlayers"));
+                return;
+            }
+
+            //add player to current players
+            addPlayerCurrentStoryline(storylineID, player);
+        }
+
         int playerCurrentActionID = playerStorylineStats.getInt("currentAction");
         ArrayList<NPCAction> actions = npc.getActions();
 
@@ -162,12 +216,16 @@ public class StorylinesManager {
 
     private void checkPlayerCompletedStoryline(Player player, String storylineID, Storyline storyline, int playerCompletions, int playerStageID) {
         if (storyline.getNpcs().size() - 1 < playerStageID) {
+            //if player already completed
             putPlayerCurrentAction(player, storylineID, 0);
             putPlayerCurrentStage(player, storylineID, 0);
             putPlayerCompletions(player, storylineID, playerCompletions + 1);
             putPlayerLastCompletion(player, storylineID, System.currentTimeMillis());
             putPlayerStartTime(player, storylineID, -1);
+
+            removePlayerCurrentStoryline(storylineID, player);
         } else {
+            //else set player to next stageID
             putPlayerCurrentAction(player, storylineID, 0);
             putPlayerCurrentStage(player, storylineID, playerStageID);
         }
