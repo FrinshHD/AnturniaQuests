@@ -8,18 +8,19 @@ storyline1:
       friendlyName: Bob
       actions:
         - message: "hi1"
-          clickSound: ENTITY_EXPERIENCE_ORB_PICKUP
-          volume: 50
-          pitch: 1
+          clickSound:
+            sound: ENTITY_EXPERIENCE_ORB_PICKUP
+            volume: 50
+            pitch: 1
         - message: "hi2"
         - command: "give %player% emerald 1"
           delay: 20 #in ticks (one second is equal to 20 ticks)
+        - quest: bringPotato
     - npcID: bob
       actions:
         - message: "hi3"
         - message: "hi4"
     - npcID: 0
-      quest: bringPotato
       actions:
         - message: "h5"
           command: "give %player% diamond 2"

@@ -14,9 +14,6 @@ public class NPC {
     private String friendlyName = null;
 
     @JsonProperty
-    private String quest = null;
-
-    @JsonProperty
     private int timeToComplete = -1;
 
     @JsonProperty
@@ -24,14 +21,6 @@ public class NPC {
 
     public String getNpcID() {
         return this.npcID;
-    }
-
-    public Quest getQuest() {
-        if (Main.getQuestsManager().getQuest(this.quest) == null) {
-            return null;
-        }
-
-        return Main.getQuestsManager().getQuest(this.quest);
     }
 
     public ArrayList<NPCAction> getActions() {

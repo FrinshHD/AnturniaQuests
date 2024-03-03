@@ -8,6 +8,8 @@ import de.frinshhd.anturniaquests.utils.ChatManager;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.sql.SQLException;
+
 public class NPCAction {
 
     @JsonProperty
@@ -45,17 +47,23 @@ public class NPCAction {
         return Main.getQuestsManager().getQuest(this.quest);
     }
 
-    public void execute(Player player) {
+    public boolean execute(Player player) {
         if (getQuest() != null) {
+            boolean completedQuest;
+            try {
+                completedQuest = getQuest().playerClick(player, true);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
 
-            return;
+            return completedQuest;
         }
 
         if (delay == null || delay <= 0L) {
             sendMessage(player);
             executeCommand(player);
             getSound().playSound(player);
-            return;
+            return true;
         }
 
         new BukkitRunnable() {
@@ -72,6 +80,8 @@ public class NPCAction {
                 cancel();
             }
         }.runTaskLater(Main.getInstance(), delay);
+
+        return true;
     }
 
     public void sendMessage(Player player) {

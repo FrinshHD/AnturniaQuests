@@ -139,34 +139,18 @@ public class StorylinesManager {
         int playerCurrentActionID = playerStorylineStats.getInt("currentAction");
         ArrayList<NPCAction> actions = npc.getActions();
 
-        if (actions.size() - 1 < playerCurrentActionID && npc.getQuest() != null) {
-            Quest quest = npc.getQuest();
-
-            boolean completedQuest;
-            try {
-                completedQuest = quest.playerClick(player, true);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-
-            if (!completedQuest) {
-                return;
-            }
-
-            //check if player has Completed the storyline
-            playerStageID += 1;
-            checkPlayerCompletedStoryline(player, storylineID, storyline, playerCompletions, playerStageID);
-            return;
-        }
-
         NPCAction playerCurrentAction = actions.get(playerCurrentActionID);
 
-        playerCurrentAction.execute(player);
+        boolean executed = playerCurrentAction.execute(player);
+
+        if (!executed) {
+            return;
+        }
 
         playerCurrentActionID += 1;
 
         //check if player has completed this npc
-        if (actions.size() - 1 < playerCurrentActionID && npc.getQuest() == null) {
+        if (actions.size() - 1 < playerCurrentActionID) {
             playerStageID += 1;
 
             //check if player has Completed the storyline
