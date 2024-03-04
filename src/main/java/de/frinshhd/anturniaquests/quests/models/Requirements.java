@@ -30,25 +30,33 @@ public class Requirements {
 
     public boolean checkItems(Player player) {
         for (Item item : getItems()) {
+            System.out.println("hi " + item.getName());
+
             if (item.getName() != null) {
                 int amountInInv = 0;
 
                 for (ItemStack content : player.getInventory().getContents()) {
                     if (content == null || content.getType().equals(Material.AIR) || !content.getType().equals(item.getMaterial())) {
+                        System.out.println(1);
                         continue;
                     }
 
                     if (!content.hasItemMeta() || !Objects.requireNonNull(content.getItemMeta()).hasDisplayName()) {
+                        System.out.println(2);
                         continue;
                     }
 
+                    System.out.println(content.getItemMeta().getDisplayName());
+
                     if (!Objects.requireNonNull(content.getItemMeta()).getDisplayName().equals(item.getName())) {
+                        System.out.println(3);
                         continue;
                     }
 
                     amountInInv += content.getAmount();
 
-                    if (item.getAmount() < amountInInv) {
+                    if (amountInInv < item.getAmount()) {
+                        System.out.println(4);
                         continue;
                     }
 
@@ -56,10 +64,12 @@ public class Requirements {
                 }
 
                 if (amountInInv < item.getAmount()) {
+                    System.out.println(5);
                     return false;
                 }
 
                 if (item.getLore().isEmpty()) {
+                    System.out.println(6);
                     continue;
                 }
             }
