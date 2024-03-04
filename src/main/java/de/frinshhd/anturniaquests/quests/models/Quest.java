@@ -171,20 +171,12 @@ public class Quest {
 
             //items
             for (Item items : getRequirements().getItems()) {
-                int amount = 0;
-                for (ItemStack content : player.getInventory().getContents()) {
-                    if (content == null) {
-                        continue;
-                    }
+                int amountInInv = items.getAmountInInventory(player);
 
-                    if (content.isSimilar(items.getItem())) {
-                        amount += content.getAmount();
-                    }
-                }
-                if (amount >= items.getAmount()) {
-                    lore.add(Translator.build("lore.requirements.items.inInventory", new TranslatorPlaceholder("amountInInv", String.valueOf(amount)), new TranslatorPlaceholder("amount", String.valueOf(items.getAmount())), new TranslatorPlaceholder("itemName", items.getName())));
+                if (amountInInv >= items.getAmount()) {
+                    lore.add(Translator.build("lore.requirements.items.inInventory", new TranslatorPlaceholder("amountInInv", String.valueOf(amountInInv)), new TranslatorPlaceholder("amount", String.valueOf(items.getAmount())), new TranslatorPlaceholder("itemName", items.getDisplayName())));
                 } else {
-                    lore.add(Translator.build("lore.requirements.items.notInInventory", new TranslatorPlaceholder("amountInInv", String.valueOf(amount)), new TranslatorPlaceholder("amount", String.valueOf(items.getAmount())), new TranslatorPlaceholder("itemName", items.getName())));
+                    lore.add(Translator.build("lore.requirements.items.notInInventory", new TranslatorPlaceholder("amountInInv", String.valueOf(amountInInv)), new TranslatorPlaceholder("amount", String.valueOf(items.getAmount())), new TranslatorPlaceholder("itemName", items.getDisplayName())));
                 }
             }
 
@@ -216,7 +208,7 @@ public class Quest {
 
             //items
             for (Item rewardItem : getRewards().getItems()) {
-                lore.add(Translator.build("lore.rewards.item", new TranslatorPlaceholder("amount", String.valueOf(rewardItem.getAmount())), new TranslatorPlaceholder("itemName", rewardItem.getName())));
+                lore.add(Translator.build("lore.rewards.item", new TranslatorPlaceholder("amount", String.valueOf(rewardItem.getAmount())), new TranslatorPlaceholder("itemName", rewardItem.getDisplayName())));
             }
 
             //commands
@@ -322,19 +314,10 @@ public class Quest {
 
                 //items
                 for (Item items : getRequirements().getItems()) {
-                    int amount = 0;
-                    for (ItemStack content : player.getInventory().getContents()) {
-                        if (content == null) {
-                            continue;
-                        }
+                    int amountInInv = items.getAmountInInventory(player);
 
-                        if (content.isSimilar(items.getItem())) {
-                            amount += content.getAmount();
-                        }
-                    }
-
-                    if (amount < items.getAmount()) {
-                        ChatManager.sendMessage(player, Translator.build("quest.missingRequirements.item", new TranslatorPlaceholder("amountInInv", String.valueOf(amount)), new TranslatorPlaceholder("amount", String.valueOf(items.getAmount())), new TranslatorPlaceholder("itemName", items.getName())));
+                    if (amountInInv < items.getAmount()) {
+                        ChatManager.sendMessage(player, Translator.build("quest.missingRequirements.item", new TranslatorPlaceholder("amountInInv", String.valueOf(amountInInv)), new TranslatorPlaceholder("amount", String.valueOf(items.getAmount())), new TranslatorPlaceholder("itemName", items.getDisplayName())));
                     }
                 }
 
@@ -403,7 +386,7 @@ public class Quest {
             QuestsManager.addItem(player, rewardItem.getItem(), rewardItem.getAmount());
 
             if (message) {
-                ChatManager.sendMessage(player, Translator.build("quest.addItem", new TranslatorPlaceholder("amount", String.valueOf(rewardItem.getAmount())), new TranslatorPlaceholder("itemName", rewardItem.getName())));
+                ChatManager.sendMessage(player, Translator.build("quest.addItem", new TranslatorPlaceholder("amount", String.valueOf(rewardItem.getAmount())), new TranslatorPlaceholder("itemName", rewardItem.getDisplayName())));
             }
         }
 

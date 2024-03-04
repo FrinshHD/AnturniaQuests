@@ -30,93 +30,7 @@ public class Requirements {
 
     public boolean checkItems(Player player) {
         for (Item item : getItems()) {
-            System.out.println("hi " + item.getName());
-
-            if (item.getName() != null) {
-                int amountInInv = 0;
-
-                for (ItemStack content : player.getInventory().getContents()) {
-                    if (content == null || content.getType().equals(Material.AIR) || !content.getType().equals(item.getMaterial())) {
-                        System.out.println(1);
-                        continue;
-                    }
-
-                    if (!content.hasItemMeta() || !Objects.requireNonNull(content.getItemMeta()).hasDisplayName()) {
-                        System.out.println(2);
-                        continue;
-                    }
-
-                    System.out.println(content.getItemMeta().getDisplayName());
-
-                    if (!Objects.requireNonNull(content.getItemMeta()).getDisplayName().equals(item.getName())) {
-                        System.out.println(3);
-                        continue;
-                    }
-
-                    amountInInv += content.getAmount();
-
-                    if (amountInInv < item.getAmount()) {
-                        System.out.println(4);
-                        continue;
-                    }
-
-                    break;
-                }
-
-                if (amountInInv < item.getAmount()) {
-                    System.out.println(5);
-                    return false;
-                }
-
-                if (item.getLore().isEmpty()) {
-                    System.out.println(6);
-                    continue;
-                }
-            }
-
-            if (!item.getLore().isEmpty()) {
-                int amountInInv = 0;
-
-                for (ItemStack content : player.getInventory().getContents()) {
-                    if (content == null || content.getType().equals(Material.AIR) || !content.getType().equals(item.getMaterial())) {
-                        continue;
-                    }
-
-                    if (!content.hasItemMeta() || !Objects.requireNonNull(content.getItemMeta()).hasLore()) {
-                        continue;
-                    }
-
-                    if (!Objects.equals(content.getItemMeta().getLore(), item.getLore())) {
-                        continue;
-                    }
-
-                    if (item.getName() != null) {
-                        if (!content.getItemMeta().hasDisplayName()) {
-                            continue;
-                        }
-
-                        if (!content.getItemMeta().getDisplayName().equals(item.getName())) {
-                            continue;
-                        }
-                    }
-
-                    amountInInv += content.getAmount();
-
-                    if (amountInInv < item.getAmount()) {
-                        continue;
-                    }
-
-                    break;
-                }
-
-                if (amountInInv < item.getAmount()) {
-                    return false;
-                }
-
-                continue;
-            }
-
-            if (!player.getInventory().containsAtLeast(item.getItem(), item.getAmount())) {
+            if (item.getAmountInInventory(player) < item.getAmount()) {
                 return false;
             }
         }
@@ -148,11 +62,7 @@ public class Requirements {
 
     public void removeItems(Player player) {
         for (Item item : getItems()) {
-            int index = 0;
-            while (item.getAmount() > index) {
-                player.getInventory().removeItem(item.getItem());
-                index++;
-            }
+            item.removeItemFromInventory(player);
         }
     }
 }
