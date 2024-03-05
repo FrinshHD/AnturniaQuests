@@ -185,7 +185,7 @@ public class StorylinesManager {
         if (storyline.getMaxCurrentPlayers() > -1) {
             //already too much players completing
             if (getStorylineCurrentPlayers(storylineID).size() >= storyline.getMaxCurrentPlayers()) {
-                ChatManager.sendMessage(player, Translator.build("storyline.tooManyCurrentPlayers"));
+                ChatManager.sendMessage(player, Translator.build("storyline.tooManyCurrentPlayers", new TranslatorPlaceholder("storylineName", storyline.getName())));
                 return;
             }
 
