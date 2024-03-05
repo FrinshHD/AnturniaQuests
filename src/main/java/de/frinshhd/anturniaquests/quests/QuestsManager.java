@@ -145,12 +145,50 @@ public class QuestsManager {
     }
 
     public int getPlayerQuestCompletions(Player player, String questID) {
-        Quests playerQuest = MysqlManager.getQuestPlayer(player.getUniqueId());
+        return getPlayerQuestCompletions(player.getUniqueId(), questID);
+    }
+
+    public int getPlayerQuestCompletions(UUID playerUUID, String questID) {
+        Quests playerQuest = MysqlManager.getQuestPlayer(playerUUID);
+
+        if (playerQuest == null) {
+            return 0;
+        }
 
         if (!playerQuest.getFinishedQuests().containsKey(questID)) {
             return 0;
         }
 
         return playerQuest.getFinishedQuests().get(questID);
+    }
+
+    public int getQuestsCompletedCounter(UUID playerUUID) {
+        Quests playerQuest = MysqlManager.getQuestPlayer(playerUUID);
+
+        if (playerQuest == null) {
+            return 0;
+        }
+
+        int counter = 0;
+        for (Integer value : playerQuest.getFinishedQuests().values()) {
+            counter += value;
+        }
+
+        return counter;
+    }
+
+    public int getKilledEntitesCounter(UUID playerUUID) {
+        KilledEntities killedEntities = MysqlManager.getKilledEntitiesPlayer(playerUUID);
+
+        if (killedEntities == null) {
+            return 0;
+        }
+
+        int counter = 0;
+        for (Integer value : killedEntities.getKilledEntities().values()) {
+            counter += value;
+        }
+
+        return counter;
     }
 }

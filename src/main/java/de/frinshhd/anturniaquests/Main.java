@@ -7,6 +7,7 @@ import de.frinshhd.anturniaquests.config.ConfigManager;
 import de.frinshhd.anturniaquests.menusystem.PlayerMenuUtility;
 import de.frinshhd.anturniaquests.quests.QuestsManager;
 import de.frinshhd.anturniaquests.storylines.StorylinesManager;
+import de.frinshhd.anturniaquests.utils.DynamicPlaceholderExpansion;
 import de.frinshhd.anturniaquests.utils.SpigotMCCommunication;
 import de.frinshhd.anturniaquests.utils.Translator;
 import net.milkbowl.vault.economy.Economy;
@@ -162,6 +163,10 @@ public final class Main extends JavaPlugin {
 
         if (isStorylinesEnabled()) {
             storylinesManager = new StorylinesManager();
+        }
+
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            DynamicPlaceholderExpansion.load(classNamesIterator, canonicalName);
         }
 
         DynamicListeners.load(classNamesIterator, canonicalName);
