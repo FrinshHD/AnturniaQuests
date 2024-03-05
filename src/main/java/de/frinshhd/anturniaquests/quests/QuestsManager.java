@@ -58,7 +58,9 @@ public class QuestsManager {
         try {
             this.quests = mapper.readValue(new FileInputStream("plugins/AnturniaQuests/quests.yml"), mapTypeQuests);
         } catch (IOException e) {
-            Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading quests.yml. AnturniaQuests will be disabled!");
+            Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading config.yml. AnturniaQuests will be disabled!\nError " + e.getMessage());
+            Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
+            return;
         }
     }
 

@@ -18,7 +18,11 @@ public class ConfigManager {
     Config config;
 
     public ConfigManager() {
-        load();
+        boolean loaded = load();
+
+        if (!loaded) {
+            return;
+        }
 
         if (getConfig().debug) {
             Main.getInstance().getLogger().setLevel(Level.ALL);
@@ -44,14 +48,18 @@ public class ConfigManager {
         }
     }
 
-    public void load() {
+    public boolean load() {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
         try {
             this.config = mapper.readValue(new FileInputStream("plugins/AnturniaQuests/config.yml"), Config.class);
         } catch (IOException e) {
-            Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading config.yml. AnturniaQuests will be disabled!");
+            Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading config.yml. AnturniaQuests will be disabled!\nError " + e.getMessage());
+            Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
+            return false;
         }
+
+        return true;
     }
 
 

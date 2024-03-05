@@ -89,7 +89,9 @@ public final class Main extends JavaPlugin {
         try {
             Translator.register("plugins/AnturniaQuests/messages.properties");
         } catch (IOException e) {
-            Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading messages.properties. AnturniaQuests will be disabled!");
+            Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading config.yml. AnturniaQuests will be disabled!\nError " + e.getMessage());
+            Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
+            return;
         }
     }
 
@@ -111,8 +113,9 @@ public final class Main extends JavaPlugin {
             try {
                 Files.copy(link, file.getAbsoluteFile().toPath());
             } catch (IOException e) {
-                Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading " + fileRaw + ". AnturniaQuests will be disabled!");
-                //throw new RuntimeException(e);
+                Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading " + fileRaw + ". AnturniaQuests will be disabled!\nError " + e.getMessage());
+                Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
+                return;
             }
         }
 
@@ -130,7 +133,9 @@ public final class Main extends JavaPlugin {
         try {
             Translator.register("plugins/AnturniaQuests/messages.properties");
         } catch (IOException e) {
-            Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading messages.properties. AnturniaQuests will be disabled!");
+            Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading messages.properties. AnturniaQuests will be disabled!\nError " + e.getMessage());
+            Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
+            return;
         }
 
         // Find plugin class names for dynamic loading

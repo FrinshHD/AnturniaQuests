@@ -22,7 +22,9 @@ public class Translator {
         try (InputStreamReader isr = new InputStreamReader(Objects.requireNonNull(Main.class.getClassLoader().getResourceAsStream("messages.properties")), StandardCharsets.UTF_8)) {
             messages.load(isr);
         } catch (IOException e) {
-            Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading messages.properties. AnturniaQuests will be disabled!");
+            Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading messages.properties. AnturniaQuests will be disabled!\nError " + e.getMessage());
+            Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
+            return;
         }
 
         //load probably modified file
@@ -30,7 +32,9 @@ public class Translator {
              InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8)) {
             messages.load(isr);
         } catch (IOException e) {
-            Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading messages.properties. AnturniaQuests will be disabled!");
+            Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading messages.properties. AnturniaQuests will be disabled!\nError " + e.getMessage());
+            Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
+            return;
         }
 
         messages.store(new FileOutputStream(path), null);
