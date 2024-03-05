@@ -6,6 +6,7 @@ import com.j256.ormlite.logger.Logger;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.config.models.Config;
 import de.frinshhd.anturniaquests.mysql.MysqlManager;
+import org.bukkit.ChatColor;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
@@ -49,7 +50,7 @@ public class ConfigManager {
         try {
             this.config = mapper.readValue(new FileInputStream("plugins/AnturniaQuests/config.yml"), Config.class);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading config.yml. AnturniaQuests will be disabled!");
         }
     }
 

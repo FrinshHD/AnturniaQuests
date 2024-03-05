@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.categories.models.Category;
+import org.bukkit.ChatColor;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -35,7 +37,7 @@ public class CategoriesManager {
         try {
             this.categories = mapper.readValue(new FileInputStream("plugins/AnturniaQuests/categories.yml"), mapTypeCategories);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading categories.yml. AnturniaQuests will be disabled!");
         }
     }
 

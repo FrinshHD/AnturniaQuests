@@ -16,6 +16,7 @@ import de.frinshhd.anturniaquests.storylines.models.NPC;
 import de.frinshhd.anturniaquests.storylines.models.NPCAction;
 import de.frinshhd.anturniaquests.storylines.models.Storyline;
 import de.frinshhd.anturniaquests.utils.*;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -60,7 +61,7 @@ public class StorylinesManager {
         try {
             this.storylines = mapper.readValue(new FileInputStream("plugins/AnturniaQuests/storylines.yml"), mapTypeQuests);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading storylines.yml. AnturniaQuests will be disabled!");
         }
     }
 

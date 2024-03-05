@@ -1,6 +1,7 @@
 package de.frinshhd.anturniaquests.utils;
 
 import de.frinshhd.anturniaquests.Main;
+import org.bukkit.ChatColor;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -21,7 +22,7 @@ public class Translator {
         try (InputStreamReader isr = new InputStreamReader(Objects.requireNonNull(Main.class.getClassLoader().getResourceAsStream("messages.properties")), StandardCharsets.UTF_8)) {
             messages.load(isr);
         } catch (IOException e) {
-            e.printStackTrace();
+            Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading messages.properties. AnturniaQuests will be disabled!");
         }
 
         //load probably modified file
@@ -29,7 +30,7 @@ public class Translator {
              InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8)) {
             messages.load(isr);
         } catch (IOException e) {
-            e.printStackTrace();
+            Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading messages.properties. AnturniaQuests will be disabled!");
         }
 
         messages.store(new FileOutputStream(path), null);

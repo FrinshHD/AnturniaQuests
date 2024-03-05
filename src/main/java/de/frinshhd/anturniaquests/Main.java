@@ -11,6 +11,7 @@ import de.frinshhd.anturniaquests.utils.SpigotMCCommunication;
 import de.frinshhd.anturniaquests.utils.Translator;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -87,7 +88,7 @@ public final class Main extends JavaPlugin {
         try {
             Translator.register("plugins/AnturniaQuests/messages.properties");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading messages.properties. AnturniaQuests will be disabled!");
         }
     }
 
@@ -109,7 +110,8 @@ public final class Main extends JavaPlugin {
             try {
                 Files.copy(link, file.getAbsoluteFile().toPath());
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading " + fileRaw + ". AnturniaQuests will be disabled!");
+                //throw new RuntimeException(e);
             }
         }
 
@@ -127,7 +129,7 @@ public final class Main extends JavaPlugin {
         try {
             Translator.register("plugins/AnturniaQuests/messages.properties");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading messages.properties. AnturniaQuests will be disabled!");
         }
 
         // Find plugin class names for dynamic loading

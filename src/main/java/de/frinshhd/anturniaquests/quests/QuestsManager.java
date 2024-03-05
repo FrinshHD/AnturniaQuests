@@ -11,6 +11,7 @@ import de.frinshhd.anturniaquests.mysql.entities.KilledEntities;
 import de.frinshhd.anturniaquests.mysql.entities.Quests;
 import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.utils.PlayerHashMap;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -57,7 +58,7 @@ public class QuestsManager {
         try {
             this.quests = mapper.readValue(new FileInputStream("plugins/AnturniaQuests/quests.yml"), mapTypeQuests);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading quests.yml. AnturniaQuests will be disabled!");
         }
     }
 
