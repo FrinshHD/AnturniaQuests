@@ -1,46 +1,115 @@
-package de.frinshhd.anturniaanturniaquests.commands;
+package de.frinshhd.anturniaquests.commands;
 
+import com.j256.ormlite.dao.Dao;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.QuestMenu;
+import de.frinshhd.anturniaquests.mysql.MysqlManager;
+import de.frinshhd.anturniaquests.mysql.entities.Quests;
 import de.frinshhd.anturniaquests.utils.ChatManager;
 import de.frinshhd.anturniaquests.utils.Translator;
 import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class QuestCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            if (args.length >= 1) {
-                if (args[0].equals("reload")) {
-                    if (!sender.hasPermission("anturniaquests.command.admin.reload")) {
-                        ChatManager.sendMessage(sender, Translator.build("noPermission"));
-                        return false;
-                    }
 
-                    Main.reload();
-                    ChatManager.sendMessage(sender, Translator.build("quests.reload"));
+        if (args.length >= 1) {
+            if (args[0].equals("help")) {
+                if (sender.hasPermission("anturniaquests.command.help")) {
+                    sendHelpMessage(sender);
                     return true;
-                }
-
-                if (args[0].equals("version")) {
-                    if (sender.hasPermission("anturniaquests.command.version")) {
-                        ChatManager.sendMessage(sender, Translator.build("quests.currentVersion", new TranslatorPlaceholder("version", Main.getInstance().getDescription().getVersion())));
-                        return true;
-                    }
+                } else {
+                    ChatManager.sendMessage(sender, Translator.build("noPermission"));
+                    return false;
                 }
             }
-            return false;
+
+            if (args[0].equals("reload")) {
+                if (!sender.hasPermission("anturniaquests.command.admin.reload")) {
+                    ChatManager.sendMessage(sender, Translator.build("noPermission"));
+                    return false;
+                }
+
+                Main.reload();
+                ChatManager.sendMessage(sender, Translator.build("quests.reload"));
+                return true;
+            }
+
+            if (args[0].equals("version")) {
+                if (sender.hasPermission("anturniaquests.command.version")) {
+                    ChatManager.sendMessage(sender, Translator.build("quests.currentVersion", new TranslatorPlaceholder("version", Main.getInstance().getDescription().getVersion())));
+                    return true;
+                }
+            }
+
+            if (args.length >= 2) {
+                if (args[0].equals("reset")) {
+                    if (sender.hasPermission("anturniaquests.command.admin.reset")) {
+                        Player target = Bukkit.getPlayer(args[1]);
+                        String questID = args[2];
+
+                        if (questID == null) {
+                            sendHelpMessage(sender);
+                            return false;
+                        }
+
+                        if (target == null) {
+                            sendHelpMessage(sender);
+                            return false;
+                        }
+
+                        UUID targetUUID = target.getUniqueId();
+
+                        Dao<Quests, Long> questsDao;
+                        try {
+                            questsDao = MysqlManager.getQuestDao();
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                        Quests quest = null;
+                        try {
+                            quest = questsDao.queryForEq("uuid", targetUUID).stream().toList().get(0);
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+
+
+                        quest.setQuest(questID, 0);
+
+                        try {
+                            questsDao.update(quest);
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                        ChatManager.sendMessage(sender, Translator.build("quest.command.reset",
+                                new TranslatorPlaceholder("playerName", target.getName()),
+                                new TranslatorPlaceholder("questName", Main.getQuestsManager().getQuest(questID).getFriendlyName())));
+
+                        return true;
+                    }
+
+                    ChatManager.sendMessage(sender, Translator.build("noPermission"));
+                    return false;
+                }
+            }
         }
 
-        Player player = (Player) sender;
+        if (!(sender instanceof Player player)) {
+            sendHelpMessage(sender);
+            return false;
+        }
 
         if (args.length == 0) {
             if (player.hasPermission("anturniaquests.command.open")) {
@@ -51,66 +120,47 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if (args.length >= 1) {
-            if (args[0].equals("help")) {
-                if (player.hasPermission("anturniaquests.command.help")) {
-                    sendHelpMessage(player);
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-
-            if (args[0].equals("reload")) {
-                if (!player.hasPermission("anturniaquests.command.admin.reload")) {
-                    ChatManager.sendMessage(player, Translator.build("noPermission"));
-                    return false;
-                }
-
-                Main.reload();
-                ChatManager.sendMessage(player, Translator.build("quests.reload"));
-                return true;
-            }
-
-            if (args[0].equals("version")) {
-                if (player.hasPermission("anturniaquests.command.version")) {
-                    ChatManager.sendMessage(player, Translator.build("quests.currentVersion", new TranslatorPlaceholder("version", Main.getInstance().getDescription().getVersion())));
-                    return true;
-                }
-            }
-        }
-
+        sendHelpMessage(player);
         return false;
     }
 
-    public void sendHelpMessage(Player player) {
+    public void sendHelpMessage(CommandSender sender) {
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("§2Quests Help\n");
         stringBuilder.append("§7- §2/quests §7- Open the quests menu\n");
-        stringBuilder.append("§7- §2/quests help §7- Take a look at this message\n");
 
-        if (player.hasPermission("anturniaquests.command.admin.reload")) {
+        if (sender.hasPermission("anturniaquests.command.version")) {
+            stringBuilder.append("§7- §2/quests version §7- Get the current installed version of AnturniaQuests\n");
+        }
+
+        if (sender.hasPermission("anturniaquests.command.admin.reload")) {
             stringBuilder.append("§7- §2/quests reload §7- Reload the plugin's configurations\n");
+        }
+
+        if (sender.hasPermission("anturniaquests.command.admin.reset")) {
+            stringBuilder.append("§7- §2/quests reset <playerName> <questID> §7- Resets the completion count of the player for a quest\n");
+        }
+
+        if (sender.hasPermission("anturniaquests.command.help")) {
+            stringBuilder.append("§7- §2/quests help §7- Take a look at this message\n");
         }
 
         stringBuilder.append("§7If you need more help join our discord at §2https://logic.frinshy.me/discord");
 
-        ChatManager.sendMessage(player, stringBuilder.toString());
+        ChatManager.sendMessage(sender, stringBuilder.toString());
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        if (!(sender instanceof Player)) {
-            return null;
-        }
-
         List<String> completions = new ArrayList<>();
 
         // Possible completions
         List<String> commands = new ArrayList<>(List.of(new String[]{}));
 
-        commands.add("version");
+        if (sender.hasPermission("anturniaquests.command.version")) {
+            commands.add("version");
+        }
 
         if (sender.hasPermission("anturniaquests.command.help")) {
             commands.add("help");
@@ -118,6 +168,10 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
 
         if (sender.hasPermission("anturniaquests.command.admin.reload")) {
             commands.add("reload");
+        }
+
+        if (sender.hasPermission("anturniaquests.command.admin.reset")) {
+            commands.add("reset");
         }
 
         // Filter

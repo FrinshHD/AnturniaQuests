@@ -19,5 +19,7 @@ permissions:
     default: true
   anturniaquests.command.admin.reload:
     default: op
+  anturniaquests.command.admin.reset:
+    default: op
   anturniaquests.admin.updateNotify:
     default: op

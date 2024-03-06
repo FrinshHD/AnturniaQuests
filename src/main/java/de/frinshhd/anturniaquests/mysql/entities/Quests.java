@@ -54,6 +54,24 @@ public class Quests {
         this.quests = hashMapToString(quests);
     }
 
+    public void setQuest(String questID, int completions) {
+        HashMap<String, Integer> quests;
+        if (this.quests == null || this.quests.isEmpty() || this.quests.equals("{}")) {
+            quests = new HashMap<>();
+        } else {
+            quests = (HashMap<String, Integer>) stringToHashMap(this.quests);
+        }
+
+        if (quests.containsKey(questID)) {
+            quests.put(questID, completions);
+            this.quests = hashMapToString(quests);
+            return;
+        }
+
+        quests.put(questID, completions);
+        this.quests = hashMapToString(quests);
+    }
+
     public void putCooldown(String questID, long lastCompletion) {
         HashMap<String, Long> cooldown;
         if (this.cooldowns == null || this.cooldowns.isEmpty() || this.cooldowns.equals("{}")) {
