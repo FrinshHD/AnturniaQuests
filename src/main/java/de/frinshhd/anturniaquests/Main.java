@@ -2,7 +2,7 @@ package de.frinshhd.anturniaquests;
 
 import com.j256.ormlite.logger.Logger;
 import de.frinshhd.anturniaquests.categories.CategoriesManager;
-import de.frinshhd.anturniaanturniaquests.commands.QuestCommand;
+import de.frinshhd.anturniaquests.commands.QuestCommand;
 import de.frinshhd.anturniaquests.config.ConfigManager;
 import de.frinshhd.anturniaquests.menusystem.PlayerMenuUtility;
 import de.frinshhd.anturniaquests.quests.QuestsManager;
