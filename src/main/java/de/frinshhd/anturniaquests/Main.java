@@ -1,12 +1,12 @@
 package de.frinshhd.anturniaquests;
 
-import com.j256.ormlite.logger.Logger;
 import de.frinshhd.anturniaquests.categories.CategoriesManager;
 import de.frinshhd.anturniaquests.commands.QuestCommand;
 import de.frinshhd.anturniaquests.config.ConfigManager;
 import de.frinshhd.anturniaquests.menusystem.PlayerMenuUtility;
 import de.frinshhd.anturniaquests.quests.QuestsManager;
 import de.frinshhd.anturniaquests.storylines.StorylinesManager;
+import de.frinshhd.anturniaquests.utils.DynamicListeners;
 import de.frinshhd.anturniaquests.utils.DynamicPlaceholderExpansion;
 import de.frinshhd.anturniaquests.utils.SpigotMCCommunication;
 import de.frinshhd.anturniaquests.utils.Translator;
@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.*;
-import java.util.logging.Level;
 
 public final class Main extends JavaPlugin {
 
@@ -145,8 +144,6 @@ public final class Main extends JavaPlugin {
         Reflections reflections = new Reflections(canonicalName, new SubTypesScanner(false));
         Set<String> classNames = reflections.getAll(new SubTypesScanner(false));
 
-        Iterator<String> classNamesIterator = classNames.iterator();
-
         configManager = new ConfigManager();
 
         questsManager = new QuestsManager();
@@ -171,10 +168,10 @@ public final class Main extends JavaPlugin {
         }
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            DynamicPlaceholderExpansion.load(classNamesIterator, canonicalName);
+            DynamicPlaceholderExpansion.load(classNames, canonicalName);
         }
 
-        DynamicListeners.load(classNamesIterator, canonicalName);
+        DynamicListeners.load(classNames, canonicalName);
 
         this.registerCommands();
 

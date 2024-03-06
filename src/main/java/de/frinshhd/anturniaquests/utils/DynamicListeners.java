@@ -1,16 +1,19 @@
-package de.frinshhd.anturniaquests;
+package de.frinshhd.anturniaquests.utils;
 
+import de.frinshhd.anturniaquests.Main;
 import org.bukkit.event.Listener;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
+import java.util.Set;
 
 import static org.bukkit.Bukkit.getServer;
 
 public class DynamicListeners {
 
-    public static void load(Iterator<String> classNamesIterator, String canonicalName) {
+    public static void load(Set<String> classNames, String canonicalName) {
+        Iterator<String> classNamesIterator = classNames.iterator();
         while (classNamesIterator.hasNext()) {
             String className = classNamesIterator.next();
 

@@ -184,7 +184,9 @@ public class Quest {
             for (KilledEntity killedEntity : getRequirements().getKilledEntities()) {
                 int amount;
 
-                if (Main.getQuestsManager().playerKilledEntities.get(player.getUniqueId()).get(killedEntity.getEntity().toString()) == null) {
+                if (Main.getQuestsManager().playerKilledEntities.get(player.getUniqueId()) == null) {
+                    amount = 0;
+                } else if (Main.getQuestsManager().playerKilledEntities.get(player.getUniqueId()).get(killedEntity.getEntity().toString()) == null) {
                     amount = 0;
                 } else {
                     amount = Main.getQuestsManager().playerKilledEntities.get(player.getUniqueId()).get(killedEntity.getEntity().toString());

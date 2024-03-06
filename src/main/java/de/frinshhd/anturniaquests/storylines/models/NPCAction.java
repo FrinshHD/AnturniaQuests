@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class NPCAction {
 
@@ -23,6 +24,9 @@ public class NPCAction {
 
     @JsonProperty
     private Sound clickSound = new Sound();
+
+    @JsonProperty
+    private ArrayList<NPCAction> actions = new ArrayList<>();
 
     @JsonProperty
     private Long delay = null;
@@ -47,7 +51,21 @@ public class NPCAction {
         return Main.getQuestsManager().getQuest(this.quest);
     }
 
+    public ArrayList<NPCAction> getActions() {
+        return this.actions;
+    }
+
     public boolean execute(Player player) {
+        boolean bool = executeThis(player);
+
+        getActions().forEach(action -> {
+            action.execute(player);
+        });
+
+        return bool;
+    }
+
+    private boolean executeThis(Player player) {
         if (getQuest() != null) {
             boolean completedQuest;
             try {
