@@ -7,3 +7,5 @@ database:
   port: 3306
 
 storylinesEnabled: true
+
+debug: true

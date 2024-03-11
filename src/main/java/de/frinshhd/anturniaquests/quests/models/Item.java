@@ -197,7 +197,6 @@ public class Item {
 
         int index = 0;
         while (getAmount() > index) {
-            Main.getInstance().getLogger().info(index + getDisplayName());
             ItemStack itemStack = getFittingItemStack(itemStacks, 1);
 
             if (itemStack.getAmount() == 1) {

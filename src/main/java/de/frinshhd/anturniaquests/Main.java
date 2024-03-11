@@ -167,7 +167,7 @@ public final class Main extends JavaPlugin {
             storylinesManager = new StorylinesManager();
         }
 
-        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null && Main.getInstance().getServer().getPluginManager().getPlugin("PlaceholderAPI").isEnabled()) {
             DynamicPlaceholderExpansion.load(classNames, canonicalName);
         }
 

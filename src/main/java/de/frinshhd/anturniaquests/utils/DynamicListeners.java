@@ -13,10 +13,7 @@ import static org.bukkit.Bukkit.getServer;
 public class DynamicListeners {
 
     public static void load(Set<String> classNames, String canonicalName) {
-        Iterator<String> classNamesIterator = classNames.iterator();
-        while (classNamesIterator.hasNext()) {
-            String className = classNamesIterator.next();
-
+        for (String className : classNames) {
             if (className.contains(canonicalName)) {
                 try {
                     Class<?> cls = Class.forName(className);
@@ -30,7 +27,7 @@ public class DynamicListeners {
                         getServer().getPluginManager().registerEvents(listener, Main.getInstance());
                     }
                 } catch (ClassNotFoundException | IllegalAccessException | InstantiationException |
-                         InvocationTargetException | IllegalArgumentException e) {
+                         InvocationTargetException | IllegalArgumentException | NoClassDefFoundError e) {
                     Main.getInstance().getLogger().warning("Error loading listeners in class " + className + " " + e);
                 }
             }
