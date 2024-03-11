@@ -59,7 +59,7 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
                         Player target = Bukkit.getPlayer(args[1]);
                         String questID = args[2];
 
-                        if (questID == null) {
+                        if (Main.getQuestsManager().getQuest(questID) == null) {
                             sendHelpMessage(sender);
                             return false;
                         }
@@ -99,7 +99,6 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
 
                         return true;
                     }
-
                     ChatManager.sendMessage(sender, Translator.build("noPermission"));
                     return false;
                 }
