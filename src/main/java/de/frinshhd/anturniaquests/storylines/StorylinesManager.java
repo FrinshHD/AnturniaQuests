@@ -8,7 +8,6 @@ import com.j256.ormlite.dao.Dao;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.mysql.MysqlManager;
 import de.frinshhd.anturniaquests.mysql.entities.Storylines;
-import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.storylines.listener.CitizensNpcsListener;
 import de.frinshhd.anturniaquests.storylines.listener.FancyNpcsListener;
 import de.frinshhd.anturniaquests.storylines.listener.StorylinesListener;
@@ -101,6 +100,7 @@ public class StorylinesManager {
 
         return players;
     }
+
     public void addPlayerCurrentStoryline(String storylineID, Player player) {
         PlayerArrayList<UUID> players = new PlayerArrayList<>();
 

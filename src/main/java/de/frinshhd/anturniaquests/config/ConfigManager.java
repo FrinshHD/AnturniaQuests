@@ -7,7 +7,6 @@ import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.config.models.Config;
 import de.frinshhd.anturniaquests.mysql.MysqlManager;
 import org.bukkit.ChatColor;
-import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;

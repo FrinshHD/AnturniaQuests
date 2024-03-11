@@ -2,14 +2,11 @@ package de.frinshhd.anturniaquests.utils;
 
 import de.frinshhd.anturniaquests.Main;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import org.bukkit.event.Listener;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.Set;
-
-import static org.bukkit.Bukkit.getServer;
 
 public class DynamicPlaceholderExpansion {
 

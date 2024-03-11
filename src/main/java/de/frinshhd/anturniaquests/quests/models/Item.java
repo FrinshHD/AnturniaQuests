@@ -3,15 +3,12 @@ package de.frinshhd.anturniaquests.quests.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.frinshhd.anturniaquests.Main;
-import de.frinshhd.anturniaquests.utils.MessageFormat;
 import net.md_5.bungee.api.chat.TranslatableComponent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class Item {
@@ -56,7 +53,7 @@ public class Item {
     }
 
     @JsonIgnore
-    public ArrayList<String> getLore(){
+    public ArrayList<String> getLore() {
         return this.lore;
     }
 

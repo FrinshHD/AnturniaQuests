@@ -1,8 +1,6 @@
 package de.frinshhd.anturniaquests.storylines.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.frinshhd.anturniaquests.Main;
-import de.frinshhd.anturniaquests.quests.models.Quest;
 
 import java.util.ArrayList;
 
