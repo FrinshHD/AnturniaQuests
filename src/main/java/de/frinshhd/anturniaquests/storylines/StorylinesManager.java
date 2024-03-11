@@ -372,7 +372,12 @@ public class StorylinesManager {
         }
         Storylines storylines;
         try {
-            storylines = storylinesDao.queryForEq("uuid", player.getUniqueId()).stream().toList().get(0);
+            storylines = MysqlManager.getStorylinesPlayer(player.getUniqueId());
+
+            if (storylines == null) {
+                //Todo: throw error message because player has no storylines object registered in db
+                return;
+            }
 
             JSONObject object = Main.getStorylinesManager().playerStats.get(player.getUniqueId());
 
