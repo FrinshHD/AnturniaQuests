@@ -376,10 +376,12 @@ public class Quest {
 
         //money
         if (getRewards().getMoney() > 0.0) {
-            Main.getEconomy().depositPlayer(player, getRewards().getMoney());
+            if (Main.getEconomy() != null) {
+                Main.getEconomy().depositPlayer(player, getRewards().getMoney());
 
-            if (message) {
-                ChatManager.sendMessage(player, Translator.build("quest.addMoney", new TranslatorPlaceholder("amount", String.valueOf(getRewards().getMoney()))));
+                if (message) {
+                    ChatManager.sendMessage(player, Translator.build("quest.addMoney", new TranslatorPlaceholder("amount", String.valueOf(getRewards().getMoney()))));
+                }
             }
         }
 
