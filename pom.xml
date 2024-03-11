@@ -6,7 +6,7 @@
 
     <groupId>net.frinshhd</groupId>
     <artifactId>AnturniaQuests</artifactId>
-    <version>1.0.0${BUILD_NUMBER}</version>
+    <version>1.0.1${BUILD_NUMBER}</version>
     <packaging>jar</packaging>
 
     <name>AnturniaQuests</name>
