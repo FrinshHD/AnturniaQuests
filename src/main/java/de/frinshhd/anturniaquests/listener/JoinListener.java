@@ -14,7 +14,7 @@ public class JoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        if (player.hasPermission("anturniaanturniaanturniaquests.admin.updateNotify") && Main.version != null) {
+        if (player.hasPermission("anturniaquests.admin.updateNotify") && Main.version != null) {
             if (!Main.version.equals(Main.getInstance().getDescription().getVersion())) {
                 ChatManager.sendMessage(player, Translator.build("updateAvailable", new TranslatorPlaceholder("newVersion", Main.version), new TranslatorPlaceholder("currentVersion", Main.getInstance().getDescription().getVersion())));
             }

@@ -14,6 +14,7 @@ public class SpigotMCCommunication {
 
     public static void init() {
         Main.version = checkForNewVersion();
+        Main.getInstance().getLogger().info("You are running on version: " + Main.getInstance().getDescription().getVersion());
     }
 
     public static String checkForNewVersion() {
@@ -30,16 +31,14 @@ public class SpigotMCCommunication {
             ComparableVersion currentComparableVersion = new ComparableVersion(currentVersion);
 
             int compare = currentComparableVersion.compareTo(latestComparableVersion);
+            System.out.println(compare);
+
             if (compare < 0) {
-                return currentVersion;
-            }
-            if (compare == 0) {
-                return currentVersion;
-            }
-            if (compare > 0) {
                 return latestVersion;
             }
-        } catch (IOException | NullPointerException e) {
+
+            return currentVersion;
+        } catch (NullPointerException | IOException e) {
             Main.getInstance().getLogger().warning("The plugin wasn't able to check for updates! Please check your internet connection.");
         }
 
