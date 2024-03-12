@@ -9,15 +9,20 @@ import de.frinshhd.anturniaquests.utils.ChatManager;
 import de.frinshhd.anturniaquests.utils.Translator;
 import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class QuestCommand implements CommandExecutor, TabCompleter {
@@ -119,6 +124,55 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if (args.length >= 1) {
+            if (args[0].toLowerCase().equals("iteminfo")) {
+                if (player.hasPermission("anturniaquests.command.admin.itemInfo")) {
+                    ItemStack item = player.getInventory().getItemInMainHand();
+                    if (item == null || item.getType().equals(Material.AIR)) {
+                        player.sendMessage("§cYour holding no valid item!");
+                        return false;
+                    }
+
+                    if (!item.hasItemMeta()) {
+                        player.sendMessage("§cYour item has no custom attributes!");
+                        return false;
+                    }
+
+                    ItemMeta itemMeta = item.getItemMeta();
+
+                    player.sendMessage("§2material: §r" + item.getType());
+                    player.sendMessage("§2amount: §r" + item.getAmount());
+
+                    assert itemMeta != null;
+                    if (itemMeta.hasDisplayName()) {
+                        String displayName = itemMeta.getDisplayName();
+                        displayName = displayName.replace('§', '&');
+                        player.sendMessage("§2displayName: §r" + displayName);
+                    }
+
+                    if (itemMeta.hasLore()) {
+                        ArrayList<String> loreRaw = new ArrayList<>(Objects.requireNonNull(itemMeta.getLore()));
+                        ArrayList<String> lore = new ArrayList<>();
+                        loreRaw.forEach(string -> {
+                            string = string.replace('§', '&');
+                            lore.add(string);
+                        });
+
+                        player.sendMessage("§2lore:");
+
+                        lore.forEach(string -> {
+                            player.sendMessage("§7- §r" + string);
+                        });
+                    }
+
+                    return true;
+                }
+
+                ChatManager.sendMessage(sender, Translator.build("noPermission"));
+                return false;
+            }
+        }
+
         sendHelpMessage(player);
         return false;
     }
@@ -167,6 +221,10 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
 
         if (sender.hasPermission("anturniaquests.command.admin.reload")) {
             commands.add("reload");
+        }
+
+        if (sender.hasPermission("anturniaquests.command.admin.itemInfo")) {
+            commands.add("iteminfo");
         }
 
         if (sender.hasPermission("anturniaquests.command.admin.reset")) {

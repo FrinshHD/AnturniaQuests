@@ -13,7 +13,7 @@ import java.util.Objects;
 
 public class Item {
 
-    @JsonProperty
+    @JsonProperty("name")
     private String name = null;
 
     @JsonProperty
@@ -74,7 +74,10 @@ public class Item {
                     continue;
                 }
 
-                if (!Objects.requireNonNull(content.getItemMeta()).getDisplayName().equals(getName())) {
+                String displayName = content.getItemMeta().getDisplayName();
+                displayName = displayName.replace('§', '&');
+
+                if (!displayName.equals(getName())) {
                     continue;
                 }
 
@@ -96,16 +99,34 @@ public class Item {
                     continue;
                 }
 
-                if (!Objects.equals(content.getItemMeta().getLore(), getLore())) {
+                ArrayList<String> loreRaw = new ArrayList<>(Objects.requireNonNull(content.getItemMeta().getLore()));
+                ArrayList<String> lore = new ArrayList<>();
+                loreRaw.forEach(string -> {
+                    string = string.replace('§', '&');
+                    lore.add(string);
+                });
+
+                System.out.println(lore);
+                System.out.println(getLore());
+
+                if (!lore.equals(getLore())) {
                     continue;
                 }
+
+                System.out.println(name);
 
                 if (getName() != null) {
                     if (!content.getItemMeta().hasDisplayName()) {
                         continue;
                     }
 
-                    if (!content.getItemMeta().getDisplayName().equals(getName())) {
+                    String displayName = content.getItemMeta().getDisplayName();
+                    displayName = displayName.replace('§', '&');
+
+                    System.out.println(displayName);
+                    System.out.println(getName());
+
+                    if (!displayName.equals(getName())) {
                         continue;
                     }
                 }
@@ -144,7 +165,10 @@ public class Item {
                     continue;
                 }
 
-                if (!Objects.requireNonNull(content.getItemMeta()).getDisplayName().equals(getName())) {
+                String displayName = content.getItemMeta().getDisplayName();
+                displayName = displayName.replace('§', '&');
+
+                if (!displayName.equals(getName())) {
                     continue;
                 }
 
@@ -162,7 +186,14 @@ public class Item {
                     continue;
                 }
 
-                if (!Objects.equals(content.getItemMeta().getLore(), getLore())) {
+                ArrayList<String> loreRaw = new ArrayList<>(Objects.requireNonNull(content.getItemMeta().getLore()));
+                ArrayList<String> lore = new ArrayList<>();
+                loreRaw.forEach(string -> {
+                    string = string.replace('§', '&');
+                    lore.add(string);
+                });
+
+                if (!lore.equals(getLore())) {
                     continue;
                 }
 
@@ -171,7 +202,10 @@ public class Item {
                         continue;
                     }
 
-                    if (!content.getItemMeta().getDisplayName().equals(getName())) {
+                    String displayName = content.getItemMeta().getDisplayName();
+                    displayName = displayName.replace('§', '&');
+
+                    if (!displayName.equals(getName())) {
                         continue;
                     }
                 }

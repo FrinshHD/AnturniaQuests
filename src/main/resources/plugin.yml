@@ -21,5 +21,7 @@ permissions:
     default: op
   anturniaquests.command.admin.reset:
     default: op
+  anturniaquests.command.admin.itemInfo:
+    default: op
   anturniaquests.admin.updateNotify:
     default: op

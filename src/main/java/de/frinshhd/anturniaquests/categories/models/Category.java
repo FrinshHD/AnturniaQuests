@@ -11,24 +11,42 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Category {
 
     @JsonProperty
-    private String friendlyName;
+    private String friendlyName = null;
 
     @JsonProperty
-    private String description;
+    private String description = null;
 
     @JsonProperty
-    private String material;
+    private String material = Material.STONE.toString();
+
+    @JsonProperty
+    private boolean dailyQuestsCategory = false;
+
+    @JsonProperty
+    private int questsPerDay = 3;
+
+    @JsonProperty
+    private ArrayList<String> timesToReset = new ArrayList<>(List.of("24:00"));
 
     public String getID() {
         return Main.getDynamicCategories().getCategoryID(this);
     }
 
     public String getFriendlyName() {
+        if (this.friendlyName == null) {
+            return getID();
+        }
+
         return this.friendlyName;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public Material getMaterial() {
@@ -42,7 +60,10 @@ public class Category {
         itemMeta.setDisplayName(ChatColor.DARK_GREEN + getFriendlyName());
 
         ArrayList<String> lore = new ArrayList<>();
-        lore.addAll(LoreBuilder.build(description, ChatColor.GRAY));
+
+        if (getDescription() != null) {
+            lore.addAll(LoreBuilder.build(getDescription(), ChatColor.GRAY));
+        }
 
         itemMeta.setLore(lore);
 
