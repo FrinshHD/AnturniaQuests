@@ -8,6 +8,9 @@ public class Config {
     public Database database = new Database();
 
     @JsonProperty
+    public boolean questMenuEnabled = true;
+
+    @JsonProperty
     public boolean storylinesEnabled = true;
 
     @JsonProperty

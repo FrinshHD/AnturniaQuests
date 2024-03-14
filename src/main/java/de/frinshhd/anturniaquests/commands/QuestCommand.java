@@ -116,12 +116,18 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 0) {
+            if (!Main.getConfigManager().getConfig().questMenuEnabled) {
+                sendHelpMessage(player);
+                return true;
+            }
+
             if (player.hasPermission("anturniaquests.command.open")) {
                 new QuestMenu(Main.getPlayerMenuUtility(player)).open(player);
+                return true;
             } else {
                 ChatManager.sendMessage(player, Translator.build("noPermission"));
+                return false;
             }
-            return true;
         }
 
         if (args.length >= 1) {
