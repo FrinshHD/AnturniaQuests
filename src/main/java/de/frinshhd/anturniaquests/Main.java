@@ -5,6 +5,7 @@ import de.frinshhd.anturniaquests.commands.QuestCommand;
 import de.frinshhd.anturniaquests.config.ConfigManager;
 import de.frinshhd.anturniaquests.menusystem.PlayerMenuUtility;
 import de.frinshhd.anturniaquests.quests.QuestsManager;
+import de.frinshhd.anturniaquests.requirements.RequirementManager;
 import de.frinshhd.anturniaquests.storylines.StorylinesManager;
 import de.frinshhd.anturniaquests.utils.DynamicListeners;
 import de.frinshhd.anturniaquests.utils.DynamicPlaceholderExpansion;
@@ -37,6 +38,7 @@ public final class Main extends JavaPlugin {
     private static ConfigManager configManager;
     private static CategoriesManager categoriesManager;
     private static StorylinesManager storylinesManager;
+    private static RequirementManager requirementManager;
 
     public static Main getInstance() {
         return INSTANCE;
@@ -52,6 +54,9 @@ public final class Main extends JavaPlugin {
 
     public static ConfigManager getConfigManager() {
         return configManager;
+    }
+    public static RequirementManager getRequirementManager() {
+        return requirementManager;
     }
 
     public static Economy getEconomy() {
@@ -146,6 +151,8 @@ public final class Main extends JavaPlugin {
 
         configManager = new ConfigManager();
 
+        requirementManager = new RequirementManager();
+
         questsManager = new QuestsManager();
 
         categoriesManager = new CategoriesManager();
@@ -179,7 +186,10 @@ public final class Main extends JavaPlugin {
         if (!getServer().getOnlinePlayers().isEmpty()) {
             getServer().getOnlinePlayers().forEach(player -> {
                 getQuestsManager().playerJoin(player);
-                getStorylinesManager().playerJoin(player);
+
+                if (storylinesEnabled) {
+                    getStorylinesManager().playerJoin(player);
+                }
             });
         }
     }

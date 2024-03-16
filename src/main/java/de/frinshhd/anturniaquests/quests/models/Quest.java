@@ -7,6 +7,9 @@ import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.mysql.MysqlManager;
 import de.frinshhd.anturniaquests.mysql.entities.Quests;
 import de.frinshhd.anturniaquests.quests.QuestsManager;
+import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
+import de.frinshhd.anturniaquests.requirements.items.ItemModel;
+import de.frinshhd.anturniaquests.requirements.killedentities.KilledEntityModell;
 import de.frinshhd.anturniaquests.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,6 +21,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class Quest {
 
@@ -34,7 +38,7 @@ public class Quest {
     private String material = null;
 
     @JsonProperty
-    private Requirements requirements = new Requirements();
+    private LinkedHashMap<String, ArrayList<Object>> requirements = new LinkedHashMap<>();
 
     @JsonProperty
     private Rewards rewards = new Rewards();
@@ -61,7 +65,6 @@ public class Quest {
     private Sound errorSound = null;
 
     public Quest() {
-        this.requirements = new Requirements();
         this.rewards = new Rewards();
         this.oneTime = true;
         this.announce = false;
@@ -88,11 +91,16 @@ public class Quest {
             return Material.getMaterial(this.material);
         }
 
-        if (!getRequirements().getItems().isEmpty()) {
+        //Todo: fix this
+        /*if (!getRequirements().getItems().isEmpty()) {
             return getRequirements().getItems().get(0).getMaterial();
-        }
+        } */
 
         return Material.STONE;
+    }
+
+    public String getID() {
+        return Main.getQuestsManager().getQuestID(this);
     }
 
     public Long getCooldown() {
@@ -134,8 +142,20 @@ public class Quest {
         return this.rewards;
     }
 
-    public Requirements getRequirements() {
+    public void setRequirement(String id, ArrayList<Object> objects) {
+        if (getRequirement(id) == null) {
+            return;
+        }
+
+        requirements.put(id, objects);
+    }
+
+    public LinkedHashMap<String, ArrayList<Object>> getRequirements() {
         return this.requirements;
+    }
+
+    public ArrayList<Object> getRequirement(String id) {
+        return getRequirements().get(id);
     }
 
     public ItemStack getItem(Player player, HashMap<String, Integer> finishedQuests) {
@@ -168,35 +188,9 @@ public class Quest {
         } else {
             lore.add(Translator.build("lore.requirements"));
 
-            //items
-            for (Item items : getRequirements().getItems()) {
-                int amountInInv = items.getAmountInInventory(player);
-
-                if (amountInInv >= items.getAmount()) {
-                    lore.add(Translator.build("lore.requirements.items.inInventory", new TranslatorPlaceholder("amountInInv", String.valueOf(amountInInv)), new TranslatorPlaceholder("amount", String.valueOf(items.getAmount())), new TranslatorPlaceholder("itemName", items.getDisplayName())));
-                } else {
-                    lore.add(Translator.build("lore.requirements.items.notInInventory", new TranslatorPlaceholder("amountInInv", String.valueOf(amountInInv)), new TranslatorPlaceholder("amount", String.valueOf(items.getAmount())), new TranslatorPlaceholder("itemName", items.getDisplayName())));
-                }
-            }
-
-            //killedEntities
-            for (KilledEntity killedEntity : getRequirements().getKilledEntities()) {
-                int amount;
-
-                if (Main.getQuestsManager().playerKilledEntities.get(player.getUniqueId()) == null) {
-                    amount = 0;
-                } else if (Main.getQuestsManager().playerKilledEntities.get(player.getUniqueId()).get(killedEntity.getEntity().toString()) == null) {
-                    amount = 0;
-                } else {
-                    amount = Main.getQuestsManager().playerKilledEntities.get(player.getUniqueId()).get(killedEntity.getEntity().toString());
-                }
-
-                if (amount >= killedEntity.getAmount()) {
-                    lore.add(Translator.build("lore.requirements.killedEntities.fulfilled", new TranslatorPlaceholder("amountKilled", String.valueOf(amount)), new TranslatorPlaceholder("amount", String.valueOf(killedEntity.getAmount())), new TranslatorPlaceholder("entityName", killedEntity.getName())));
-                } else {
-                    lore.add(Translator.build("lore.requirements.killedEntities.notFulfilled", new TranslatorPlaceholder("amountKilled", String.valueOf(amount)), new TranslatorPlaceholder("amount", String.valueOf(killedEntity.getAmount())), new TranslatorPlaceholder("entityName", killedEntity.getName())));
-                }
-            }
+            getRequirements().keySet().forEach(id -> {
+                lore.addAll(Main.getRequirementManager().getRequirement(id).getLore(player, getRequirements().get(id)));
+            });
 
             lore.add(" ");
 
@@ -208,8 +202,8 @@ public class Quest {
             }
 
             //items
-            for (Item rewardItem : getRewards().getItems()) {
-                lore.add(Translator.build("lore.rewards.item", new TranslatorPlaceholder("amount", String.valueOf(rewardItem.getAmount())), new TranslatorPlaceholder("itemName", rewardItem.getDisplayName())));
+            for (ItemModel rewardItemModel : getRewards().getItems()) {
+                lore.add(Translator.build("lore.rewards.item", new TranslatorPlaceholder("amount", String.valueOf(rewardItemModel.getAmount())), new TranslatorPlaceholder("itemName", rewardItemModel.getDisplayName())));
             }
 
             //commands
@@ -309,39 +303,17 @@ public class Quest {
             return false;
         }
 
-        if (!getRequirements().check(player)) {
+        if (!Main.getRequirementManager().check(player, getID())) {
             if (message) {
                 ChatManager.sendMessage(player, Translator.build("quest.missingRequirements"));
 
-                //items
-                for (Item items : getRequirements().getItems()) {
-                    int amountInInv = items.getAmountInInventory(player);
-
-                    if (amountInInv < items.getAmount()) {
-                        ChatManager.sendMessage(player, Translator.build("quest.missingRequirements.item", new TranslatorPlaceholder("amountInInv", String.valueOf(amountInInv)), new TranslatorPlaceholder("amount", String.valueOf(items.getAmount())), new TranslatorPlaceholder("itemName", items.getDisplayName())));
-                    }
-                }
-
-                //killedEntities
-                for (KilledEntity killedEntity : getRequirements().getKilledEntities()) {
-                    int amount;
-
-                    if (Main.getQuestsManager().playerKilledEntities.get(player.getUniqueId()).get(killedEntity.getEntity().toString()) == null) {
-                        amount = 0;
-                    } else {
-                        amount = Main.getQuestsManager().playerKilledEntities.get(player.getUniqueId()).get(killedEntity.getEntity().toString());
-                    }
-
-                    if (amount < killedEntity.getAmount()) {
-                        ChatManager.sendMessage(player, Translator.build("quest.missingRequirements.killedEntity", new TranslatorPlaceholder("amountKilled", String.valueOf(amount)), new TranslatorPlaceholder("amount", String.valueOf(killedEntity.getAmount())), new TranslatorPlaceholder("entityName", killedEntity.getName())));
-                    }
-                }
+                Main.getRequirementManager().sendPlayerMissing(player, getID());
             }
             SurvivalQuestSounds.questError(player);
             return false;
         }
 
-        getRequirements().removeItems(player);
+        Main.getRequirementManager().complete(player, getID());
 
         Dao<Quests, Long> questsDao;
         try {
@@ -361,7 +333,6 @@ public class Quest {
         questsDao.update(quest);
 
         claim(player, message);
-
         return true;
     }
 
@@ -385,11 +356,11 @@ public class Quest {
         }
 
         //items
-        for (Item rewardItem : getRewards().getItems()) {
-            QuestsManager.addItem(player, rewardItem.getItem(), rewardItem.getAmount());
+        for (ItemModel rewardItemModel : getRewards().getItems()) {
+            QuestsManager.addItem(player, rewardItemModel.getItem(), rewardItemModel.getAmount());
 
             if (message) {
-                ChatManager.sendMessage(player, Translator.build("quest.addItem", new TranslatorPlaceholder("amount", String.valueOf(rewardItem.getAmount())), new TranslatorPlaceholder("itemName", rewardItem.getDisplayName())));
+                ChatManager.sendMessage(player, Translator.build("quest.addItem", new TranslatorPlaceholder("amount", String.valueOf(rewardItemModel.getAmount())), new TranslatorPlaceholder("itemName", rewardItemModel.getDisplayName())));
             }
         }
 

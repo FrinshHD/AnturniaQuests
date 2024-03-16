@@ -10,6 +10,9 @@ import de.frinshhd.anturniaquests.mysql.MysqlManager;
 import de.frinshhd.anturniaquests.mysql.entities.KilledEntities;
 import de.frinshhd.anturniaquests.mysql.entities.Quests;
 import de.frinshhd.anturniaquests.quests.models.Quest;
+import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
+import de.frinshhd.anturniaquests.requirements.RequirementManager;
+import de.frinshhd.anturniaquests.requirements.items.ItemModel;
 import de.frinshhd.anturniaquests.utils.PlayerHashMap;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.EntityType;
@@ -18,11 +21,10 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class QuestsManager {
 
@@ -57,11 +59,43 @@ public class QuestsManager {
 
         try {
             this.quests = mapper.readValue(new FileInputStream("plugins/AnturniaQuests/quests.yml"), mapTypeQuests);
+            //this.quests = mapper.readValue(this.getClass().getClassLoader().getResourceAsStream("quests.yml"), mapTypeQuests);
         } catch (IOException e) {
             Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading config.yml. AnturniaQuests will be disabled!\nError " + e.getMessage());
             Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
             return;
         }
+
+        quests.values().forEach(quest -> {
+            quest.getRequirements().forEach((id, modelList) -> {
+                ArrayList<Object> models = new ArrayList<>();
+                modelList.forEach(requirement -> {
+
+                    LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) requirement;
+                    Class<?> cls = Main.getRequirementManager().getRequirement(id).getModellClass();
+                    if (cls == null) {
+                        return;
+                    }
+
+                    try {
+                        Constructor<?> constructor = cls.getConstructor(LinkedHashMap.class);
+
+                        Object[] parameters = {map};
+
+                        BasicRequirementModel basicRequirementModel = (BasicRequirementModel) constructor.newInstance(parameters);
+
+                        models.add(basicRequirementModel);
+
+                    } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
+                             IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                });
+
+                quest.setRequirement(id, models);
+            });
+        });
     }
 
     public Quest getQuest(String questID) {

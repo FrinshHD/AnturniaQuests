@@ -1,31 +1,52 @@
-package de.frinshhd.anturniaquests.quests.models;
+package de.frinshhd.anturniaquests.requirements.items;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import de.frinshhd.anturniaquests.Main;
+import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
 import net.md_5.bungee.api.chat.TranslatableComponent;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.Objects;
 
-public class Item {
+public class ItemModel extends BasicRequirementModel {
 
-    @JsonProperty("name")
     private String name = null;
 
-    @JsonProperty
     private int amount = 1;
 
-    @JsonProperty
     private Material material = Material.AIR;
 
-    @JsonProperty
     private ArrayList<String> lore = new ArrayList<>();
 
-    @JsonIgnore
+    public ItemModel(LinkedHashMap<String, Object> map) {
+        super(map);
+
+        if (map.containsKey("name")) {
+            this.name = (String) map.get("name");
+        }
+
+        if (map.containsKey("amount")) {
+            this.amount = (int) map.get("amount");
+        }
+
+        if (map.containsKey("material")) {
+            this.material = Material.valueOf((String) map.get("material"));
+        }
+
+        if (map.containsKey("lore")) {
+            String loreRaw = (String) map.get("lore");
+            loreRaw = loreRaw.substring(1, loreRaw.length() - 1);
+            ArrayList<String> lore = new ArrayList<String>(Arrays.asList(loreRaw.split(",")));
+            this.lore = lore;
+        }
+    }
+
     public String getName() {
         if (this.name != null) {
             return this.name;
@@ -106,14 +127,9 @@ public class Item {
                     lore.add(string);
                 });
 
-                System.out.println(lore);
-                System.out.println(getLore());
-
                 if (!lore.equals(getLore())) {
                     continue;
                 }
-
-                System.out.println(name);
 
                 if (getName() != null) {
                     if (!content.getItemMeta().hasDisplayName()) {
@@ -122,9 +138,6 @@ public class Item {
 
                     String displayName = content.getItemMeta().getDisplayName();
                     displayName = displayName.replace('§', '&');
-
-                    System.out.println(displayName);
-                    System.out.println(getName());
 
                     if (!displayName.equals(getName())) {
                         continue;
