@@ -10,9 +10,8 @@ import de.frinshhd.anturniaquests.mysql.MysqlManager;
 import de.frinshhd.anturniaquests.mysql.entities.KilledEntities;
 import de.frinshhd.anturniaquests.mysql.entities.Quests;
 import de.frinshhd.anturniaquests.quests.models.Quest;
+import de.frinshhd.anturniaquests.requirements.BasicRequirement;
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
-import de.frinshhd.anturniaquests.requirements.RequirementManager;
-import de.frinshhd.anturniaquests.requirements.items.ItemModel;
 import de.frinshhd.anturniaquests.utils.PlayerHashMap;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.EntityType;
@@ -96,6 +95,10 @@ public class QuestsManager {
                 quest.setRequirement(id, models);
             });
         });
+
+        for (BasicRequirement requirement : Main.getRequirementManager().getRequirements()) {
+            requirement.init(this);
+        }
     }
 
     public Quest getQuest(String questID) {

@@ -55,6 +55,7 @@ public final class Main extends JavaPlugin {
     public static ConfigManager getConfigManager() {
         return configManager;
     }
+
     public static RequirementManager getRequirementManager() {
         return requirementManager;
     }
@@ -151,7 +152,7 @@ public final class Main extends JavaPlugin {
 
         configManager = new ConfigManager();
 
-        requirementManager = new RequirementManager();
+        requirementManager = new RequirementManager(true);
 
         questsManager = new QuestsManager();
 
@@ -185,6 +186,7 @@ public final class Main extends JavaPlugin {
         //run playerJoinLogic for all online players in case of server reload
         if (!getServer().getOnlinePlayers().isEmpty()) {
             getServer().getOnlinePlayers().forEach(player -> {
+                getRequirementManager().playerJoin(player);
                 getQuestsManager().playerJoin(player);
 
                 if (storylinesEnabled) {
@@ -212,7 +214,11 @@ public final class Main extends JavaPlugin {
         if (!getServer().getOnlinePlayers().isEmpty()) {
             getServer().getOnlinePlayers().forEach(player -> {
                 getQuestsManager().playerQuit(player);
-                getStorylinesManager().playerQuit(player);
+                getRequirementManager().playerQuit(player);
+
+                if (storylinesEnabled) {
+                    getStorylinesManager().playerQuit(player);
+                }
             });
         }
     }

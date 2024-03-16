@@ -1,11 +1,11 @@
 package de.frinshhd.anturniaquests.utils;
 
 import de.frinshhd.anturniaquests.Main;
+import de.frinshhd.anturniaquests.requirements.BasicRequirement;
 import org.bukkit.event.Listener;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Iterator;
 import java.util.Set;
 
 import static org.bukkit.Bukkit.getServer;
@@ -19,6 +19,10 @@ public class DynamicListeners {
                     Class<?> cls = Class.forName(className);
 
                     Class<Listener> listenerClass = Listener.class;
+
+                    if (listenerClass.isAssignableFrom(BasicRequirement.class)) {
+                        continue;
+                    }
 
                     if (listenerClass.isAssignableFrom(cls)) {
                         Constructor<?> constructor = cls.getConstructors()[0];

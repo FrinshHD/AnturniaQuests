@@ -31,7 +31,6 @@ public class SpigotMCCommunication {
             ComparableVersion currentComparableVersion = new ComparableVersion(currentVersion);
 
             int compare = currentComparableVersion.compareTo(latestComparableVersion);
-            System.out.println(compare);
 
             if (compare < 0) {
                 return latestVersion;

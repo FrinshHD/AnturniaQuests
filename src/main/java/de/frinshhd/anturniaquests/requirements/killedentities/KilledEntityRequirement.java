@@ -4,7 +4,6 @@ import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.requirements.BasicRequirement;
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
-import de.frinshhd.anturniaquests.requirements.items.ItemModel;
 import de.frinshhd.anturniaquests.utils.ChatManager;
 import de.frinshhd.anturniaquests.utils.Translator;
 import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
@@ -28,9 +27,9 @@ public class KilledEntityRequirement extends BasicRequirement implements Listene
     public ArrayList<String> getLore(Player player, ArrayList<Object> objects) {
         ArrayList<String> lore = new ArrayList<>();
 
-        ArrayList<KilledEntityModell> killedEntities = new ArrayList<>();
+        ArrayList<KilledEntityModel> killedEntities = new ArrayList<>();
         for (Object object : objects) {
-            killedEntities.add((KilledEntityModell) object);
+            killedEntities.add((KilledEntityModel) object);
         }
 
         killedEntities.forEach(killedEntity -> {
@@ -74,23 +73,23 @@ public class KilledEntityRequirement extends BasicRequirement implements Listene
 
     @Override
     public Class<?> getModellClass() {
-        return KilledEntityModell.class;
+        return KilledEntityModel.class;
     }
 
     @Override
     public void sendPlayerMissing(Player player, BasicRequirementModel requirementModel) {
-        KilledEntityModell killedEntityModell  = (KilledEntityModell) requirementModel;
+        KilledEntityModel killedEntityModel = (KilledEntityModel) requirementModel;
 
         int amount;
 
-        if (Main.getQuestsManager().playerKilledEntities.get(player.getUniqueId()).get(killedEntityModell.getEntity().toString()) == null) {
+        if (Main.getQuestsManager().playerKilledEntities.get(player.getUniqueId()).get(killedEntityModel.getEntity().toString()) == null) {
             amount = 0;
         } else {
-            amount = Main.getQuestsManager().playerKilledEntities.get(player.getUniqueId()).get(killedEntityModell.getEntity().toString());
+            amount = Main.getQuestsManager().playerKilledEntities.get(player.getUniqueId()).get(killedEntityModel.getEntity().toString());
         }
 
-        if (amount < killedEntityModell.getAmount()) {
-            ChatManager.sendMessage(player, Translator.build("quest.missingRequirements.killedEntity", new TranslatorPlaceholder("amountKilled", String.valueOf(amount)), new TranslatorPlaceholder("amount", String.valueOf(killedEntityModell.getAmount())), new TranslatorPlaceholder("entityName", killedEntityModell.getName())));
+        if (amount < killedEntityModel.getAmount()) {
+            ChatManager.sendMessage(player, Translator.build("quest.missingRequirements.killedEntity", new TranslatorPlaceholder("amountKilled", String.valueOf(amount)), new TranslatorPlaceholder("amount", String.valueOf(killedEntityModel.getAmount())), new TranslatorPlaceholder("entityName", killedEntityModel.getName())));
         }
     }
 
@@ -99,9 +98,9 @@ public class KilledEntityRequirement extends BasicRequirement implements Listene
         Quest quest = Main.getQuestsManager().getQuest(questID);
 
         for (Object rawRequirementModell : quest.getRequirement(getId())) {
-            KilledEntityModell killedEntityModell = (KilledEntityModell) rawRequirementModell;
+            KilledEntityModel killedEntityModel = (KilledEntityModel) rawRequirementModell;
 
-            if (Main.getQuestsManager().getKilledEntityAmount(player, killedEntityModell.getEntity()) < killedEntityModell.getAmount()) {
+            if (Main.getQuestsManager().getKilledEntityAmount(player, killedEntityModel.getEntity()) < killedEntityModel.getAmount()) {
                 return false;
             }
         }

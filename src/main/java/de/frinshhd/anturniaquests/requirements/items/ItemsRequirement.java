@@ -1,7 +1,6 @@
 package de.frinshhd.anturniaquests.requirements.items;
 
 import de.frinshhd.anturniaquests.Main;
-import de.frinshhd.anturniaquests.mysql.entities.Quests;
 import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.requirements.BasicRequirement;
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
@@ -9,10 +8,8 @@ import de.frinshhd.anturniaquests.utils.ChatManager;
 import de.frinshhd.anturniaquests.utils.Translator;
 import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
 import org.bukkit.entity.Player;
-import org.checkerframework.checker.units.qual.C;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class ItemsRequirement extends BasicRequirement {
 
@@ -48,7 +45,7 @@ public class ItemsRequirement extends BasicRequirement {
 
     @Override
     public void sendPlayerMissing(Player player, BasicRequirementModel requirementModel) {
-        ItemModel itemModel  = (ItemModel) requirementModel;
+        ItemModel itemModel = (ItemModel) requirementModel;
         int amountInInv = itemModel.getAmountInInventory(player);
 
         if (amountInInv < itemModel.getAmount()) {

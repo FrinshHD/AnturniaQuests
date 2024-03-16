@@ -7,9 +7,7 @@ import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.mysql.MysqlManager;
 import de.frinshhd.anturniaquests.mysql.entities.Quests;
 import de.frinshhd.anturniaquests.quests.QuestsManager;
-import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
 import de.frinshhd.anturniaquests.requirements.items.ItemModel;
-import de.frinshhd.anturniaquests.requirements.killedentities.KilledEntityModell;
 import de.frinshhd.anturniaquests.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -91,10 +89,9 @@ public class Quest {
             return Material.getMaterial(this.material);
         }
 
-        //Todo: fix this
-        /*if (!getRequirements().getItems().isEmpty()) {
-            return getRequirements().getItems().get(0).getMaterial();
-        } */
+        if (getRequirement("items") != null && !getRequirement("items").isEmpty()) {
+            return ((ItemModel) getRequirement("items").get(0)).getMaterial();
+        }
 
         return Material.STONE;
     }

@@ -7,6 +7,7 @@ import com.j256.ormlite.table.TableUtils;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.mysql.entities.KilledEntities;
 import de.frinshhd.anturniaquests.mysql.entities.Quests;
+import de.frinshhd.anturniaquests.mysql.entities.Requirements;
 import de.frinshhd.anturniaquests.mysql.entities.Storylines;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -37,6 +38,10 @@ public class MysqlManager implements Listener {
         return DaoManager.createDao(connectionSource, Storylines.class);
     }
 
+    public static Dao<Requirements, Long> getRequirementsDao() throws SQLException {
+        return DaoManager.createDao(connectionSource, Requirements.class);
+    }
+
     public static void connect(String url) {
         connect(url, null, null);
     }
@@ -60,7 +65,11 @@ public class MysqlManager implements Listener {
         try {
             TableUtils.createTableIfNotExists(connectionSource, Quests.class);
             TableUtils.createTableIfNotExists(connectionSource, KilledEntities.class);
-            TableUtils.createTableIfNotExists(connectionSource, Storylines.class);
+            TableUtils.createTableIfNotExists(connectionSource, Requirements.class);
+
+            if (Main.isStorylinesEnabled()) {
+                TableUtils.createTableIfNotExists(connectionSource, Storylines.class);
+            }
         } catch (SQLException e) {
             //Todo logging
         }
@@ -132,6 +141,28 @@ public class MysqlManager implements Listener {
         return storylines.get(0);
     }
 
+    public static Requirements getRequirementsPlayer(UUID uuid) {
+        Dao<Requirements, Long> requirementsDao;
+        try {
+            requirementsDao = getRequirementsDao();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        List<Requirements> requirements;
+        try {
+            requirements = requirementsDao.queryForEq("uuid", uuid);
+        } catch (SQLException e) {
+            return null;
+        }
+
+        if (requirements.isEmpty()) {
+            return null;
+        }
+
+        return requirements.get(0);
+    }
+
     public static void disconnect() throws Exception {
         connectionSource.close();
     }
@@ -195,6 +226,23 @@ public class MysqlManager implements Listener {
             killedEntities.create(player.getUniqueId());
             try {
                 killedEntitiesDao.create(killedEntities);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        //create requirements
+        if (MysqlManager.getRequirementsPlayer(player.getUniqueId()) == null) {
+            Dao<Requirements, Long> requirementsDao;
+            try {
+                requirementsDao = MysqlManager.getRequirementsDao();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            Requirements requirements = new Requirements();
+            requirements.create(player.getUniqueId());
+            try {
+                requirementsDao.create(requirements);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
