@@ -425,7 +425,7 @@ public class StorylinesManager {
                         if (getPlayerStageStartTime(player, storylineID) == -1) {
                             continue;
                         } else {
-                            long playerStageStartTime = getPlayerStartTime(player, storylineID);
+                            long playerStageStartTime = getPlayerStageStartTime(player, storylineID);
                             NPC npc = storyline.getNPCStageID(getPlayerStageID(player, storylineID));
                             long stageTimeToComplete = npc.getTimeToComplete();
 

@@ -32,8 +32,9 @@ public class ConfigManager {
             Logger.setGlobalLogLevel(com.j256.ormlite.logger.Level.FATAL);
             java.util.logging.Logger.getLogger("org.reflections").setLevel(Level.OFF);
         }
+    }
 
-        // connect to database
+    public void connectToDB() {
         switch (this.config.database.getType()) {
             case MYSQL:
                 MysqlManager.connect("jdbc:mysql://" + this.config.database.ip + ":" + this.config.database.port + "/" + this.config.database.database, this.config.database.username, this.config.database.password);

@@ -101,11 +101,13 @@ public class RequirementManager implements Listener {
     public void complete(Player player, String questID) {
         Quest quest = Main.getQuestsManager().getQuest(questID);
 
-        quest.getRequirement("items").forEach(requirement -> {
-            ItemModel itemModel = (ItemModel) requirement;
+        if (quest.getRequirement("items") != null) {
+            quest.getRequirement("items").forEach(requirement -> {
+                ItemModel itemModel = (ItemModel) requirement;
 
-            itemModel.removeItemFromInventory(player);
-        });
+                itemModel.removeItemFromInventory(player);
+            });
+        }
     }
 
     public void playerJoin(Player player) {

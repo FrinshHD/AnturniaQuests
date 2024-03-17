@@ -179,6 +179,8 @@ public final class Main extends JavaPlugin {
             DynamicPlaceholderExpansion.load(classNames, canonicalName);
         }
 
+        configManager.connectToDB();
+
         DynamicListeners.load(classNames, canonicalName);
 
         this.registerCommands();
