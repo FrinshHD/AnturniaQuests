@@ -407,9 +407,7 @@ public class StorylinesManager {
                     for (String storylineID : playerStats.get(player.getUniqueId()).keySet()) {
                         Storyline storyline = getStoryline(storylineID);
 
-                        if (getPlayerStartTime(player, storylineID) == -1) {
-                            continue;
-                        } else {
+                        if (getPlayerStartTime(player, storylineID) != -1) {
                             long playerStartTime = getPlayerStartTime(player, storylineID);
                             long storylineTimeToComplete = storyline.getTimeToComplete();
 
@@ -422,9 +420,7 @@ public class StorylinesManager {
                             }
                         }
 
-                        if (getPlayerStageStartTime(player, storylineID) == -1) {
-                            continue;
-                        } else {
+                        if (getPlayerStageStartTime(player, storylineID) != -1) {
                             long playerStageStartTime = getPlayerStageStartTime(player, storylineID);
                             NPC npc = storyline.getNPCStageID(getPlayerStageID(player, storylineID));
                             long stageTimeToComplete = npc.getTimeToComplete();
