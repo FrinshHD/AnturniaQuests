@@ -107,6 +107,28 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
                     return false;
                 }
             }
+
+            if (args.length >= 3) {
+                if (args[0].equals("storylines")) {
+                    if (args[1].equals("reset")) {
+                        Player target = Bukkit.getPlayer(args[2]);
+                        String storylineID = args[3];
+
+                        if (Main.getStorylinesManager().getStoryline(storylineID) == null) {
+                            sendHelpMessage(sender);
+                            return false;
+                        }
+
+                        if (target == null) {
+                            sendHelpMessage(sender);
+                            return false;
+                        }
+
+                        Main.getStorylinesManager().removePlayerStoryline(target, storylineID);
+                        return true;
+                    }
+                }
+            }
         }
 
         if (!(sender instanceof Player player)) {

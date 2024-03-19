@@ -112,13 +112,13 @@ public class StorylinesManager {
     }
 
     public void removePlayerCurrentStoryline(String storylineID, Player player) {
-        PlayerArrayList<UUID> players = new PlayerArrayList<>();
+        PlayerArrayList<UUID> players;
 
         if (this.storylineCurrentPlayers.containsKey(storylineID)) {
             players = this.storylineCurrentPlayers.get(storylineID);
+            players.remove(player.getUniqueId());
+            this.storylineCurrentPlayers.put(storylineID, players);
         }
-
-        players.remove(player.getUniqueId());
     }
 
     public void npcClick(Player player, String npcID) {
@@ -157,7 +157,6 @@ public class StorylinesManager {
             return;
         }
 
-
         int playerStageID = playerStorylineStats.getInt("currentStage");
         NPC npc = storyline.getNPCStageID(playerStageID);
 
@@ -166,6 +165,20 @@ public class StorylinesManager {
             ChatManager.sendMessage(player, Translator.build("storyline.falseStageNPC"));
             return;
         }
+
+        int playerCurrentActionID = playerStorylineStats.getInt("currentAction");
+        ArrayList<NPCAction> actions = npc.getActions();
+
+        //check if player has completed this npc
+        if (actions.size() - 1 < playerCurrentActionID) {
+            playerStageID += 1;
+
+            //check if player has Completed the storyline
+            checkPlayerCompletedStoryline(player, storylineID, storyline, playerCompletions, playerStageID);
+            return;
+        }
+
+        NPCAction playerCurrentAction = actions.get(playerCurrentActionID);
 
         //check if counter has to start //Todo
         if (storyline.getTimeToComplete() > -1) {
@@ -193,11 +206,6 @@ public class StorylinesManager {
             addPlayerCurrentStoryline(storylineID, player);
         }
 
-        int playerCurrentActionID = playerStorylineStats.getInt("currentAction");
-        ArrayList<NPCAction> actions = npc.getActions();
-
-        NPCAction playerCurrentAction = actions.get(playerCurrentActionID);
-
         boolean executed = playerCurrentAction.execute(player);
 
         if (!executed) {
@@ -206,15 +214,7 @@ public class StorylinesManager {
 
         playerCurrentActionID += 1;
 
-        //check if player has completed this npc
-        if (actions.size() - 1 < playerCurrentActionID) {
-            playerStageID += 1;
-
-            //check if player has Completed the storyline
-            checkPlayerCompletedStoryline(player, storylineID, storyline, playerCompletions, playerStageID);
-        } else {
-            putPlayerCurrentAction(player, storylineID, playerCurrentActionID);
-        }
+        putPlayerCurrentAction(player, storylineID, playerCurrentActionID);
     }
 
     private void checkPlayerCompletedStoryline(Player player, String storylineID, Storyline storyline, int playerCompletions, int playerStageID) {
@@ -231,6 +231,7 @@ public class StorylinesManager {
             //else set player to next stageID
             putPlayerCurrentAction(player, storylineID, 0);
             putPlayerCurrentStage(player, storylineID, playerStageID);
+            putPlayerStageStartTime(player, storylineID, -1);
         }
     }
 
@@ -256,16 +257,21 @@ public class StorylinesManager {
         return object;
     }
 
+    public JSONObject getEmptyStoryline() {
+        JSONObject object = new JSONObject();
+        object.put("completions", 0);
+        object.put("lastCompletion", 0);
+        object.put("currentStage", 0);
+        object.put("currentAction", 0);
+        object.put("currentStartTime", -1);
+        object.put("currentStageStartTime", -1);
+
+        return object;
+    }
+
     public JSONObject getPlayerStoryline(Player player, String storylineID) {
         if (!getPlayerStats(player).has(storylineID)) {
-            JSONObject object = new JSONObject();
-            object.put("completions", 0);
-            object.put("lastCompletion", 0);
-            object.put("currentStage", 0);
-            object.put("currentAction", 0);
-            object.put("currentStartTime", -1);
-            object.put("currentStageStartTime", -1);
-            return object;
+            return getEmptyStoryline();
         }
 
         return getPlayerStats(player).getJSONObject(storylineID);
@@ -389,6 +395,18 @@ public class StorylinesManager {
         }
     }
 
+    public void removePlayerStoryline(Player player, String storylineID) {
+        removePlayerCurrentStoryline(storylineID, player);
+
+        UUID uuid = player.getUniqueId();
+
+        JSONObject object = playerStats.get(uuid);
+        JSONObject storylineObject = getEmptyStoryline();
+
+        object.put(storylineID, storylineObject);
+        playerStats.put(uuid, object);
+    }
+
     //Todo: start runnable logic
     public void startRunnable() {
         this.runnable = new BukkitRunnable() {
@@ -407,7 +425,7 @@ public class StorylinesManager {
                     for (String storylineID : playerStats.get(player.getUniqueId()).keySet()) {
                         Storyline storyline = getStoryline(storylineID);
 
-                        if (getPlayerStartTime(player, storylineID) != -1) {
+                        if (getPlayerStartTime(player, storylineID) > -1) {
                             long playerStartTime = getPlayerStartTime(player, storylineID);
                             long storylineTimeToComplete = storyline.getTimeToComplete();
 
@@ -420,7 +438,7 @@ public class StorylinesManager {
                             }
                         }
 
-                        if (getPlayerStageStartTime(player, storylineID) != -1) {
+                        if (getPlayerStageStartTime(player, storylineID) > -1) {
                             long playerStageStartTime = getPlayerStageStartTime(player, storylineID);
                             NPC npc = storyline.getNPCStageID(getPlayerStageID(player, storylineID));
                             long stageTimeToComplete = npc.getTimeToComplete();
