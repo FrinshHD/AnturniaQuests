@@ -58,9 +58,11 @@ public class NPCAction {
     public boolean execute(Player player) {
         boolean bool = executeThis(player);
 
-        getActions().forEach(action -> {
-            action.execute(player);
-        });
+        if (bool) {
+            getActions().forEach(action -> {
+                action.execute(player);
+            });
+        }
 
         return bool;
     }
