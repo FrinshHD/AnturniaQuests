@@ -17,7 +17,7 @@ public class BlockInteractionsModel extends BasicRequirementModel {
     private String world = "world";
 
     public BlockInteractionsModel(LinkedHashMap<String, Object> map) {
-        super(map);
+        super(map, "blockInteractions");
 
         if (map.containsKey("interactActions")) {
             this.interactActions = (List<String>) map.get("interactActions");

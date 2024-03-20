@@ -167,21 +167,13 @@ public class StorylinesManager {
         }
 
         int playerCurrentActionID = playerStorylineStats.getInt("currentAction");
-        ArrayList<NPCAction> actions = npc.getActions();
-
-        //check if player has completed this npc
-        if (actions.size() - 1 < playerCurrentActionID) {
-            playerStageID += 1;
-
-            //check if player has Completed the storyline
-            checkPlayerCompletedStoryline(player, storylineID, storyline, playerCompletions, playerStageID);
-            return;
-        }
-
-        NPCAction playerCurrentAction = actions.get(playerCurrentActionID);
 
         //check if counter has to start //Todo
         if (storyline.getTimeToComplete() > -1) {
+            if (playerStageID == 0 && playerCurrentActionID == 0) {
+                putPlayerStartTime(player, storylineID, -1);
+            }
+
             if (getPlayerStartTime(player, storylineID) == -1) {
                 putPlayerStartTime(player, storylineID, System.currentTimeMillis());
             }
@@ -189,6 +181,10 @@ public class StorylinesManager {
 
         //check if counter for the stage has to start //Todo
         if (npc.getTimeToComplete() > -1) {
+            if (playerCurrentActionID == 0) {
+                putPlayerStageStartTime(player, storylineID, -1);
+            }
+
             if (getPlayerStageStartTime(player, storylineID) == -1) {
                 putPlayerStageStartTime(player, storylineID, System.currentTimeMillis());
             }
@@ -206,6 +202,10 @@ public class StorylinesManager {
             addPlayerCurrentStoryline(storylineID, player);
         }
 
+        ArrayList<NPCAction> actions = npc.getActions();
+
+        NPCAction playerCurrentAction = actions.get(playerCurrentActionID);
+
         boolean executed = playerCurrentAction.execute(player);
 
         if (!executed) {
@@ -215,6 +215,14 @@ public class StorylinesManager {
         playerCurrentActionID += 1;
 
         putPlayerCurrentAction(player, storylineID, playerCurrentActionID);
+
+        //check if player has completed this npc
+        if (actions.size() - 1 < playerCurrentActionID) {
+            playerStageID += 1;
+
+            //check if player has Completed the storyline
+            checkPlayerCompletedStoryline(player, storylineID, storyline, playerCompletions, playerStageID);
+        }
     }
 
     private void checkPlayerCompletedStoryline(Player player, String storylineID, Storyline storyline, int playerCompletions, int playerStageID) {
@@ -225,13 +233,13 @@ public class StorylinesManager {
             putPlayerCompletions(player, storylineID, playerCompletions + 1);
             putPlayerLastCompletion(player, storylineID, System.currentTimeMillis());
             putPlayerStartTime(player, storylineID, -1);
+            putPlayerStageStartTime(player, storylineID, -1);
 
             removePlayerCurrentStoryline(storylineID, player);
         } else {
             //else set player to next stageID
             putPlayerCurrentAction(player, storylineID, 0);
             putPlayerCurrentStage(player, storylineID, playerStageID);
-            putPlayerStageStartTime(player, storylineID, -1);
         }
     }
 
@@ -440,7 +448,14 @@ public class StorylinesManager {
 
                         if (getPlayerStageStartTime(player, storylineID) > -1) {
                             long playerStageStartTime = getPlayerStageStartTime(player, storylineID);
-                            NPC npc = storyline.getNPCStageID(getPlayerStageID(player, storylineID));
+
+                            int playerStageID = getPlayerStageID(player, storylineID);
+
+                            if (getPlayerStageID(player, storylineID) > 0 && getPlayerStoryline(player, storylineID).getInt("currentAction") == 0) {
+                                playerStageID = getPlayerStageID(player, storylineID) - 1;
+                            }
+
+                            NPC npc = storyline.getNPCStageID(playerStageID);
                             long stageTimeToComplete = npc.getTimeToComplete();
 
                             if (stageTimeToComplete > -1) {

@@ -23,7 +23,7 @@ public class ItemModel extends BasicRequirementModel {
     private ArrayList<String> lore = new ArrayList<>();
 
     public ItemModel(LinkedHashMap<String, Object> map) {
-        super(map);
+        super(map, "items");
 
         if (map.containsKey("name")) {
             this.name = (String) map.get("name");

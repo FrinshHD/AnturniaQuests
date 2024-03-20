@@ -17,7 +17,7 @@ public class PlaceBlockModel extends BasicRequirementModel {
     private Material material = null;
 
     public PlaceBlockModel(LinkedHashMap<String, Object> map) {
-        super(map);
+        super(map, "placeBlocks");
 
         if (map.containsKey("location")) {
             Object locationObj = map.get("location");

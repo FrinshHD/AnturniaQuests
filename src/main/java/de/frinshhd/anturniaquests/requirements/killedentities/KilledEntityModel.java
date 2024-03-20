@@ -13,7 +13,7 @@ public class KilledEntityModel extends BasicRequirementModel {
     private int amount = 1;
 
     public KilledEntityModel(LinkedHashMap<String, Object> map) {
-        super(map);
+        super(map, "killedEntities");
         if (map.containsKey("entity")) {
             this.entity = EntityType.valueOf((String) map.get("entity"));
         }
