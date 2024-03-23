@@ -267,6 +267,36 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
 
             if (args.length == 1 && completion.toLowerCase().startsWith(args[0])) {
                 completions.add(completion);
+                return;
+            }
+
+            String arg0 = args[0];
+
+            //2. arg
+            if (args.length == 2) {
+                if (arg0.equals("reset")) {
+                    Main.getInstance().getServer().getOnlinePlayers().forEach(player -> {
+                        if (player.getName().toLowerCase().startsWith(args[1])) {
+                            completions.add(player.getName());
+                        }
+                    });
+                    return;
+                }
+            }
+
+
+            //3. arg
+            if (args.length == 3) {
+                if (arg0.equals("reset")) {
+                    ArrayList<String> quests = new ArrayList<>(Main.getQuestsManager().quests.keySet());
+
+                    quests.forEach(quest -> {
+                        if (quest.toLowerCase().startsWith(args[2])) {
+                            completions.add(quest);
+                        }
+                    });
+                    return;
+                }
             }
         });
 
