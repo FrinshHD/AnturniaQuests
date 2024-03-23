@@ -26,7 +26,7 @@ public class PlaceBlockRequirement extends BasicRequirement implements Listener 
 
     public List<Location> registeredLocations = new ArrayList<>();
 
-    public PlaceBlockRequirement() {
+    public PlaceBlockRequirement(boolean notGenerated) {
         super("placeBlocks", true);
 
         //register listener

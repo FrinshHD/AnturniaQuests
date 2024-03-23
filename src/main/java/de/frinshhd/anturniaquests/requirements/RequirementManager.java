@@ -52,13 +52,15 @@ public class RequirementManager implements Listener {
                     Class<BasicRequirement> requiremmentClass = BasicRequirement.class;
 
                     if (requiremmentClass.isAssignableFrom(cls)) {
-                        Constructor<?> constructor = cls.getConstructors()[0];
-                        BasicRequirement requirement = (BasicRequirement) constructor.newInstance();
+                        Constructor<?> constructor = cls.getConstructor(boolean.class);
+                        Object[] parameters = {true};
+
+                        BasicRequirement requirement = (BasicRequirement) constructor.newInstance(parameters);
 
                         requirements.put(requirement.getId(), requirement);
                     }
                 } catch (ClassNotFoundException | IllegalAccessException | InstantiationException |
-                         InvocationTargetException | IllegalArgumentException | NoClassDefFoundError e) {
+                         InvocationTargetException | IllegalArgumentException | NoClassDefFoundError | NoSuchMethodException e) {
                     Main.getInstance().getLogger().warning("Error loading listeners in class " + className + " " + e);
                 }
             }

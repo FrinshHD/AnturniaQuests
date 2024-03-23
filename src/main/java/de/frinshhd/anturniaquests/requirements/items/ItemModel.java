@@ -1,6 +1,7 @@
 package de.frinshhd.anturniaquests.requirements.items;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
 import net.md_5.bungee.api.chat.TranslatableComponent;
 import org.bukkit.Material;
@@ -14,13 +15,21 @@ import java.util.Objects;
 
 public class ItemModel extends BasicRequirementModel {
 
+    @JsonProperty
     private String name = null;
 
+    @JsonProperty
     private int amount = 1;
 
+    @JsonProperty
     private Material material = Material.AIR;
 
+    @JsonProperty
     private ArrayList<String> lore = new ArrayList<>();
+
+    public ItemModel() {
+        super(null, null);
+    }
 
     public ItemModel(LinkedHashMap<String, Object> map) {
         super(map, "items");

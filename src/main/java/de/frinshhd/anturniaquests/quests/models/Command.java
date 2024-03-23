@@ -12,6 +12,10 @@ public class Command {
 
     @JsonIgnore
     public String getName() {
+        if (this.name == null) {
+            return getCommand();
+        }
+
         return this.name;
     }
 

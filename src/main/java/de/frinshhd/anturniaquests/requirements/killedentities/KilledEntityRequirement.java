@@ -16,7 +16,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import java.util.ArrayList;
 
 public class KilledEntityRequirement extends BasicRequirement implements Listener {
-    public KilledEntityRequirement() {
+    public KilledEntityRequirement(boolean notGenerated) {
         super("killedEntities", false);
 
         //register listener

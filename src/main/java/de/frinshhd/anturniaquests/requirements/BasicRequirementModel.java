@@ -7,7 +7,8 @@ import java.util.LinkedHashMap;
 public abstract class BasicRequirementModel {
     private String id = null;
 
-    public BasicRequirementModel(LinkedHashMap<String, Object> map) {}
+    public BasicRequirementModel(LinkedHashMap<String, Object> map) {
+    }
 
     public BasicRequirementModel(LinkedHashMap<String, Object> map, String id) {
         setId(id);

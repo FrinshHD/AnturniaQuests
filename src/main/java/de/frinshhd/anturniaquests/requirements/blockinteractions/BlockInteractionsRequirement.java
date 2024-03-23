@@ -28,7 +28,7 @@ public class BlockInteractionsRequirement extends BasicRequirement implements Li
 
     public HashMap<Location, List<String>> registeredLocations = new HashMap<>();
 
-    public BlockInteractionsRequirement() {
+    public BlockInteractionsRequirement(boolean notGenerated) {
         super("blockInteractions", true);
 
         //register listener

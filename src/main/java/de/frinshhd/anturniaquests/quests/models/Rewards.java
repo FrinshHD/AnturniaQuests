@@ -10,7 +10,7 @@ import java.util.List;
 public class Rewards {
 
     @JsonProperty
-    private List<ItemModel> itemModels = new ArrayList<>();
+    private List<ItemModel> items = new ArrayList<>();
     @JsonProperty
     private double money = 0.0;
     @JsonProperty
@@ -18,7 +18,7 @@ public class Rewards {
 
     @JsonIgnore
     public List<ItemModel> getItems() {
-        return this.itemModels;
+        return this.items;
     }
 
     @JsonIgnore

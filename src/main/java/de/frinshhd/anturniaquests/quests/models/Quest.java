@@ -162,8 +162,10 @@ public class Quest {
         itemMeta.setDisplayName(Translator.build("inventory.quest.color") + getFriendlyName());
 
         ArrayList<String> lore = new ArrayList<>();
-        lore.addAll(LoreBuilder.build(getDescription(), ChatColor.GRAY));
-        lore.add(" ");
+        if (!getDescription().isEmpty()) {
+            lore.addAll(LoreBuilder.build(getDescription(), ChatColor.GRAY));
+            lore.add(" ");
+        }
 
         if (isOneTimeUse() && finishedQuests.containsKey(Main.getQuestsManager().getQuestID(this))) {
             lore.add(Translator.build("lore.alreadyCompleted"));
