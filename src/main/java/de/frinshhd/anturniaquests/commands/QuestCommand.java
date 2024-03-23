@@ -230,6 +230,10 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
             stringBuilder.append("§7- §2/quests reset <playerName> <questID> §7- Resets the completion count of the player for a quest\n");
         }
 
+        if (sender.hasPermission("anturniaquests.command.admin.storylines.reset")) {
+            stringBuilder.append("§7- §2/quests storylines reset <playerName> <storylineID> §7- Resets the completion count of the player for a storyline\n");
+        }
+
         if (sender.hasPermission("anturniaquests.command.help")) {
             stringBuilder.append("§7- §2/quests help §7- Take a look at this message\n");
         }
