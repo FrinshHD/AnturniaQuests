@@ -20,12 +20,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.json.JSONObject;
 
+import javax.swing.plaf.basic.BasicButtonUI;
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.*;
 
 public class PlacedBlocksRequirement extends BasicRequirement implements Listener {
-    public PlacedBlocksRequirement() {
+    public PlacedBlocksRequirement(boolean notGenerated) {
         super("placedBlocks", false);
 
         //register listener
@@ -43,12 +44,10 @@ public class PlacedBlocksRequirement extends BasicRequirement implements Listene
 
         placedBlocks.forEach(placedBlock -> {
 
-            int amount;
-
             if (hasPlayerPlacedBlocks(player.getUniqueId(), placedBlock.getWorlds(), placedBlock.getMaterial(), placedBlock.getAmount())) {
-                lore.add(Translator.build("lore.requirements.placedBlocks.fulfilled", new TranslatorPlaceholder("material", placedBlock.getDisplayName()), new TranslatorPlaceholder("amount", String.valueOf(placedBlock.getAmount())), new TranslatorPlaceholder("worlds", placedBlock.getWorldFormated())));
+                lore.add(Translator.build("lore.requirements.placedBlocks.fulfilled", new TranslatorPlaceholder("material", placedBlock.getDisplayName()), new TranslatorPlaceholder("amountPlaced", String.valueOf(getPlayerPlacedBlocks(player.getUniqueId(), placedBlock.getWorlds(), placedBlock.getMaterial()))), new TranslatorPlaceholder("amount", String.valueOf(placedBlock.getAmount())), new TranslatorPlaceholder("worlds", placedBlock.getWorldFormated())));
             } else {
-                lore.add(Translator.build("lore.requirements.placedBlocks..notFulfilled", new TranslatorPlaceholder("material", placedBlock.getDisplayName()), new TranslatorPlaceholder("amount", String.valueOf(placedBlock.getAmount())), new TranslatorPlaceholder("worlds", placedBlock.getWorldFormated())));
+                lore.add(Translator.build("lore.requirements.placedBlocks.notFulfilled", new TranslatorPlaceholder("material", placedBlock.getDisplayName()), new TranslatorPlaceholder("amountPlaced", String.valueOf(getPlayerPlacedBlocks(player.getUniqueId(), placedBlock.getWorlds(), placedBlock.getMaterial()))), new TranslatorPlaceholder("amount", String.valueOf(placedBlock.getAmount())), new TranslatorPlaceholder("worlds", placedBlock.getWorldFormated())));
             }
         });
 
@@ -65,7 +64,7 @@ public class PlacedBlocksRequirement extends BasicRequirement implements Listene
         PlacedBlocksModel placedBlocksModel = (PlacedBlocksModel) requirementModel;
 
         if (!hasPlayerPlacedBlocks(player.getUniqueId(), placedBlocksModel.getWorlds(), placedBlocksModel.getMaterial(), placedBlocksModel.getAmount())) {
-            ChatManager.sendMessage(player, Translator.build("quest.missingRequirements.placedBlocks", new TranslatorPlaceholder("material", placedBlocksModel.getDisplayName()), new TranslatorPlaceholder("amount", String.valueOf(placedBlocksModel.getAmount())), new TranslatorPlaceholder("worlds", placedBlocksModel.getWorldFormated())));
+            ChatManager.sendMessage(player, Translator.build("quest.missingRequirements.placedBlocks", new TranslatorPlaceholder("material", placedBlocksModel.getDisplayName()), new TranslatorPlaceholder("amountPlaced", String.valueOf(getPlayerPlacedBlocks(player.getUniqueId(), placedBlocksModel.getWorlds(), placedBlocksModel.getMaterial()))), new TranslatorPlaceholder("amount", String.valueOf(placedBlocksModel.getAmount())), new TranslatorPlaceholder("worlds", placedBlocksModel.getWorldFormated())));
         }
     }
 
@@ -101,10 +100,10 @@ public class PlacedBlocksRequirement extends BasicRequirement implements Listene
         Type mapType = new TypeToken<HashMap<String, HashMap<String, Integer>>>() {
         }.getType();
 
-        if (!requirementsData.has(getId())) {
+        if (requirementsData.isEmpty()) {
             worlds = new HashMap<>();
         } else {
-            worlds = gson.fromJson(requirementsData.getString(getId()), mapType);
+            worlds = gson.fromJson(requirementsData.toString(), mapType);
         }
 
         if (!worlds.containsKey(world)) {
@@ -112,6 +111,7 @@ public class PlacedBlocksRequirement extends BasicRequirement implements Listene
             blocks.put(material.toString(), 1);
 
             worlds.put(world, blocks);
+            Main.getRequirementManager().putPlayerRequirement(playerUUID, getId(), new JSONObject(worlds));
             return;
         }
 
@@ -128,7 +128,11 @@ public class PlacedBlocksRequirement extends BasicRequirement implements Listene
         Main.getRequirementManager().putPlayerRequirement(playerUUID, getId(), new JSONObject(worlds));
     }
 
-    public boolean hasPlayerPlacedBlocks(UUID playerUUID, ArrayList<World> worldsToLookAt, Material material, int amount) {
+    public boolean hasPlayerPlacedBlocks(UUID playerUUID, ArrayList<String> worldsToLookAt, Material material, int amount) {
+        return getPlayerPlacedBlocks(playerUUID, worldsToLookAt, material) >= amount;
+    }
+
+    public int getPlayerPlacedBlocks(UUID playerUUID, ArrayList<String> worldsToLookAt, Material material) {
         Gson gson = new Gson();
         JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());
 
@@ -137,15 +141,19 @@ public class PlacedBlocksRequirement extends BasicRequirement implements Listene
         Type mapType = new TypeToken<HashMap<String, HashMap<String, Integer>>>() {
         }.getType();
 
-        if (!requirementsData.has(getId())) {
+        if (requirementsData.isEmpty()) {
             worlds = new HashMap<>();
         } else {
-            worlds = gson.fromJson(requirementsData.getString(getId()), mapType);
+            worlds = gson.fromJson(requirementsData.toString(), mapType);
         }
 
         int index = 0;
-        for (World world : worldsToLookAt) {
-            String worldName = world.getName();
+
+        if (worldsToLookAt.isEmpty()) {
+            worldsToLookAt.addAll(worlds.keySet().stream().toList());
+        }
+
+        for (String worldName : worldsToLookAt) {
 
             if (!worlds.containsKey(worldName)) {
                 continue;
@@ -156,12 +164,8 @@ public class PlacedBlocksRequirement extends BasicRequirement implements Listene
             }
 
             index += worlds.get(worldName).get(material.toString());
-
-            if (index >= amount) {
-                return true;
-            }
         }
 
-        return false;
+        return index;
     }
 }

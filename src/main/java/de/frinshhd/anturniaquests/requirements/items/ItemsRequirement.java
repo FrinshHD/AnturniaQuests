@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class ItemsRequirement extends BasicRequirement {
 
-    public ItemsRequirement() {
+    public ItemsRequirement(boolean notGenerated) {
         super("items", false);
     }
 

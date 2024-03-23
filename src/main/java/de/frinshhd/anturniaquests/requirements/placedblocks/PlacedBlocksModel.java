@@ -1,7 +1,6 @@
 package de.frinshhd.anturniaquests.requirements.placedblocks;
 
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
-import jdk.swing.interop.SwingInterOpUtils;
 import net.md_5.bungee.api.chat.TranslatableComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -16,7 +15,7 @@ public class PlacedBlocksModel extends BasicRequirementModel {
 
     private int amount = 1;
 
-    private ArrayList<String> worlds = null;
+    private ArrayList<String> worlds = new ArrayList<>();
 
     public PlacedBlocksModel(LinkedHashMap<String, Object> map) {
         super(map, "placedBlocks");
@@ -46,8 +45,9 @@ public class PlacedBlocksModel extends BasicRequirementModel {
         return new TranslatableComponent(getMaterial().getTranslationKey()).toPlainText();
     }
 
-    public ArrayList<World> getWorlds() {
-        ArrayList<World> worlds = new ArrayList<>();
+    public ArrayList<String> getWorlds() {
+        return this.worlds;
+        /*ArrayList<String> worlds = new ArrayList<>();
 
         this.worlds.forEach(worldName -> {
             World world = Bukkit.getWorld(worldName);
@@ -59,7 +59,7 @@ public class PlacedBlocksModel extends BasicRequirementModel {
             worlds.add(world);
         });
 
-        return worlds;
+        return worlds; */
     }
 
     public String getWorldFormated() {
@@ -67,7 +67,7 @@ public class PlacedBlocksModel extends BasicRequirementModel {
             return "";
         }
 
-        ArrayList<String> worlds = (ArrayList<String>) this.worlds.clone();
+        ArrayList<String> worlds = (ArrayList<String>) this.getWorlds().clone();
         String worldsString = worlds.toString();
         worldsString = worldsString.substring(1, worldsString.length() - 1);
 
