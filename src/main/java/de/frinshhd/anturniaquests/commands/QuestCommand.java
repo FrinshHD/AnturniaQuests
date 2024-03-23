@@ -111,21 +111,29 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
             if (args.length >= 3) {
                 if (args[0].equals("storylines")) {
                     if (args[1].equals("reset")) {
-                        Player target = Bukkit.getPlayer(args[2]);
-                        String storylineID = args[3];
+                        if (sender.hasPermission("anturniaquests.command.admin.storylines.reset")) {
+                            Player target = Bukkit.getPlayer(args[2]);
+                            String storylineID = args[3];
 
-                        if (Main.getStorylinesManager().getStoryline(storylineID) == null) {
-                            sendHelpMessage(sender);
-                            return false;
+                            if (Main.getStorylinesManager().getStoryline(storylineID) == null) {
+                                sendHelpMessage(sender);
+                                return false;
+                            }
+
+                            if (target == null) {
+                                sendHelpMessage(sender);
+                                return false;
+                            }
+
+                            Main.getStorylinesManager().removePlayerStoryline(target, storylineID);
+                            ChatManager.sendMessage(sender, Translator.build("storyline.command.reset",
+                                    new TranslatorPlaceholder("playerName", target.getName()),
+                                    new TranslatorPlaceholder("storylineName", Main.getStorylinesManager().getStoryline(storylineID).getName())));
+                            return true;
                         }
 
-                        if (target == null) {
-                            sendHelpMessage(sender);
-                            return false;
-                        }
-
-                        Main.getStorylinesManager().removePlayerStoryline(target, storylineID);
-                        return true;
+                        ChatManager.sendMessage(sender, Translator.build("noPermission"));
+                        return false;
                     }
                 }
             }
@@ -258,6 +266,10 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
             commands.add("reset");
         }
 
+        if (sender.hasPermission("anturniaquests.command.admin.storylines")) {
+            commands.add("storylines");
+        }
+
         // Filter
         commands.forEach(completion -> {
             if (args.length == 0) {
@@ -269,25 +281,42 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
                 completions.add(completion);
                 return;
             }
+        });
 
-            String arg0 = args[0];
+        String arg0 = args[0];
 
-            //2. arg
-            if (args.length == 2) {
-                if (arg0.equals("reset")) {
+        //2. arg
+        if (args.length == 2) {
+            if (arg0.equals("reset")) {
+                if (sender.hasPermission("anturniaquests.command.admin.reset")) {
                     Main.getInstance().getServer().getOnlinePlayers().forEach(player -> {
                         if (player.getName().toLowerCase().startsWith(args[1])) {
                             completions.add(player.getName());
                         }
                     });
-                    return;
                 }
             }
 
+            if (arg0.equals("storylines")) {
+                ArrayList<String> possibleSubCommands = new ArrayList<>();
 
-            //3. arg
-            if (args.length == 3) {
-                if (arg0.equals("reset")) {
+                if (sender.hasPermission("anturniaquests.command.admin.storylines.reset")) {
+                    possibleSubCommands.add("reset");
+                }
+
+                possibleSubCommands.forEach(possibleSubCommand -> {
+                    if (possibleSubCommand.toLowerCase().startsWith(args[1])) {
+                        completions.add(possibleSubCommand);
+                    }
+                });
+            }
+        }
+
+
+        //3. arg
+        if (args.length == 3) {
+            if (arg0.equals("reset")) {
+                if (sender.hasPermission("anturniaquests.command.admin.reset")) {
                     ArrayList<String> quests = new ArrayList<>(Main.getQuestsManager().quests.keySet());
 
                     quests.forEach(quest -> {
@@ -295,10 +324,38 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
                             completions.add(quest);
                         }
                     });
-                    return;
                 }
             }
-        });
+
+            if (arg0.equals("storylines")) {
+                if (args[1].equals("reset")) {
+                    if (sender.hasPermission("anturniaquests.command.admin.storylines.reset")) {
+                        Main.getInstance().getServer().getOnlinePlayers().forEach(player -> {
+                            if (player.getName().toLowerCase().startsWith(args[2])) {
+                                completions.add(player.getName());
+                            }
+                        });
+                    }
+                }
+            }
+        }
+
+        //4. arg
+        if (args.length == 4) {
+            if (arg0.equals("storylines")) {
+                if (args[1].equals("reset")) {
+                    if (sender.hasPermission("anturniaquests.command.admin.storylines.reset")) {
+                        ArrayList<String> storylines = new ArrayList<>(Main.getStorylinesManager().storylines.keySet());
+
+                        storylines.forEach(storyline -> {
+                            if (storyline.toLowerCase().startsWith(args[3])) {
+                                completions.add(storyline);
+                            }
+                        });
+                    }
+                }
+            }
+        }
 
         return completions;
     }

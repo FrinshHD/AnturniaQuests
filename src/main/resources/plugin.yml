@@ -25,3 +25,7 @@ permissions:
     default: op
   anturniaquests.admin.updateNotify:
     default: op
+  anturniaquests.command.admin.storylines:
+    default: op
+  anturniaquests.command.admin.storylines.reset:
+    default: op
