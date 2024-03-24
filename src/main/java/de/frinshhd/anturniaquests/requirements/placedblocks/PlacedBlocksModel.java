@@ -2,9 +2,7 @@ package de.frinshhd.anturniaquests.requirements.placedblocks;
 
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
 import net.md_5.bungee.api.chat.TranslatableComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.World;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

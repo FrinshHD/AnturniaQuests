@@ -60,7 +60,8 @@ public class RequirementManager implements Listener {
                         requirements.put(requirement.getId(), requirement);
                     }
                 } catch (ClassNotFoundException | IllegalAccessException | InstantiationException |
-                         InvocationTargetException | IllegalArgumentException | NoClassDefFoundError | NoSuchMethodException e) {
+                         InvocationTargetException | IllegalArgumentException | NoClassDefFoundError |
+                         NoSuchMethodException e) {
                     Main.getInstance().getLogger().warning("Error loading listeners in class " + className + " " + e);
                 }
             }
