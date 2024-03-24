@@ -42,9 +42,9 @@ public class DestroyedBlocksRequirement extends BasicRequirement implements List
         placedBlocks.forEach(placedBlock -> {
 
             if (hasPlayerDestroyedBlocks(player.getUniqueId(), placedBlock.getWorlds(), placedBlock.getMaterial(), placedBlock.getAmount())) {
-                lore.add(Translator.build("lore.requirements.destroyedBlocks.fulfilled", new TranslatorPlaceholder("material", placedBlock.getDisplayName()), new TranslatorPlaceholder("amountPlaced", String.valueOf(getPlayerDestroyedBlocks(player.getUniqueId(), placedBlock.getWorlds(), placedBlock.getMaterial()))), new TranslatorPlaceholder("amount", String.valueOf(placedBlock.getAmount())), new TranslatorPlaceholder("worlds", placedBlock.getWorldFormated())));
+                lore.add(Translator.build("lore.requirements.destroyedBlocks.fulfilled", new TranslatorPlaceholder("material", placedBlock.getDisplayName()), new TranslatorPlaceholder("amountDestroyed", String.valueOf(getPlayerDestroyedBlocks(player.getUniqueId(), placedBlock.getWorlds(), placedBlock.getMaterial()))), new TranslatorPlaceholder("amount", String.valueOf(placedBlock.getAmount())), new TranslatorPlaceholder("worlds", placedBlock.getWorldFormated())));
             } else {
-                lore.add(Translator.build("lore.requirements.destroyedBlocks.notFulfilled", new TranslatorPlaceholder("material", placedBlock.getDisplayName()), new TranslatorPlaceholder("amountPlaced", String.valueOf(getPlayerDestroyedBlocks(player.getUniqueId(), placedBlock.getWorlds(), placedBlock.getMaterial()))), new TranslatorPlaceholder("amount", String.valueOf(placedBlock.getAmount())), new TranslatorPlaceholder("worlds", placedBlock.getWorldFormated())));
+                lore.add(Translator.build("lore.requirements.destroyedBlocks.notFulfilled", new TranslatorPlaceholder("material", placedBlock.getDisplayName()), new TranslatorPlaceholder("amountDestroyed", String.valueOf(getPlayerDestroyedBlocks(player.getUniqueId(), placedBlock.getWorlds(), placedBlock.getMaterial()))), new TranslatorPlaceholder("amount", String.valueOf(placedBlock.getAmount())), new TranslatorPlaceholder("worlds", placedBlock.getWorldFormated())));
             }
         });
 
@@ -61,7 +61,7 @@ public class DestroyedBlocksRequirement extends BasicRequirement implements List
         DestroyedBlocksModel destroyedBlocksModel = (DestroyedBlocksModel) requirementModel;
 
         if (!hasPlayerDestroyedBlocks(player.getUniqueId(), destroyedBlocksModel.getWorlds(), destroyedBlocksModel.getMaterial(), destroyedBlocksModel.getAmount())) {
-            ChatManager.sendMessage(player, Translator.build("quest.missingRequirements.destroyedBlocks", new TranslatorPlaceholder("material", destroyedBlocksModel.getDisplayName()), new TranslatorPlaceholder("amountPlaced", String.valueOf(getPlayerDestroyedBlocks(player.getUniqueId(), destroyedBlocksModel.getWorlds(), destroyedBlocksModel.getMaterial()))), new TranslatorPlaceholder("amount", String.valueOf(destroyedBlocksModel.getAmount())), new TranslatorPlaceholder("worlds", destroyedBlocksModel.getWorldFormated())));
+            ChatManager.sendMessage(player, Translator.build("quest.missingRequirements.destroyedBlocks", new TranslatorPlaceholder("material", destroyedBlocksModel.getDisplayName()), new TranslatorPlaceholder("amountDestroyed", String.valueOf(getPlayerDestroyedBlocks(player.getUniqueId(), destroyedBlocksModel.getWorlds(), destroyedBlocksModel.getMaterial()))), new TranslatorPlaceholder("amount", String.valueOf(destroyedBlocksModel.getAmount())), new TranslatorPlaceholder("worlds", destroyedBlocksModel.getWorldFormated())));
         }
     }
 
