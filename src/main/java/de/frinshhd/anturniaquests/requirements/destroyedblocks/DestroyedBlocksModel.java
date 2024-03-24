@@ -1,4 +1,4 @@
-package de.frinshhd.anturniaquests.requirements.destroyedblocks.placedblocks;
+package de.frinshhd.anturniaquests.requirements.destroyedblocks;
 
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
 import net.md_5.bungee.api.chat.TranslatableComponent;

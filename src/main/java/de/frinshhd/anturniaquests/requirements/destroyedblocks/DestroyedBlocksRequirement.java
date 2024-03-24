@@ -1,4 +1,4 @@
-package de.frinshhd.anturniaquests.requirements.destroyedblocks.placedblocks;
+package de.frinshhd.anturniaquests.requirements.destroyedblocks;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
