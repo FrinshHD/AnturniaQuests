@@ -61,11 +61,10 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
                 if (args[0].equals("reset")) {
                     if (sender.hasPermission("anturniaquests.command.admin.reset")) {
                         Player target = Bukkit.getPlayer(args[1]);
-                        String questID = args[2];
+                        String questID = null;
 
-                        if (Main.getQuestsManager().getQuest(questID) == null) {
-                            sendHelpMessage(sender);
-                            return false;
+                        if (args.length >= 3) {
+                            questID = args[2];
                         }
 
                         if (target == null) {
@@ -89,7 +88,11 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
                         }
 
 
-                        quest.setQuest(questID, 0);
+                        if (questID == null || Main.getQuestsManager().getQuest(questID) == null) {
+                            quest.resetQuests();
+                        } else {
+                            quest.setQuest(questID, 0);
+                        }
 
                         try {
                             questsDao.update(quest);
@@ -97,9 +100,14 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
                             throw new RuntimeException(e);
                         }
 
-                        ChatManager.sendMessage(sender, Translator.build("quest.command.reset",
-                                new TranslatorPlaceholder("playerName", target.getName()),
-                                new TranslatorPlaceholder("questName", Main.getQuestsManager().getQuest(questID).getFriendlyName())));
+                        if (questID == null || Main.getQuestsManager().getQuest(questID) == null) {
+                            ChatManager.sendMessage(sender, Translator.build("quest.command.reset.all",
+                                    new TranslatorPlaceholder("playerName", target.getName())));
+                        } else {
+                            ChatManager.sendMessage(sender, Translator.build("quest.command.reset",
+                                    new TranslatorPlaceholder("playerName", target.getName()),
+                                    new TranslatorPlaceholder("questName", Main.getQuestsManager().getQuest(questID).getFriendlyName())));
+                        }
 
                         return true;
                     }
@@ -113,11 +121,10 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
                     if (args[1].equals("reset")) {
                         if (sender.hasPermission("anturniaquests.command.admin.storylines.reset")) {
                             Player target = Bukkit.getPlayer(args[2]);
-                            String storylineID = args[3];
+                            String storylineID = null;
 
-                            if (Main.getStorylinesManager().getStoryline(storylineID) == null) {
-                                sendHelpMessage(sender);
-                                return false;
+                            if (args.length >= 4) {
+                                storylineID = args[3];
                             }
 
                             if (target == null) {
@@ -125,10 +132,17 @@ public class QuestCommand implements CommandExecutor, TabCompleter {
                                 return false;
                             }
 
-                            Main.getStorylinesManager().removePlayerStoryline(target, storylineID);
-                            ChatManager.sendMessage(sender, Translator.build("storyline.command.reset",
-                                    new TranslatorPlaceholder("playerName", target.getName()),
-                                    new TranslatorPlaceholder("storylineName", Main.getStorylinesManager().getStoryline(storylineID).getName())));
+                            if (storylineID == null || Main.getStorylinesManager().getStoryline(storylineID) == null) {
+                                Main.getStorylinesManager().resetPlayerStorylines(target);
+                                ChatManager.sendMessage(sender, Translator.build("storyline.command.reset.all",
+                                        new TranslatorPlaceholder("playerName", target.getName())));
+                            } else {
+                                Main.getStorylinesManager().removePlayerStoryline(target, storylineID);
+                                ChatManager.sendMessage(sender, Translator.build("storyline.command.reset",
+                                        new TranslatorPlaceholder("playerName", target.getName()),
+                                        new TranslatorPlaceholder("storylineName", Main.getStorylinesManager().getStoryline(storylineID).getName())));
+                            }
+
                             return true;
                         }
 

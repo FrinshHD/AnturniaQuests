@@ -415,6 +415,19 @@ public class StorylinesManager {
         playerStats.put(uuid, object);
     }
 
+    public void resetPlayerStorylines(Player player) {
+        for (Map.Entry<String, PlayerArrayList<UUID>> stringPlayerArrayListEntry : storylineCurrentPlayers.entrySet()) {
+            String storylineID = stringPlayerArrayListEntry.getKey();
+            PlayerArrayList<UUID> players = stringPlayerArrayListEntry.getValue();
+
+            players.remove(player.getUniqueId());
+
+            storylineCurrentPlayers.put(storylineID, players);
+        }
+
+        playerStats.put(player.getUniqueId(), new JSONObject());
+    }
+
     //Todo: start runnable logic
     public void startRunnable() {
         this.runnable = new BukkitRunnable() {

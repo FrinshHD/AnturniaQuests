@@ -72,6 +72,10 @@ public class Quests {
         this.quests = hashMapToString(quests);
     }
 
+    public void resetQuests() {
+        this.quests = hashMapToString(new HashMap<String, Integer>());
+    }
+
     public void putCooldown(String questID, long lastCompletion) {
         HashMap<String, Long> cooldown;
         if (this.cooldowns == null || this.cooldowns.isEmpty() || this.cooldowns.equals("{}")) {
