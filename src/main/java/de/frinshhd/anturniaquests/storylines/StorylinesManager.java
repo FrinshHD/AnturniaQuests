@@ -129,6 +129,7 @@ public class StorylinesManager {
 
             if (storyline.getNPC(npcID) != null) {
                 storylineID = stringStorylineEntry.getKey();
+                break;
             }
         }
 
@@ -157,16 +158,40 @@ public class StorylinesManager {
             return;
         }
 
+        //check for stages
+
+        ArrayList<Integer> playerCompletedStages = getPlayerCompletedStages(player, storylineID);
+        int playerCurrentActionID = playerStorylineStats.getInt("currentAction");
+
         int playerStageID = playerStorylineStats.getInt("currentStage");
+        //NPC realNpc = storyline.getNPC(npcID);
         NPC npc = storyline.getNPCStageID(playerStageID);
+        NPC npcBefore = null;
+
+        if (playerStageID >= 1) {
+            npcBefore = storyline.getNPCStageID(playerStageID - 1);
+        }
 
         //check if currentStage of the player is the same as the one of the npc
         if (!npc.getNpcID().equals(npcID)) {
-            ChatManager.sendMessage(player, Translator.build("storyline.falseStageNPC"));
-            return;
+            if (npcBefore == null && npc.getGroup() == null) {
+                ChatManager.sendMessage(player, Translator.build("storyline.falseStageNPC"));
+                return;
+            }
+
+            if (npcBefore == null)
+
+            ArrayList<Integer> missingNpcs = getPlayerMissingNPCsFromGroup(player, storylineID, npcBefore.getGroup());
+
+            if (missingNpcs.isEmpty()) {
+                ChatManager.sendMessage(player, Translator.build("storyline.falseStageNPC"));
+                return;
+            }
+
+
         }
 
-        int playerCurrentActionID = playerStorylineStats.getInt("currentAction");
+
 
         //check if counter has to start //Todo
         if (storyline.getTimeToComplete() > -1) {
@@ -234,12 +259,14 @@ public class StorylinesManager {
             putPlayerLastCompletion(player, storylineID, System.currentTimeMillis());
             putPlayerStartTime(player, storylineID, -1);
             putPlayerStageStartTime(player, storylineID, -1);
+            resetPlayerCompletedStages(player, storylineID);
 
             removePlayerCurrentStoryline(storylineID, player);
         } else {
             //else set player to next stageID
             putPlayerCurrentAction(player, storylineID, 0);
             putPlayerCurrentStage(player, storylineID, playerStageID);
+            addPlayerCompletedStage(player, storylineID, playerStageID - 1);
         }
     }
 
@@ -249,6 +276,7 @@ public class StorylinesManager {
         putPlayerStartTime(player, storylineID, -1);
         putPlayerStageStartTime(player, storylineID, -1);
         putPlayerLastCompletion(player, storylineID, System.currentTimeMillis());
+        resetPlayerCompletedStages(player, storylineID);
     }
 
     public JSONObject getPlayerStats(Player player) {
@@ -273,6 +301,7 @@ public class StorylinesManager {
         object.put("currentAction", 0);
         object.put("currentStartTime", -1);
         object.put("currentStageStartTime", -1);
+        object.put("completedStages", new ArrayList<Integer>());
 
         return object;
     }
@@ -345,6 +374,18 @@ public class StorylinesManager {
         putStorylineStats(player, storylineID, "currentStageStartTime", startTime);
     }
 
+    public void addPlayerCompletedStage(Player player, String storylineID, int stageID) {
+        putStorylineStats(player, storylineID, "completedStages", getPlayerCompletedStages(player, storylineID).add(stageID));
+    }
+
+    public void resetPlayerCompletedStages(Player player, String storylineID) {
+        putStorylineStats(player, storylineID, "completedStages", new ArrayList<Integer>());
+    }
+
+    public ArrayList<Integer> getPlayerCompletedStages(Player player, String storylineID) {
+        return (ArrayList<Integer>) getStorylineStats(player, storylineID, "completedStages", new ArrayList<Integer>());
+    }
+
     public void putStorylineStats(Player player, String storylineID, String key, Object value) {
         UUID uuid = player.getUniqueId();
 
@@ -413,6 +454,22 @@ public class StorylinesManager {
 
         object.put(storylineID, storylineObject);
         playerStats.put(uuid, object);
+    }
+
+    public ArrayList<Integer> getPlayerMissingNPCsFromGroup(Player player, String storylineID, String groupID) {
+        ArrayList<Integer> missingStages = new ArrayList<>();
+        ArrayList<Integer> completedStages = getPlayerCompletedStages(player, storylineID);
+
+        int index = 0;
+        for (NPC npc : Main.getStorylinesManager().getStoryline(storylineID).getNpcs()) {
+            if (npc.getGroup().equals(groupID) && !completedStages.contains(index)) {
+                missingStages.add(index);
+            }
+
+            index++;
+        }
+
+        return missingStages;
     }
 
     public void resetPlayerStorylines(Player player) {
