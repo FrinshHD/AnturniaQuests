@@ -13,6 +13,7 @@ import java.util.List;
 public class HelpCommand extends BasicSubCommand {
     public HelpCommand() {
         super("quests", "anturniaquests.command.help", new String[]{"help"});
+        setDescription("Shows all available commands and their descriptions.");
     }
 
     @Override

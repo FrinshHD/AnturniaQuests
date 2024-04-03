@@ -15,6 +15,7 @@ import java.util.List;
 public class QuestCommand extends BasicCommand {
     public QuestCommand() {
         super("quests", "anturniaquests.command.quests");
+        setDescription("Opens the quest menu.");
     }
 
     @Override

@@ -20,6 +20,7 @@ import java.util.UUID;
 public class ResetCommand extends BasicSubCommand {
     public ResetCommand() {
         super("quests", "anturniaquests.command.admin.reset", new String[]{"reset"});
+        setDescription("Resets a player's quest progress.");
     }
 
     @Override
