@@ -123,44 +123,60 @@ public class CommandManager {
         return commands.get(name);
     }
 
+    /**
+     * Returns the subcommand with the given path, or the closest match if no exact match is found.
+     *
+     * @param command        The command to search for subcommands in.
+     * @param subCommandPath The path of the subcommand to find.
+     * @return The subcommand with the given path, or the closest match if no exact match is found.
+     */
     public BasicSubCommand getSubCommand(BasicCommand command, String... subCommandPath) {
-        List<BasicSubCommand> subCommands = new ArrayList<>();
+        List<BasicSubCommand> subCommands = getSubCommands(command);
 
-        for (BasicSubCommand subCommand : getSubCommands(command)) {
-            if (subCommand.getPath()[0].startsWith(subCommandPath[0])) {
-                subCommands.add(subCommand);
+        // Iterate over the parts of the subcommand path
+        int index = 0;
+        for (String pathPart : subCommandPath) {
+
+            if (index >= subCommandPath.length) {
+                break;
             }
-        }
 
-        System.out.println(Arrays.toString(subCommandPath));
-        System.out.println(subCommands);
+            if (subCommands.size() == 1) {
+                break;
+            }
 
+            List<BasicSubCommand> subCommandsMatch = new ArrayList<>(subCommands);
+            List<BasicSubCommand> elementsToRemove = new ArrayList<>();
 
-        int index = 1;
-        while (subCommands.size() > 1) {
-            for (BasicSubCommand subCommand : subCommands) {
-                if (subCommands.size() == 1) {
-                    break;
-                }
-
+            for (BasicSubCommand subCommand : subCommandsMatch) {
                 if (subCommand.getPath().length <= index) {
-                    subCommands.remove(subCommand);
+                    elementsToRemove.add(subCommand);
                     continue;
                 }
 
-                if (!subCommand.getPath()[index].startsWith(subCommandPath[index])) {
-                    subCommands.remove(subCommand);
+                if (!subCommand.getPath()[index].equalsIgnoreCase(pathPart)) {
+                    elementsToRemove.add(subCommand);
                 }
             }
-            
+
+            subCommandsMatch.removeAll(elementsToRemove);
+
+            if (subCommandsMatch.isEmpty()) {
+                break;
+            }
+
+            subCommands = subCommandsMatch;
+
             index++;
         }
-        
-        if (subCommands.size() == 1) {
+
+        // If we've made it to the end of the loop, there should be at least one subcommand left in the list
+        // Return the first subcommand in the list
+        if (!subCommands.isEmpty()) {
             return subCommands.get(0);
         }
 
-
+        // If the list is empty, the function will return a "fake" subcommand with a path of "<unknown>"
         return null;
     }
 
