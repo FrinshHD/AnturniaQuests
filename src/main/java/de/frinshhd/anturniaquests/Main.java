@@ -40,7 +40,7 @@ public final class Main extends JavaPlugin {
     private static CategoriesManager categoriesManager;
     private static StorylinesManager storylinesManager;
     private static RequirementManager requirementManager;
-    private static CommandManager commandManager = new CommandManager();
+    private static CommandManager commandManager;
 
     public static Main getInstance() {
         return INSTANCE;
@@ -181,6 +181,7 @@ public final class Main extends JavaPlugin {
         }
 
         commandManager = new CommandManager();
+        commandManager.load(classNames, canonicalName);
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null && Main.getInstance().getServer().getPluginManager().getPlugin("PlaceholderAPI").isEnabled()) {
             DynamicPlaceholderExpansion.load(classNames, canonicalName);
@@ -233,6 +234,6 @@ public final class Main extends JavaPlugin {
     }
 
     public void registerCommands() {
-        Objects.requireNonNull(Bukkit.getPluginCommand("quests")).setExecutor(new QuestCommand());
+        //Objects.requireNonNull(Bukkit.getPluginCommand("quests")).setExecutor(new QuestCommand());
     }
 }

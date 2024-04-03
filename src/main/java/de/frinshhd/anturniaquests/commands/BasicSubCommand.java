@@ -2,7 +2,9 @@ package de.frinshhd.anturniaquests.commands;
 
 import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public abstract class BasicSubCommand {
 
@@ -58,4 +60,12 @@ public abstract class BasicSubCommand {
     }
 
     public abstract boolean execute(CommandSender sender, String[] args);
+
+    public List<String> tabComplete(CommandSender sender, String[] args) {
+        if (getPermission() != null && !sender.hasPermission(getPermission())) {
+            return null;
+        }
+
+        return new ArrayList<>();
+    }
 }

@@ -6,70 +6,28 @@ import de.frinshhd.anturniaquests.utils.Translator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.defaults.BukkitCommand;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class BasicCommand implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.List;
 
-    private final String command;
+public abstract class BasicCommand extends Command {
 
-    private final String permission;
+    public BasicCommand(String name, String permission) {
+        super(name);
 
-    private String description = null;
-
-    public BasicCommand(String command, String permission) {
-        this.command = command;
-        this.permission = permission;
+        this.setPermission(permission);
     }
 
-    public String getCommand() {
-        return command;
-    }
 
-    public String getPermission() {
-        return permission;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    protected void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * Do not use this method, use execute instead!
-     *
-     * @param sender  The sender of the command
-     * @param command The command
-     * @param label   The label
-     * @param args    The arguments
-     * @return true if the command was executed successfully
-     */
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
         if (getPermission() != null && !sender.hasPermission(getPermission())) {
             ChatManager.sendMessage(sender, Translator.build("noPermission"));
             return false;
         }
 
-        return execute(sender, command, args);
-    }
-
-
-    /**
-     * Executes the command.
-     * <p>
-     * This method is called when a command is executed. It first retrieves the subcommand associated with this command and the provided arguments.
-     * If a subcommand is found, it is executed with the provided sender and arguments.
-     * If no subcommand is found, the method returns false, indicating that the command was not executed successfully.
-     *
-     * @param sender  The sender of the command.
-     * @param command The command to be executed.
-     * @param args    The arguments of the command.
-     * @return true if the command or subcommand was executed successfully, false otherwise.
-     */
-    public boolean execute(CommandSender sender, Command command, String[] args) {
         BasicSubCommand subCommand = Main.getCommandManager().getSubCommand(this, args);
 
         if (subCommand != null) {
@@ -79,5 +37,48 @@ public abstract class BasicCommand implements CommandExecutor {
         // first layer logic comes here
 
         return false;
+    }
+
+    @NotNull
+    @Override
+    public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
+        super.tabComplete(sender, alias, args);
+        List<String> completions = new ArrayList<>();
+
+        if (getPermission() != null && !sender.hasPermission(getPermission())) {
+            return new ArrayList<>();
+        }
+
+        //Todo: add support for layered subCommandss
+
+        if (args.length <= 1) {
+
+            List<BasicSubCommand> basicSubCommands = Main.getCommandManager().getSubCommands(this);
+
+            basicSubCommands.forEach(basicSubCommand -> {
+                if (basicSubCommand.getPath().length >= args.length && basicSubCommand.getPath()[0].startsWith(args[0])) {
+                    completions.add(basicSubCommand.getPath()[args.length - 1]);
+                }
+            });
+        } else {
+            BasicSubCommand subCommand = Main.getCommandManager().getSubCommand(this, args);
+
+            if (subCommand != null) {
+                completions.addAll(subCommand.tabComplete(sender, args));
+            }
+        }
+
+
+            /*BasicSubCommand subCommand = Main.getCommandManager().getSubCommand(this, args);
+
+            System.out.println(subCommand);
+
+            if (subCommand != null) {
+                completions.addAll(subCommand.tabComplete(sender, args));
+            } */
+
+        // first layer logic comes here
+
+        return completions;
     }
 }

@@ -1,8 +1,11 @@
 package de.frinshhd.anturniaquests.commands;
 
 import de.frinshhd.anturniaquests.Main;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandMap;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
@@ -16,7 +19,7 @@ public class CommandManager {
     private Map<BasicCommand, List<BasicSubCommand>> subCommands = new HashMap<>();
 
     public CommandManager() {
-
+        //Todo: execute load function
     }
 
     public void load(Set<String> classNames, String canonicalName) {
@@ -48,7 +51,19 @@ public class CommandManager {
 
                         BasicCommand basicCommand = (BasicCommand) constructor.newInstance();
 
-                        commands.put(basicCommand.getCommand(), basicCommand);
+                        commands.put(basicCommand.getName(), basicCommand);
+
+                        try {
+                            final Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+
+                            bukkitCommandMap.setAccessible(true);
+                            CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
+
+                            commandMap.register(Main.getInstance().getName(), basicCommand);
+                        } catch(Exception e) {
+                            Main.getInstance().getLogger().warning("[DynamicCommands] Error registering command " + className + " " + e);
+                            return;
+                        }
 
                         Main.getInstance().getLogger().info("[DynamicCommands] Successfully registered command " + className);
                     }
@@ -109,11 +124,42 @@ public class CommandManager {
     }
 
     public BasicSubCommand getSubCommand(BasicCommand command, String... subCommandPath) {
+        List<BasicSubCommand> subCommands = new ArrayList<>();
+
         for (BasicSubCommand subCommand : getSubCommands(command)) {
-            if (Arrays.equals(subCommand.getPath(), subCommandPath)) {
-                return subCommand;
+            if (subCommand.getPath()[0].startsWith(subCommandPath[0])) {
+                subCommands.add(subCommand);
             }
         }
+
+        System.out.println(Arrays.toString(subCommandPath));
+        System.out.println(subCommands);
+
+
+        int index = 1;
+        while (subCommands.size() > 1) {
+            for (BasicSubCommand subCommand : subCommands) {
+                if (subCommands.size() == 1) {
+                    break;
+                }
+
+                if (subCommand.getPath().length <= index) {
+                    subCommands.remove(subCommand);
+                    continue;
+                }
+
+                if (!subCommand.getPath()[index].startsWith(subCommandPath[index])) {
+                    subCommands.remove(subCommand);
+                }
+            }
+            
+            index++;
+        }
+        
+        if (subCommands.size() == 1) {
+            return subCommands.get(0);
+        }
+
 
         return null;
     }
