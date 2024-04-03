@@ -16,6 +16,7 @@ public class StorylinesResetCommand extends BasicSubCommand {
 
     public StorylinesResetCommand() {
         super("quests", "anturniaquests.command.admin.storylines.reset", new String[]{"storylines", "reset"});
+        setDescription("Resets a player's storyline progress.");
     }
 
     @Override

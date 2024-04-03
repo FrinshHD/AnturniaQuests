@@ -17,6 +17,7 @@ public class StorylinesCommand extends BasicSubCommand {
 
     public StorylinesCommand() {
         super("quests", "anturniaquests.command.admin.storylines", new String[]{"storylines"});
+        setDescription("Manage storylines.");
     }
 
     @Override
