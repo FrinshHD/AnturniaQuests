@@ -5,7 +5,9 @@ import de.frinshhd.anturniaquests.commands.BasicSubCommand;
 import de.frinshhd.anturniaquests.utils.ChatManager;
 import de.frinshhd.anturniaquests.utils.Translator;
 import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,52 +20,59 @@ public class StorylinesResetCommand extends BasicSubCommand {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        StringBuilder message = new StringBuilder();
+        Player target = Bukkit.getPlayer(args[2]);
+        String storylineID = null;
 
-        message.append(
-                        Translator.build("help.title",
-                                new TranslatorPlaceholder("commandName", "/" + Main.getCommandManager().getCommand(getMainCommand()).getName())))
-                .append("\n");
-
-        if (Main.getCommandManager().getCommand(getMainCommand()).getDescription().isEmpty()) {
-            message.append(
-                            Translator.build("help.command.noDescription",
-                                    new TranslatorPlaceholder("command", "/" + getMainCommand())))
-                    .append("\n");
-        } else {
-            message.append(
-                            Translator.build("help.command",
-                                    new TranslatorPlaceholder("command", "/" + getMainCommand()),
-                                    new TranslatorPlaceholder("description", Main.getCommandManager().getCommand(getMainCommand()).getDescription())))
-                    .append("\n");
+        if (args.length >= 4) {
+            storylineID = args[3];
         }
 
-        List<BasicSubCommand> subCommands = Main.getCommandManager().getSubCommands(Main.getCommandManager().getCommand(getMainCommand()));
+        if (target == null) {
+            Main.getCommandManager().getSubCommand(Main.getCommandManager().getCommand(getMainCommand()), "help").execute(sender, new String[]{"help", "storylines", "reset"});
+            return false;
+        }
 
-        subCommands.forEach(subCommand -> {
-            if (subCommand.getPermission() == null || sender.hasPermission(subCommand.getPermission())) {
-                if (subCommand.getDescription() == null || subCommand.getDescription().isEmpty()) {
-                    message.append(
-                                    Translator.build("help.command.noDescription",
-                                            new TranslatorPlaceholder("command", "/" + subCommand.getCommandFull())))
-                            .append("\n");
-                } else {
-                    message.append(
-                                    Translator.build("help.command",
-                                            new TranslatorPlaceholder("command", "/" + subCommand.getCommandFull()),
-                                            new TranslatorPlaceholder("description", subCommand.getDescription())))
-                            .append("\n");
-                }
-            }
-        });
+        if (storylineID == null || Main.getStorylinesManager().getStoryline(storylineID) == null) {
+            Main.getStorylinesManager().resetPlayerStorylines(target);
+            ChatManager.sendMessage(sender, Translator.build("storyline.command.reset.all",
+                    new TranslatorPlaceholder("playerName", target.getName())));
+        } else {
+            Main.getStorylinesManager().removePlayerStoryline(target, storylineID);
+            ChatManager.sendMessage(sender, Translator.build("storyline.command.reset",
+                    new TranslatorPlaceholder("playerName", target.getName()),
+                    new TranslatorPlaceholder("storylineName", Main.getStorylinesManager().getStoryline(storylineID).getName())));
+        }
 
-        ChatManager.sendMessage(sender, message.toString());
         return true;
     }
 
     @Override
     public List<String> tabComplete(CommandSender sender, String[] args) {
-        return new ArrayList<>();
+        if (super.tabComplete(sender, args) == null) {
+            return new ArrayList<>();
+        }
+
+        List<String> completions = new ArrayList<>();
+
+        if (args.length == 3) {
+            Main.getInstance().getServer().getOnlinePlayers().forEach(player -> {
+                if (player.getName().toLowerCase().startsWith(args[2])) {
+                    completions.add(player.getName());
+                }
+            });
+        }
+
+        if (args.length == 4) {
+            ArrayList<String> storylines = new ArrayList<>(Main.getStorylinesManager().storylines.keySet());
+
+            storylines.forEach(storyline -> {
+                if (storyline.toLowerCase().startsWith(args[3])) {
+                    completions.add(storyline);
+                }
+            });
+        }
+
+        return completions;
     }
 
 }
