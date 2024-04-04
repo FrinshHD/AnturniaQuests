@@ -131,6 +131,11 @@ public class CommandManager {
      * @return The subcommand with the given path, or the closest match if no exact match is found.
      */
     public BasicSubCommand getSubCommand(BasicCommand command, String... subCommandPath) {
+        if (subCommandPath.length == 0) {
+            return null;
+        }
+
+
         List<BasicSubCommand> subCommands = getSubCommands(command);
 
         // Iterate over the parts of the subcommand path
@@ -154,6 +159,16 @@ public class CommandManager {
                     continue;
                 }
 
+                if (subCommand.getPath()[index].startsWith("<") && subCommand.getPath()[index].endsWith(">")) {
+                    elementsToRemove.add(subCommand);
+                    continue;
+                }
+
+                if (subCommand.getPath()[index].startsWith("[") && subCommand.getPath()[index].endsWith("]")) {
+                    elementsToRemove.add(subCommand);
+                    continue;
+                }
+
                 if (!subCommand.getPath()[index].equalsIgnoreCase(pathPart)) {
                     elementsToRemove.add(subCommand);
                 }
@@ -161,7 +176,7 @@ public class CommandManager {
 
             subCommandsMatch.removeAll(elementsToRemove);
 
-            if (subCommandsMatch.isEmpty()) {
+            if (subCommandsMatch.isEmpty() && index > 0) {
                 break;
             }
 

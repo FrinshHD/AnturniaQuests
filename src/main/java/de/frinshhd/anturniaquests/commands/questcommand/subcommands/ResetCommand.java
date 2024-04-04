@@ -23,7 +23,7 @@ public class ResetCommand extends BasicSubCommand {
     private final PlayerHashMap<UUID, Long> lastExecution = new PlayerHashMap<>();
 
     public ResetCommand() {
-        super("quests", "anturniaquests.command.admin.reset", new String[]{"reset"});
+        super("quests", "anturniaquests.command.admin.reset", new String[]{"reset", "<player>", "[questID}"});
         setDescription("Resets a player's quest progress.");
     }
 
