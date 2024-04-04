@@ -1,6 +1,7 @@
 package de.frinshhd.anturniaquests;
 
 import de.frinshhd.anturniaquests.categories.CategoriesManager;
+import de.frinshhd.anturniaquests.commands.CommandManager;
 import de.frinshhd.anturniaquests.commands.QuestCommand;
 import de.frinshhd.anturniaquests.config.ConfigManager;
 import de.frinshhd.anturniaquests.menusystem.PlayerMenuUtility;
@@ -39,6 +40,7 @@ public final class Main extends JavaPlugin {
     private static CategoriesManager categoriesManager;
     private static StorylinesManager storylinesManager;
     private static RequirementManager requirementManager;
+    private static CommandManager commandManager;
 
     public static Main getInstance() {
         return INSTANCE;
@@ -54,6 +56,9 @@ public final class Main extends JavaPlugin {
 
     public static ConfigManager getConfigManager() {
         return configManager;
+    }
+    public static CommandManager getCommandManager() {
+        return commandManager;
     }
 
     public static RequirementManager getRequirementManager() {
@@ -175,6 +180,9 @@ public final class Main extends JavaPlugin {
             storylinesManager = new StorylinesManager();
         }
 
+        commandManager = new CommandManager();
+        commandManager.load(classNames, canonicalName);
+
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null && Main.getInstance().getServer().getPluginManager().getPlugin("PlaceholderAPI").isEnabled()) {
             DynamicPlaceholderExpansion.load(classNames, canonicalName);
         }
@@ -226,6 +234,6 @@ public final class Main extends JavaPlugin {
     }
 
     public void registerCommands() {
-        Objects.requireNonNull(Bukkit.getPluginCommand("quests")).setExecutor(new QuestCommand());
+        //Objects.requireNonNull(Bukkit.getPluginCommand("quests")).setExecutor(new QuestCommand());
     }
 }

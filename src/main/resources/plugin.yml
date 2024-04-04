@@ -5,11 +5,6 @@ api-version: '1.16'
 author: "FrinshHD"
 softdepend: [ "Vault", "FancyNpcs", "Citizens", "PlaceholderAPI" ]
 
-commands:
-  quests:
-    description: open the quests menu,
-    aliases: [ "anturniaquests" ]
-
 permissions:
   anturniaquests.command.open:
     default: true
