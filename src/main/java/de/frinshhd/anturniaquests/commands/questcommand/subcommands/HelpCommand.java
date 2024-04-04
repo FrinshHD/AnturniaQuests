@@ -65,8 +65,6 @@ public class HelpCommand extends BasicSubCommand {
                     }
                 });
 
-                message.append("\n ");
-
                 ChatManager.sendMessage(sender, message.toString());
                 return true;
             }
@@ -109,8 +107,6 @@ public class HelpCommand extends BasicSubCommand {
                 }
             }
         });
-
-        message.append("\n ");
 
         ChatManager.sendMessage(sender, message.toString());
         return true;

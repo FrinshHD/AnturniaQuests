@@ -3,6 +3,7 @@ package de.frinshhd.anturniaquests.commands.questcommand.subcommands.storylines;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.commands.BasicSubCommand;
 import de.frinshhd.anturniaquests.utils.ChatManager;
+import de.frinshhd.anturniaquests.utils.PlayerHashMap;
 import de.frinshhd.anturniaquests.utils.Translator;
 import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
 import org.bukkit.Bukkit;
@@ -11,8 +12,11 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class StorylinesResetCommand extends BasicSubCommand {
+
+    private final PlayerHashMap<UUID, Long> lastExecution = new PlayerHashMap<>();
 
     public StorylinesResetCommand() {
         super("quests", "anturniaquests.command.admin.storylines.reset", new String[]{"storylines", "reset"});
@@ -21,7 +25,12 @@ public class StorylinesResetCommand extends BasicSubCommand {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        Player target = Bukkit.getPlayer(args[2]);
+        Player target = null;
+
+        if (args.length >= 3) {
+            target = Bukkit.getPlayer(args[2]);
+        }
+
         String storylineID = null;
 
         if (args.length >= 4) {
@@ -30,13 +39,20 @@ public class StorylinesResetCommand extends BasicSubCommand {
 
         if (target == null) {
             Main.getCommandManager().getSubCommand(Main.getCommandManager().getCommand(getMainCommand()), "help").execute(sender, new String[]{"help", "storylines", "reset"});
-            return false;
+            return true;
         }
 
         if (storylineID == null || Main.getStorylinesManager().getStoryline(storylineID) == null) {
-            Main.getStorylinesManager().resetPlayerStorylines(target);
-            ChatManager.sendMessage(sender, Translator.build("storyline.command.reset.all",
-                    new TranslatorPlaceholder("playerName", target.getName())));
+            if (canFullyReset(sender)) {
+                Main.getStorylinesManager().resetPlayerStorylines(target);
+                ChatManager.sendMessage(sender, Translator.build("storyline.command.reset.all",
+                        new TranslatorPlaceholder("playerName", target.getName())));
+
+                putLastExecution(sender, -1L);
+            } else {
+                putLastExecution(sender, System.currentTimeMillis());
+                ChatManager.sendMessage(sender, Translator.build("quest.command.reset.confirm", new TranslatorPlaceholder("delay", "10")));
+            }
         } else {
             Main.getStorylinesManager().removePlayerStoryline(target, storylineID);
             ChatManager.sendMessage(sender, Translator.build("storyline.command.reset",
@@ -74,6 +90,33 @@ public class StorylinesResetCommand extends BasicSubCommand {
         }
 
         return completions;
+    }
+
+    private boolean canFullyReset(CommandSender sender) {
+        UUID uuid;
+
+        if (sender instanceof Player player) {
+            uuid = player.getUniqueId();
+        } else {
+            uuid = null;
+        }
+
+        long lastExecution = this.lastExecution.getOrDefault(uuid, -2L);
+
+        if (lastExecution == -2L) {
+            return false;
+        }
+
+
+        return lastExecution + (10 * 1000L) > System.currentTimeMillis();
+    }
+
+    private void putLastExecution(CommandSender sender, long time) {
+        if (sender instanceof Player player) {
+            this.lastExecution.put(player.getUniqueId(), time);
+        } else {
+            this.lastExecution.put(null, time);
+        }
     }
 
 }

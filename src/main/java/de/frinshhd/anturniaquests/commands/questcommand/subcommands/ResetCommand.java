@@ -6,6 +6,7 @@ import de.frinshhd.anturniaquests.commands.BasicSubCommand;
 import de.frinshhd.anturniaquests.mysql.MysqlManager;
 import de.frinshhd.anturniaquests.mysql.entities.Quests;
 import de.frinshhd.anturniaquests.utils.ChatManager;
+import de.frinshhd.anturniaquests.utils.PlayerHashMap;
 import de.frinshhd.anturniaquests.utils.Translator;
 import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
 import org.bukkit.Bukkit;
@@ -18,6 +19,9 @@ import java.util.List;
 import java.util.UUID;
 
 public class ResetCommand extends BasicSubCommand {
+
+    private final PlayerHashMap<UUID, Long> lastExecution = new PlayerHashMap<>();
+
     public ResetCommand() {
         super("quests", "anturniaquests.command.admin.reset", new String[]{"reset"});
         setDescription("Resets a player's quest progress.");
@@ -66,8 +70,14 @@ public class ResetCommand extends BasicSubCommand {
         }
 
         if (questID == null || Main.getQuestsManager().getQuest(questID) == null) {
-            ChatManager.sendMessage(sender, Translator.build("quest.command.reset.all",
-                    new TranslatorPlaceholder("playerName", target.getName())));
+            if (canFullyReset(sender)) {
+                ChatManager.sendMessage(sender, Translator.build("quest.command.reset.all",
+                        new TranslatorPlaceholder("playerName", target.getName())));
+                putLastExecution(sender, -1L);
+            } else {
+                putLastExecution(sender, System.currentTimeMillis());
+                ChatManager.sendMessage(sender, Translator.build("quest.command.reset.confirm", new TranslatorPlaceholder("delay", "10")));
+            }
         } else {
             ChatManager.sendMessage(sender, Translator.build("quest.command.reset",
                     new TranslatorPlaceholder("playerName", target.getName()),
@@ -120,5 +130,32 @@ public class ResetCommand extends BasicSubCommand {
         }
 
         return completions;
+    }
+
+    private boolean canFullyReset(CommandSender sender) {
+        UUID uuid;
+
+        if (sender instanceof Player player) {
+            uuid = player.getUniqueId();
+        } else {
+            uuid = null;
+        }
+
+        long lastExecution = this.lastExecution.getOrDefault(uuid, -2L);
+
+        if (lastExecution == -2L) {
+            return false;
+        }
+
+
+        return lastExecution + (10 * 1000L) > System.currentTimeMillis();
+    }
+
+    private void putLastExecution(CommandSender sender, long time) {
+        if (sender instanceof Player player) {
+            this.lastExecution.put(player.getUniqueId(), time);
+        } else {
+            this.lastExecution.put(null, time);
+        }
     }
 }
