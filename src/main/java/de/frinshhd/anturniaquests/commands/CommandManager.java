@@ -60,7 +60,7 @@ public class CommandManager {
                             CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
 
                             commandMap.register(Main.getInstance().getName(), basicCommand);
-                        } catch(Exception e) {
+                        } catch (Exception e) {
                             Main.getInstance().getLogger().warning("[DynamicCommands] Error registering command " + className + " " + e);
                             return;
                         }

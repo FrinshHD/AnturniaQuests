@@ -5,7 +5,6 @@ import de.frinshhd.anturniaquests.QuestMenu;
 import de.frinshhd.anturniaquests.commands.BasicCommand;
 import de.frinshhd.anturniaquests.utils.ChatManager;
 import de.frinshhd.anturniaquests.utils.Translator;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -15,6 +14,7 @@ import java.util.List;
 public class QuestCommand extends BasicCommand {
     public QuestCommand() {
         super("quests", "anturniaquests.command.quests");
+        setAliases(List.of("quest"));
         setDescription("Opens the quest menu.");
     }
 

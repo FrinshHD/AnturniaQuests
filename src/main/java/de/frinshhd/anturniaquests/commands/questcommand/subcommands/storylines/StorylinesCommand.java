@@ -1,16 +1,10 @@
 package de.frinshhd.anturniaquests.commands.questcommand.subcommands.storylines;
 
 import de.frinshhd.anturniaquests.Main;
-import de.frinshhd.anturniaquests.QuestMenu;
 import de.frinshhd.anturniaquests.commands.BasicSubCommand;
-import de.frinshhd.anturniaquests.utils.ChatManager;
-import de.frinshhd.anturniaquests.utils.Translator;
-import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class StorylinesCommand extends BasicSubCommand {

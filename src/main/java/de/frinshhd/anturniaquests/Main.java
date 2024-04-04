@@ -2,7 +2,6 @@ package de.frinshhd.anturniaquests;
 
 import de.frinshhd.anturniaquests.categories.CategoriesManager;
 import de.frinshhd.anturniaquests.commands.CommandManager;
-import de.frinshhd.anturniaquests.commands.QuestCommand;
 import de.frinshhd.anturniaquests.config.ConfigManager;
 import de.frinshhd.anturniaquests.menusystem.PlayerMenuUtility;
 import de.frinshhd.anturniaquests.quests.QuestsManager;
@@ -25,7 +24,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 public final class Main extends JavaPlugin {
 
@@ -57,6 +59,7 @@ public final class Main extends JavaPlugin {
     public static ConfigManager getConfigManager() {
         return configManager;
     }
+
     public static CommandManager getCommandManager() {
         return commandManager;
     }

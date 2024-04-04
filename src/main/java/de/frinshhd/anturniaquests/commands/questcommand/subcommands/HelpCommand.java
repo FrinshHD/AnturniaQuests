@@ -78,8 +78,8 @@ public class HelpCommand extends BasicSubCommand {
 
         if (Main.getCommandManager().getCommand(getMainCommand()).getDescription().isEmpty()) {
             message.append(
-                    Translator.build("help.command.noDescription",
-                            new TranslatorPlaceholder("command", "/" + getMainCommand())))
+                            Translator.build("help.command.noDescription",
+                                    new TranslatorPlaceholder("command", "/" + getMainCommand())))
                     .append("\n");
         } else {
             message.append(
