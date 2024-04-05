@@ -6,6 +6,11 @@ database:
   ip: "127.0.0.1"
   port: 3306
 
+commands:
+  - name: "quests"
+    aliases:
+      - "quest"
+
 questMenuEnabled: true
 storylinesEnabled: true
 

@@ -14,7 +14,12 @@ import java.util.List;
 public class QuestCommand extends BasicCommand {
     public QuestCommand() {
         super("quests", "anturniaquests.command.quests");
-        setAliases(List.of("quest"));
+
+        if (Main.getConfigManager().getConfig().getCommand("quests") != null) {
+            setAliases(Main.getConfigManager().getConfig().getCommand("quests").getAliases());
+        }
+
+
         setDescription("Opens the quest menu.");
     }
 
