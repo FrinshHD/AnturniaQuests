@@ -54,6 +54,10 @@ public abstract class BasicCommand extends Command {
             List<BasicSubCommand> basicSubCommands = Main.getCommandManager().getSubCommands(this);
 
             basicSubCommands.forEach(basicSubCommand -> {
+                if (basicSubCommand.isHidden()) {
+                    return;
+                }
+
                 if (basicSubCommand.getPath().length >= args.length && basicSubCommand.getPath()[0].startsWith(args[0])) {
                     completions.add(basicSubCommand.getPath()[args.length - 1]);
                 }
@@ -62,7 +66,9 @@ public abstract class BasicCommand extends Command {
             BasicSubCommand subCommand = Main.getCommandManager().getSubCommand(this, args);
 
             if (subCommand != null) {
-                completions.addAll(subCommand.tabComplete(sender, args));
+                if (!subCommand.isHidden()) {
+                    completions.addAll(subCommand.tabComplete(sender, args));
+                }
             }
         }
 

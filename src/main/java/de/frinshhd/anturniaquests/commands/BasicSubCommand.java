@@ -11,6 +11,7 @@ public abstract class BasicSubCommand {
     private final String mainCommand;
     private final String permission;
     private final String[] path;
+    private boolean hidden = false;
 
     private String description = null;
 
@@ -57,6 +58,14 @@ public abstract class BasicSubCommand {
 
     protected void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
+
+    public boolean isHidden() {
+        return hidden;
     }
 
     public abstract boolean execute(CommandSender sender, String[] args);

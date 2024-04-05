@@ -51,6 +51,10 @@ public class HelpCommand extends BasicSubCommand {
                         .append("\n");
 
                 filteredSubCommands.forEach(subCommand -> {
+                    if (subCommand.isHidden()) {
+                        return;
+                    }
+
                     if (subCommand.getDescription() == null || subCommand.getDescription().isEmpty()) {
                         message.append(
                                         Translator.build("help.command.noDescription",
@@ -92,6 +96,10 @@ public class HelpCommand extends BasicSubCommand {
         List<BasicSubCommand> subCommands = Main.getCommandManager().getSubCommands(Main.getCommandManager().getCommand(getMainCommand()));
 
         subCommands.forEach(subCommand -> {
+            if (subCommand.isHidden()) {
+                return;
+            }
+
             if (subCommand.getPermission() == null || sender.hasPermission(subCommand.getPermission())) {
                 if (subCommand.getDescription() == null || subCommand.getDescription().isEmpty()) {
                     message.append(

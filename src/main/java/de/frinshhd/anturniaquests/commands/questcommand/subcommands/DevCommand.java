@@ -10,6 +10,7 @@ public class DevCommand extends BasicSubCommand {
     public DevCommand() {
         super("quests", "anturniaquests.command.admin.dev", new String[]{"dev"});
         setDescription("Only for development!");
+        setHidden(true);
     }
 
     @Override
