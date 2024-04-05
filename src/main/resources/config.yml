@@ -14,4 +14,4 @@ commands:
 questMenuEnabled: true
 storylinesEnabled: true
 
-debug: true
+debug: false
