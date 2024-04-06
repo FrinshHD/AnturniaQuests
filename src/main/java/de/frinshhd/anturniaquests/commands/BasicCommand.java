@@ -29,7 +29,7 @@ public abstract class BasicCommand extends Command {
         BasicSubCommand subCommand = Main.getCommandManager().getSubCommand(this, args);
 
         if (subCommand != null) {
-            return subCommand.execute(sender, args);
+            return subCommand.execute(sender, commandLabel, args);
         }
 
         // first layer logic comes here

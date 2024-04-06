@@ -68,7 +68,7 @@ public abstract class BasicSubCommand {
         return hidden;
     }
 
-    public abstract boolean execute(CommandSender sender, String[] args);
+    public abstract boolean execute(CommandSender sender, String commandLabel, String[] args);
 
     public List<String> tabComplete(CommandSender sender, String[] args) {
         if (getPermission() != null && !sender.hasPermission(getPermission())) {

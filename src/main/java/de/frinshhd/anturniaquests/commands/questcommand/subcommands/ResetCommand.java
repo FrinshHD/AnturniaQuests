@@ -28,7 +28,7 @@ public class ResetCommand extends BasicSubCommand {
     }
 
     @Override
-    public boolean execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         Player target = Bukkit.getPlayer(args[1]);
         String questID = null;
 
@@ -37,7 +37,7 @@ public class ResetCommand extends BasicSubCommand {
         }
 
         if (target == null) {
-            Main.getCommandManager().getSubCommand(Main.getCommandManager().getCommand(getMainCommand()), "help").execute(sender, new String[]{});
+            Main.getCommandManager().getSubCommand(Main.getCommandManager().getCommand(getMainCommand()), "help").execute(sender, commandLabel, new String[]{});
             return false;
         }
 

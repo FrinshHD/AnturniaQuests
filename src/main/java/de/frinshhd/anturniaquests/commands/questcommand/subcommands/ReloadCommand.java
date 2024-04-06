@@ -17,7 +17,7 @@ public class ReloadCommand extends BasicSubCommand {
     }
 
     @Override
-    public boolean execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         Main.reload();
         ChatManager.sendMessage(sender, Translator.build("quests.reload"));
         return true;

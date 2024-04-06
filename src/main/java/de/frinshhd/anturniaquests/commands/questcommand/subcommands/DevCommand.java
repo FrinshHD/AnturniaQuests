@@ -14,7 +14,7 @@ public class DevCommand extends BasicSubCommand {
     }
 
     @Override
-    public boolean execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         sender.sendMessage("This command is only for development!");
         return true;
     }

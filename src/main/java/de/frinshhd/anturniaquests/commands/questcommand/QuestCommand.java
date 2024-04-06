@@ -33,7 +33,7 @@ public class QuestCommand extends BasicCommand {
 
             if (!(sender instanceof Player player)) {
                 //send help message
-                Main.getCommandManager().getSubCommand(this, "help").execute(sender, new String[]{});
+                Main.getCommandManager().getSubCommand(this, "help").execute(sender, commandLabel, new String[]{});
                 return false;
             }
 
@@ -53,7 +53,7 @@ public class QuestCommand extends BasicCommand {
         }
 
         //send help message
-        Main.getCommandManager().getSubCommand(this, "help").execute(sender, new String[]{});
+        Main.getCommandManager().getSubCommand(this, "help").execute(sender, commandLabel, new String[]{});
         return false;
     }
 

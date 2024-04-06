@@ -15,8 +15,8 @@ public class StorylinesCommand extends BasicSubCommand {
     }
 
     @Override
-    public boolean execute(CommandSender sender, String[] args) {
-        Main.getCommandManager().getSubCommand(Main.getCommandManager().getCommand(getMainCommand()), "help").execute(sender, new String[]{"help", "storylines"});
+    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+        Main.getCommandManager().getSubCommand(Main.getCommandManager().getCommand(getMainCommand()), "help").execute(sender, commandLabel, new String[]{"help", "storylines"});
         return true;
     }
 

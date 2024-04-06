@@ -24,7 +24,7 @@ public class StorylinesResetCommand extends BasicSubCommand {
     }
 
     @Override
-    public boolean execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         Player target = null;
 
         if (args.length >= 3) {
@@ -38,7 +38,7 @@ public class StorylinesResetCommand extends BasicSubCommand {
         }
 
         if (target == null) {
-            Main.getCommandManager().getSubCommand(Main.getCommandManager().getCommand(getMainCommand()), "help").execute(sender, new String[]{"help", "storylines", "reset"});
+            Main.getCommandManager().getSubCommand(Main.getCommandManager().getCommand(getMainCommand()), "help").execute(sender, commandLabel, new String[]{"help", "storylines", "reset"});
             return true;
         }
 

@@ -18,7 +18,7 @@ public class HelpCommand extends BasicSubCommand {
     }
 
     @Override
-    public boolean execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         StringBuilder message = new StringBuilder();
 
         String arg1;
@@ -47,7 +47,7 @@ public class HelpCommand extends BasicSubCommand {
                 message.append("\n");
                 message.append(
                                 Translator.build("help.title",
-                                        new TranslatorPlaceholder("commandName", "/" + Main.getCommandManager().getCommand(getMainCommand()).getName() + " " + arg1)))
+                                        new TranslatorPlaceholder("commandName", "/" + commandLabel + " " + arg1)))
                         .append("\n");
 
                 filteredSubCommands.forEach(subCommand -> {
@@ -58,12 +58,12 @@ public class HelpCommand extends BasicSubCommand {
                     if (subCommand.getDescription() == null || subCommand.getDescription().isEmpty()) {
                         message.append(
                                         Translator.build("help.command.noDescription",
-                                                new TranslatorPlaceholder("command", "/" + subCommand.getCommandFull())))
+                                                new TranslatorPlaceholder("command", "/" + commandLabel + " " + subCommand.getCommand())))
                                 .append("\n");
                     } else {
                         message.append(
                                         Translator.build("help.command",
-                                                new TranslatorPlaceholder("command", "/" + subCommand.getCommandFull()),
+                                                new TranslatorPlaceholder("command", "/" + commandLabel + " " + subCommand.getCommand()),
                                                 new TranslatorPlaceholder("description", subCommand.getDescription())))
                                 .append("\n");
                     }
@@ -77,18 +77,18 @@ public class HelpCommand extends BasicSubCommand {
         message.append("\n");
         message.append(
                         Translator.build("help.title",
-                                new TranslatorPlaceholder("commandName", "/" + Main.getCommandManager().getCommand(getMainCommand()).getName())))
+                                new TranslatorPlaceholder("commandName", "/" + commandLabel)))
                 .append("\n");
 
         if (Main.getCommandManager().getCommand(getMainCommand()).getDescription().isEmpty()) {
             message.append(
                             Translator.build("help.command.noDescription",
-                                    new TranslatorPlaceholder("command", "/" + getMainCommand())))
+                                    new TranslatorPlaceholder("command", "/" + commandLabel)))
                     .append("\n");
         } else {
             message.append(
                             Translator.build("help.command",
-                                    new TranslatorPlaceholder("command", "/" + getMainCommand()),
+                                    new TranslatorPlaceholder("command", "/" + commandLabel),
                                     new TranslatorPlaceholder("description", Main.getCommandManager().getCommand(getMainCommand()).getDescription())))
                     .append("\n");
         }
@@ -104,12 +104,12 @@ public class HelpCommand extends BasicSubCommand {
                 if (subCommand.getDescription() == null || subCommand.getDescription().isEmpty()) {
                     message.append(
                                     Translator.build("help.command.noDescription",
-                                            new TranslatorPlaceholder("command", "/" + subCommand.getCommandFull())))
+                                            new TranslatorPlaceholder("command", "/" + commandLabel + " " + subCommand.getCommand())))
                             .append("\n");
                 } else {
                     message.append(
                                     Translator.build("help.command",
-                                            new TranslatorPlaceholder("command", "/" + subCommand.getCommandFull()),
+                                            new TranslatorPlaceholder("command", "/" + commandLabel + " " + subCommand.getCommand()),
                                             new TranslatorPlaceholder("description", subCommand.getDescription())))
                             .append("\n");
                 }
