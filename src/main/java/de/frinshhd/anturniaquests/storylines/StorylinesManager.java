@@ -181,7 +181,7 @@ public class StorylinesManager {
         }
 
         if (npc == null) {
-            ChatManager.sendMessage(player, Translator.build("storyline.falseStageNPC"));
+            ChatManager.sendMessage(player, Translator.build("storyline.falseStageNPC.alreadyCompleted"));
             return;
         }
 
@@ -195,7 +195,7 @@ public class StorylinesManager {
             }
 
             if (getPlayerCurrentNpcStageID(player, storylineID) != -1 && getPlayerCurrentNpcStageID(player, storylineID) != getNpcStageID(storylineID, npc)) {
-                ChatManager.sendMessage(player, Translator.build("storyline.falseStageNPC"));
+                ChatManager.sendMessage(player, Translator.build("storyline.falseStageNPC.finishCurrent", new TranslatorPlaceholder("npcName", storyline.getNPCStageID(getPlayerCurrentNpcStageID(player, storylineID)).getName())));
                 return;
             }
 
