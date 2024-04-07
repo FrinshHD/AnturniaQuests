@@ -17,6 +17,9 @@ public class NPC {
     @JsonProperty
     private ArrayList<NPCAction> actions = new ArrayList<>();
 
+    @JsonProperty()
+    private String group = null;
+
     public String getNpcID() {
         return this.npcID;
     }
@@ -39,5 +42,9 @@ public class NPC {
         }
 
         return this.friendlyName;
+    }
+
+    public String getGroup() {
+        return group;
     }
 }
