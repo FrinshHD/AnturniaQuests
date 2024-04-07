@@ -17,8 +17,8 @@ public class NPC {
     @JsonProperty
     private ArrayList<NPCAction> actions = new ArrayList<>();
 
-    @JsonProperty
-    private String stage = null;
+    @JsonProperty()
+    private String group = null;
 
     public String getNpcID() {
         return this.npcID;
@@ -45,6 +45,6 @@ public class NPC {
     }
 
     public String getGroup() {
-        return stage;
+        return group;
     }
 }

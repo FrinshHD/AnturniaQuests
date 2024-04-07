@@ -19,6 +19,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.FileInputStream;
@@ -62,7 +63,6 @@ public class StorylinesManager {
         } catch (IOException e) {
             Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading storylines.yml. AnturniaQuests will be disabled!\nError " + e.getMessage());
             Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
-            return;
         }
     }
 
@@ -165,32 +165,65 @@ public class StorylinesManager {
 
         int playerStageID = playerStorylineStats.getInt("currentStage");
         //NPC realNpc = storyline.getNPC(npcID);
-        NPC npc = storyline.getNPCStageID(playerStageID);
-        NPC npcBefore = null;
+        NPC npc = null;
 
-        if (playerStageID >= 1) {
-            npcBefore = storyline.getNPCStageID(playerStageID - 1);
+        for (NPC storylineNpc : storyline.getNpcs()) {
+            if (!storylineNpc.getNpcID().equals(npcID)) {
+                continue;
+            }
+
+            if (getPlayerCompletedStages(player, storylineID).contains(getNpcStageID(storylineID, storylineNpc))) {
+                continue;
+            }
+
+            npc = storylineNpc;
+            break;
         }
+
+        if (npc == null) {
+            ChatManager.sendMessage(player, Translator.build("storyline.falseStageNPC"));
+            return;
+        }
+
+        NPC npcClicked = storyline.getNPCStageID(playerStageID);
 
         //check if currentStage of the player is the same as the one of the npc
-        if (!npc.getNpcID().equals(npcID)) {
-            if (npcBefore == null && npc.getGroup() == null) {
+        if (!npcClicked.getNpcID().equals(npcID)) {
+            if (npc.getGroup() == null) {
                 ChatManager.sendMessage(player, Translator.build("storyline.falseStageNPC"));
                 return;
             }
 
-            if (npcBefore == null)
-
-            ArrayList<Integer> missingNpcs = getPlayerMissingNPCsFromGroup(player, storylineID, npcBefore.getGroup());
-
-            if (missingNpcs.isEmpty()) {
+            if (getPlayerCurrentNpcStageID(player, storylineID) != -1 && getPlayerCurrentNpcStageID(player, storylineID) != getNpcStageID(storylineID, npc)) {
                 ChatManager.sendMessage(player, Translator.build("storyline.falseStageNPC"));
                 return;
             }
 
+            //if the first npc has no group
+            if (getPlayerCompletedStages(player, storylineID).isEmpty()) {
+                if (storyline.getNPCStageID(0).getGroup() == null || !storyline.getNPCStageID(0).getGroup().equals(npc.getGroup())) {
+                    ChatManager.sendMessage(player, Translator.build("storyline.falseStageNPC"));
+                    return;
+                }
+            } else {
+                if (getPlayerCompletedStages(player, storylineID).contains(getNpcStageID(storylineID, npc))) {
+                    ChatManager.sendMessage(player, Translator.build("storyline.falseStageNPC"));
+                    return;
+                }
+
+                NPC npcBefore = storyline.getNPCStageID(getPlayerCompletedStages(player, storylineID).get(getPlayerCompletedStages(player, storylineID).size() - 1));
+
+                if (npcBefore.getGroup() == null ||
+                        !npcBefore.getGroup().equals(npc.getGroup())) {
+                    if (storyline.getNPCStageID(getNpcStageID(storylineID, npcBefore) + 1).getGroup() == null ||
+                            !storyline.getNPCStageID(getNpcStageID(storylineID, npcBefore) + 1).getGroup().equals(npc.getGroup())) {
+                        ChatManager.sendMessage(player, Translator.build("storyline.falseStageNPC"));
+                        return;
+                    }
+                }
+            }
 
         }
-
 
 
         //check if counter has to start //Todo
@@ -237,6 +270,10 @@ public class StorylinesManager {
             return;
         }
 
+        if (getPlayerCurrentNpcStageID(player, storylineID) == -1) {
+            putPlayerCurrentNpcStageID(player, storylineID, getNpcStageID(storylineID, npc));
+        }
+
         playerCurrentActionID += 1;
 
         putPlayerCurrentAction(player, storylineID, playerCurrentActionID);
@@ -259,6 +296,7 @@ public class StorylinesManager {
             putPlayerLastCompletion(player, storylineID, System.currentTimeMillis());
             putPlayerStartTime(player, storylineID, -1);
             putPlayerStageStartTime(player, storylineID, -1);
+            putPlayerCurrentNpcStageID(player, storylineID, -1);
             resetPlayerCompletedStages(player, storylineID);
 
             removePlayerCurrentStoryline(storylineID, player);
@@ -266,7 +304,8 @@ public class StorylinesManager {
             //else set player to next stageID
             putPlayerCurrentAction(player, storylineID, 0);
             putPlayerCurrentStage(player, storylineID, playerStageID);
-            addPlayerCompletedStage(player, storylineID, playerStageID - 1);
+            addPlayerCompletedStage(player, storylineID, getPlayerCurrentNpcStageID(player, storylineID));
+            putPlayerCurrentNpcStageID(player, storylineID, -1);
         }
     }
 
@@ -301,7 +340,8 @@ public class StorylinesManager {
         object.put("currentAction", 0);
         object.put("currentStartTime", -1);
         object.put("currentStageStartTime", -1);
-        object.put("completedStages", new ArrayList<Integer>());
+        object.put("currentNpcStageID", -1);
+        object.put("completedStages", arrayListToJsonArray(new ArrayList<Integer>()));
 
         return object;
     }
@@ -324,7 +364,12 @@ public class StorylinesManager {
 
     public int getPlayerStageID(Player player, String storylineID) {
         int defaultValue = 0;
-        return (int) getStorylineStats(player, storylineID, "currentStage", 0);
+        return getStorylineStats(player, storylineID, "currentStage", 0);
+    }
+
+    public int getPlayerCurrentNpcStageID(Player player, String storylineID) {
+        int defaultValue = -1;
+        return getStorylineStats(player, storylineID, "currentNpcStageID", -1);
     }
 
     public long getStorylineStats(Player player, String storylineID, String key, long defaultLong) {
@@ -335,6 +380,11 @@ public class StorylinesManager {
     public int getStorylineStats(Player player, String storylineID, String key, int defaultInt) {
         Object defaultValue = defaultInt;
         return (Integer) getStorylineStats(player, storylineID, key, defaultValue);
+    }
+
+    public JSONArray getStorylineStats(Player player, String storylineID, String key, JSONArray defaultArray) {
+        Object defaultValue = defaultArray;
+        return (JSONArray) getStorylineStats(player, storylineID, key, defaultValue);
     }
 
     public Object getStorylineStats(Player player, String storylineID, String key, Object defaultValue) {
@@ -374,16 +424,46 @@ public class StorylinesManager {
         putStorylineStats(player, storylineID, "currentStageStartTime", startTime);
     }
 
+    public void putPlayerCurrentNpcStageID(Player player, String storylineID, int npcStageID) {
+        putStorylineStats(player, storylineID, "currentNpcStageID", npcStageID);
+    }
+
     public void addPlayerCompletedStage(Player player, String storylineID, int stageID) {
-        putStorylineStats(player, storylineID, "completedStages", getPlayerCompletedStages(player, storylineID).add(stageID));
+        ArrayList<Integer> completedStages = getPlayerCompletedStages(player, storylineID);
+        completedStages.add(stageID);
+
+        JSONArray array = arrayListToJsonArray(completedStages);
+
+        putStorylineStats(player, storylineID, "completedStages", array);
+    }
+
+    public JSONArray arrayListToJsonArray(ArrayList<Integer> list) {
+        JSONArray jsonArray = new JSONArray();
+        for (Integer i : list) {
+            jsonArray.put(i);
+        }
+        return jsonArray;
     }
 
     public void resetPlayerCompletedStages(Player player, String storylineID) {
-        putStorylineStats(player, storylineID, "completedStages", new ArrayList<Integer>());
+        putStorylineStats(player, storylineID, "completedStages", arrayListToJsonArray(new ArrayList<Integer>()));
     }
 
     public ArrayList<Integer> getPlayerCompletedStages(Player player, String storylineID) {
-        return (ArrayList<Integer>) getStorylineStats(player, storylineID, "completedStages", new ArrayList<Integer>());
+        JSONArray array = getStorylineStats(player, storylineID, "completedStages", new JSONArray());
+
+        return jsonArrayToArrayList(array);
+    }
+
+    public ArrayList<Integer> jsonArrayToArrayList(JSONArray jsonArray) {
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        if (jsonArray != null) {
+            int len = jsonArray.length();
+            for (int i = 0; i < len; i++) {
+                list.add((Integer) jsonArray.get(i));
+            }
+        }
+        return list;
     }
 
     public void putStorylineStats(Player player, String storylineID, String key, Object value) {
@@ -540,6 +620,19 @@ public class StorylinesManager {
                 }
             }
         }.runTaskTimer(Main.getInstance(), 0, 20);
+    }
+
+    public int getNpcStageID(String storylineID, NPC npc) {
+        int index = 0;
+        for (NPC npc1 : getStoryline(storylineID).getNpcs()) {
+            if (npc1.equals(npc)) {
+                return index;
+            }
+
+            index++;
+        }
+
+        return -1;
     }
 
 }
