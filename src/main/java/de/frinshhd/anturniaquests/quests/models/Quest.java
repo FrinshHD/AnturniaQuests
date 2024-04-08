@@ -188,7 +188,15 @@ public class Quest {
             lore.add(Translator.build("lore.requirements"));
 
             getRequirements().keySet().forEach(id -> {
-                lore.addAll(Main.getRequirementManager().getRequirement(id).getLore(player, getRequirements().get(id)));
+                ArrayList<String> loreRequirements = Main.getRequirementManager().getRequirement(id).getLore(player, getRequirements().get(id));
+                ArrayList<String> loreRequirementsNew = new ArrayList<>();
+
+                loreRequirements.forEach(loreRequirement -> {
+                    Main.getInstance().getLogger().info(String.valueOf(LoreBuilder.build(loreRequirement, ChatColor.GRAY)));
+                    loreRequirementsNew.addAll(LoreBuilder.buildSimple(loreRequirement));
+                });
+
+                lore.addAll(loreRequirementsNew);
             });
 
             lore.add(" ");

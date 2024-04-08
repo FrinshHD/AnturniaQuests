@@ -8,12 +8,15 @@ import org.bukkit.World;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * The ReachLocationModel class extends the BasicRequirementModel class.
  * It represents a requirement for a quest where a player must reach a certain location.
  */
 public class ReachLocationModel extends BasicRequirementModel {
+
+    private String friendlyName = null;
 
     /**
      * The first boundary location of the area to be reached.
@@ -29,11 +32,6 @@ public class ReachLocationModel extends BasicRequirementModel {
      * The world in which the locations are located.
      */
     private String world = "world";
-
-    /**
-     * The radius within which the locations should be reached.
-     */
-    private int radius = 1;
 
     /**
      * Constructor for the ReachLocationModel class.
@@ -59,19 +57,9 @@ public class ReachLocationModel extends BasicRequirementModel {
             world = (String) map.get("world");
         }
 
-        // Initialize the radius if it is present in the map
-        if (map.containsKey("radius")) {
-            radius = (int) map.get("radius");
+        if (map.containsKey("friendlyName")) {
+            friendlyName = (String) map.get("friendlyName");
         }
-    }
-
-    /**
-     * Getter for the radius property.
-     *
-     * @return The radius within which the locations should be reached
-     */
-    public int getRadius() {
-        return radius;
     }
 
     /**
@@ -115,6 +103,10 @@ public class ReachLocationModel extends BasicRequirementModel {
         return Main.getInstance().getServer().getWorld(this.world);
     }
 
+    public String getFriendlyName() {
+        return friendlyName;
+    }
+
     /**
      * This method generates a list of all possible locations within the boundaries defined by two locations.
      * The two locations are retrieved from the location1 and location2 properties of the class.
@@ -156,4 +148,52 @@ public class ReachLocationModel extends BasicRequirementModel {
         // Return the list of locations
         return locations;
     }
+
+    public boolean isLocationIncluded(Location location) {
+        return getAllLocationsBetween().contains(location);
+    }
+
+    public String getLocationFormated(Location location) {
+        if (getFriendlyName() != null) {
+            return getFriendlyName();
+        }
+
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("[X: ");
+        builder.append(location.getX());
+        builder.append(" Y: ");
+        builder.append(location.getY());
+        builder.append(" Z: ");
+        builder.append(location.getZ());
+        builder.append("]");
+
+        return builder.toString();
+    }
+
+    /*public String getLocationFormated() {
+        if (getFriendlyName() != null) {
+            return getFriendlyName();
+        }
+
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("[");
+        builder.append(getLocation1().getX());
+        builder.append(" ");
+        builder.append(getLocation1().getY());
+        builder.append(" ");
+        builder.append(getLocation1().getZ());
+        builder.append("]");
+        builder.append(" - ");
+        builder.append("[");
+        builder.append(getLocation2().getX());
+        builder.append(" ");
+        builder.append(getLocation2().getY());
+        builder.append(" ");
+        builder.append(getLocation2().getZ());
+        builder.append("]");
+
+        return builder.toString();
+    }  */
 }
