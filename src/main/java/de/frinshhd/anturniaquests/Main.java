@@ -98,7 +98,10 @@ public final class Main extends JavaPlugin {
         Main.getConfigManager().load();
         Main.getQuestsManager().load();
         Main.getDynamicCategories().load();
-        Main.getStorylinesManager().load();
+
+        if (isStorylinesEnabled()) {
+            Main.getStorylinesManager().load();
+        }
         try {
             Translator.register("plugins/AnturniaQuests/messages.properties");
         } catch (IOException e) {

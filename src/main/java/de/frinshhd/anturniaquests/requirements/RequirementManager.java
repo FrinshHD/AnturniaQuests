@@ -37,31 +37,44 @@ public class RequirementManager implements Listener {
         load();
     }
 
+    /**
+     * The load method is responsible for dynamically loading all classes that extend the BasicRequirement class.
+     * It uses the Reflections library to scan the package for such classes.
+     */
     public void load() {
+        // Get the canonical name of the Main class
         String fullCanonicalName = Main.class.getCanonicalName();
+        // Extract the package name from the canonical name
         String canonicalName = fullCanonicalName.substring(0, fullCanonicalName.lastIndexOf("."));
 
+        // Create a new Reflections object to scan the package
         Reflections reflections = new Reflections(canonicalName, new SubTypesScanner(false));
+        // Get all the class names in the package
         Set<String> classNames = reflections.getAll(new SubTypesScanner(false));
 
+        // Iterate over each class name
         for (String className : classNames) {
+            // Check if the class is in the same package as the Main class
             if (className.contains(canonicalName)) {
                 try {
+                    // Load the class
                     Class<?> cls = Class.forName(className);
 
-                    Class<BasicRequirement> requiremmentClass = BasicRequirement.class;
-
-                    if (requiremmentClass.isAssignableFrom(cls)) {
+                    // Check if the class extends BasicRequirement
+                    Class<BasicRequirement> requirementClass = BasicRequirement.class;
+                    if (requirementClass.isAssignableFrom(cls)) {
+                        // Get the constructor of the class that takes a boolean as a parameter
                         Constructor<?> constructor = cls.getConstructor(boolean.class);
-                        Object[] parameters = {true};
+                        // Create a new instance of the class
+                        BasicRequirement requirement = (BasicRequirement) constructor.newInstance(true);
 
-                        BasicRequirement requirement = (BasicRequirement) constructor.newInstance(parameters);
-
+                        // Add the instance to the requirements map
                         requirements.put(requirement.getId(), requirement);
                     }
                 } catch (ClassNotFoundException | IllegalAccessException | InstantiationException |
                          InvocationTargetException | IllegalArgumentException | NoClassDefFoundError |
                          NoSuchMethodException e) {
+                    // Log any exceptions that occur
                     Main.getInstance().getLogger().warning("Error loading listeners in class " + className + " " + e);
                 }
             }
