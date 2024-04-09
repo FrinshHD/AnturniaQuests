@@ -50,8 +50,6 @@ public class ReachLocationRequirement extends BasicRequirement implements Listen
             ReachLocationModel reachLocationModel = (ReachLocationModel) rawRequirementModel;
             registeredLocations.addAll(reachLocationModel.getAllLocationsBetween());
         });
-
-        Main.getInstance().getLogger().info(String.valueOf(registeredLocations));
     }
 
     @Override
@@ -142,19 +140,14 @@ public class ReachLocationRequirement extends BasicRequirement implements Listen
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
 
-        Main.getInstance().getLogger().info(player.getName());
-
         if (event.getFrom().getBlock().getLocation().equals(Objects.requireNonNull(event.getTo()).getBlock().getLocation())) {
-            Main.getInstance().getLogger().info(String.valueOf(event.getFrom().getBlock().getLocation()));
             return;
         }
 
         if (!registeredLocations.contains(Objects.requireNonNull(event.getTo()).getBlock().getLocation())) {
-            System.out.println("2");
             return;
         }
 
-        Main.getInstance().getLogger().info("1");
         savePlayerLocation(player.getUniqueId(), Objects.requireNonNull(event.getTo()).getBlock().getLocation());
     }
 
@@ -207,14 +200,10 @@ public class ReachLocationRequirement extends BasicRequirement implements Listen
     }
 
     public boolean hasPlayerReached(UUID playerUUID, List<Location> locations) {
-        Main.getInstance().getLogger().info(String.valueOf(getPlayerAllLocations(playerUUID)));
         for (Location location : getPlayerAllLocations(playerUUID)) {
             if (locations.contains(location)) {
                 return true;
             }
-
-            Main.getInstance().getLogger().info("jeffry");
-            Main.getInstance().getLogger().info(String.valueOf(locations));
         }
 
         return false;

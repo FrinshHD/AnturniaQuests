@@ -192,7 +192,6 @@ public class Quest {
                 ArrayList<String> loreRequirementsNew = new ArrayList<>();
 
                 loreRequirements.forEach(loreRequirement -> {
-                    Main.getInstance().getLogger().info(String.valueOf(LoreBuilder.build(loreRequirement, ChatColor.GRAY)));
                     loreRequirementsNew.addAll(LoreBuilder.buildSimple(loreRequirement));
                 });
 
