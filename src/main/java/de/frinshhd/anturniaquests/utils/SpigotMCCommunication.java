@@ -15,6 +15,10 @@ public class SpigotMCCommunication {
     public static void init() {
         Main.version = checkForNewVersion();
         Main.getInstance().getLogger().info("You are running on version: " + Main.getInstance().getDescription().getVersion());
+
+        if (!Main.version.equals(Main.getInstance().getDescription().getVersion())) {
+            Main.getInstance().getLogger().info("There is a new update available with version: " + Main.version);
+        }
     }
 
     public static String checkForNewVersion() {
