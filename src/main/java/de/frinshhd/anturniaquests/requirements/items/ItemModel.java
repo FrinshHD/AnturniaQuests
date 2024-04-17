@@ -27,10 +27,12 @@ public class ItemModel extends BasicRequirementModel {
     @JsonProperty
     private ArrayList<String> lore = new ArrayList<>();
 
+
     public ItemModel() {
         super(null, null);
     }
 
+    @JsonIgnore
     public ItemModel(LinkedHashMap<String, Object> map) {
         super(map, "items");
 
@@ -54,6 +56,7 @@ public class ItemModel extends BasicRequirementModel {
         }
     }
 
+    @JsonIgnore
     public String getName() {
         if (this.name != null) {
             return this.name;
@@ -62,6 +65,7 @@ public class ItemModel extends BasicRequirementModel {
         return null;
     }
 
+    @JsonIgnore
     public String getDisplayName() {
         if (this.name != null) {
             return this.name;
@@ -85,10 +89,12 @@ public class ItemModel extends BasicRequirementModel {
         return this.lore;
     }
 
+    @JsonIgnore
     public ItemStack getItem() {
         return new ItemStack(getMaterial());
     }
 
+    @JsonIgnore
     public int getAmountInInventory(Player player) {
         if (getName() != null && getLore().isEmpty()) {
             int amountInInv = 0;
@@ -172,6 +178,7 @@ public class ItemModel extends BasicRequirementModel {
         return amountInInv;
     }
 
+    @JsonIgnore
     public void removeItemFromInventory(Player player) {
         ArrayList<ItemStack> itemStacks = new ArrayList<>();
 
@@ -263,6 +270,7 @@ public class ItemModel extends BasicRequirementModel {
         }
     }
 
+    @JsonIgnore
     private ItemStack getFittingItemStack(ArrayList<ItemStack> items, int minAmount) {
         ItemStack itemStack = null;
 

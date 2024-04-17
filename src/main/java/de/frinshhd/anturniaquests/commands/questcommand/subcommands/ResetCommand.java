@@ -37,7 +37,7 @@ public class ResetCommand extends BasicSubCommand {
         }
 
         if (target == null) {
-            Main.getCommandManager().getSubCommand(Main.getCommandManager().getCommand(getMainCommand()), "help").execute(sender, commandLabel, new String[]{});
+            Main.getCommandManager().getSubCommand(Main.getCommandManager().getCommand(getMainCommand()), "help").execute(sender, commandLabel, new String[]{"help", "reset"});
             return false;
         }
 

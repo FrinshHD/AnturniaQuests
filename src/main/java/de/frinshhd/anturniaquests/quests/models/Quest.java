@@ -24,28 +24,22 @@ import java.util.LinkedHashMap;
 public class Quest {
 
     @JsonProperty
-    private String friendlyName = "";
+    private String friendlyName = null;
+
+    @JsonProperty
+    private String description = null;
 
     @JsonProperty
     private String category = null;
 
     @JsonProperty
-    private String description = "";
-
-    @JsonProperty
     private String material = null;
 
     @JsonProperty
-    private LinkedHashMap<String, ArrayList<Object>> requirements = new LinkedHashMap<>();
+    private Boolean oneTime = null;
 
     @JsonProperty
-    private Rewards rewards = new Rewards();
-
-    @JsonProperty
-    private boolean oneTime = false;
-
-    @JsonProperty
-    private boolean announce = false;
+    private Boolean announce = null;
 
     @JsonProperty
     private Integer cooldown = null;
@@ -54,22 +48,27 @@ public class Quest {
     private Boolean showCompletions = null;
 
     @JsonProperty
-    private ArrayList<String> requiredQuests = new ArrayList<>();
-
-    @JsonProperty
     private Sound completionSound = null;
 
     @JsonProperty
     private Sound errorSound = null;
 
-    public Quest() {
-        this.rewards = new Rewards();
-        this.oneTime = true;
-        this.announce = false;
-    }
+    @JsonProperty
+    private ArrayList<String> requiredQuests = new ArrayList<>();
+
+    @JsonProperty
+    private LinkedHashMap<String, ArrayList<Object>> requirements = new LinkedHashMap<>();
+
+    @JsonProperty
+    private Rewards rewards = null;
+
+    public Quest() {}
 
     @JsonIgnore
     public String getFriendlyName() {
+        if (this.friendlyName == null) {
+            return "";
+        }
         return this.friendlyName;
     }
 
@@ -80,6 +79,10 @@ public class Quest {
 
     @JsonIgnore
     public String getDescription() {
+        if (this.description == null) {
+            return "";
+        }
+
         return this.description;
     }
 
@@ -96,10 +99,12 @@ public class Quest {
         return Material.STONE;
     }
 
+    @JsonIgnore
     public String getID() {
         return Main.getQuestsManager().getQuestID(this);
     }
 
+    @JsonIgnore
     public Long getCooldown() {
         if (this.cooldown == null) {
             return null;
@@ -108,6 +113,7 @@ public class Quest {
         return this.cooldown * 1000L;
     }
 
+    @JsonIgnore
     public boolean isShowCompletions() {
         if (showCompletions == null) {
             return !isOneTimeUse();
@@ -116,6 +122,7 @@ public class Quest {
         return showCompletions;
     }
 
+    @JsonIgnore
     public ArrayList<Quest> getRequiredQuests() {
         ArrayList<Quest> quests = new ArrayList<>();
 
@@ -132,13 +139,22 @@ public class Quest {
 
     @JsonIgnore
     public boolean isOneTimeUse() {
+        if (this.oneTime == null) {
+            return true;
+        }
+
         return this.oneTime;
     }
 
+    @JsonIgnore
     public Rewards getRewards() {
+        if (rewards == null) {
+            return new Rewards();
+        }
         return this.rewards;
     }
 
+    @JsonIgnore
     public void setRequirement(String id, ArrayList<Object> objects) {
         if (getRequirement(id) == null) {
             return;
@@ -147,14 +163,17 @@ public class Quest {
         requirements.put(id, objects);
     }
 
+    @JsonIgnore
     public LinkedHashMap<String, ArrayList<Object>> getRequirements() {
         return this.requirements;
     }
 
+    @JsonIgnore
     public ArrayList<Object> getRequirement(String id) {
         return getRequirements().get(id);
     }
 
+    @JsonIgnore
     public ItemStack getItem(Player player, HashMap<String, Integer> finishedQuests) {
         ItemStack item = new ItemStack(getMaterial());
         ItemMeta itemMeta = item.getItemMeta();
@@ -237,6 +256,7 @@ public class Quest {
         return item;
     }
 
+    @JsonIgnore
     public boolean checkCanCompleteQuest(Player player) {
         if (getQuestsToCompletePlayer(player).isEmpty()) {
             return true;
@@ -245,6 +265,7 @@ public class Quest {
         return false;
     }
 
+    @JsonIgnore
     public ArrayList<Quest> getQuestsToCompletePlayer(Player player) {
         ArrayList<Quest> quests = new ArrayList<>();
 
@@ -265,10 +286,12 @@ public class Quest {
         return quests;
     }
 
+    @JsonIgnore
     public void playerClick(Player player) throws SQLException {
         playerClick(player, false);
     }
 
+    @JsonIgnore
     public boolean playerClick(Player player, boolean message) throws SQLException {
         if (isOneTimeUse() && MysqlManager.getQuestPlayer(player.getUniqueId()).getFinishedQuests().containsKey(Main.getQuestsManager().getQuestID(this))) {
 
@@ -342,6 +365,7 @@ public class Quest {
         return true;
     }
 
+    @JsonIgnore
     public void claim(Player player, boolean message) {
 
         if (message) {
@@ -387,7 +411,7 @@ public class Quest {
             }
         }
 
-        if (this.announce) {
+        if (this.announce != null && this.announce) {
             Bukkit.getOnlinePlayers().forEach(players -> {
                 ChatManager.sendMessage(player, Translator.build("quest.announce", new TranslatorPlaceholder("player", player.getName()), new TranslatorPlaceholder("questName", getFriendlyName())));
             });
