@@ -7,6 +7,9 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.commands.BasicSubCommand;
 import de.frinshhd.anturniaquests.quests.models.Quest;
+import de.frinshhd.anturniaquests.utils.ChatManager;
+import de.frinshhd.anturniaquests.utils.Translator;
+import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
 import org.bukkit.command.CommandSender;
 
 import java.io.File;
@@ -17,10 +20,10 @@ import java.util.List;
 import java.util.Map;
 
 public class CreateCommand extends BasicSubCommand {
-    //Layout: /quests create <questID>
 
     public CreateCommand() {
-        super("quests", "anturniaquests.command.admin.create", new String[]{"create"});
+        super("quests", "anturniaquests.command.admin.create", new String[]{"create", "<questID>"});
+        setDescription("Creates a new quest.");
     }
 
     @Override
@@ -33,11 +36,12 @@ public class CreateCommand extends BasicSubCommand {
         String questID = args[1];
 
         if (Main.getQuestsManager().getQuest(questID) != null) {
-            //tell player this questID already exists
+            ChatManager.sendMessage(sender, Translator.build("quest.exists", new TranslatorPlaceholder("questID", questID)));
             return true;
         }
 
         Main.getQuestsManager().saveQuestToYml(questID, new Quest());
+        ChatManager.sendMessage(sender, Translator.build("quest.command.create", new TranslatorPlaceholder("questID", questID)));
         return true;
     }
 

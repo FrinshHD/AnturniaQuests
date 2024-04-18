@@ -258,4 +258,8 @@ public class QuestsManager {
 
         load();
     }
+
+    public Quest getEditableQuest(String questID) {
+        return this.questsRaw.get(questID);
+    }
 }

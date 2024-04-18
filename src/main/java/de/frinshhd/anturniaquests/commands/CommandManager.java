@@ -160,7 +160,7 @@ public class CommandManager {
                 }
 
                 if (subCommand.getPath()[index].startsWith("<") && subCommand.getPath()[index].endsWith(">")) {
-                    elementsToRemove.add(subCommand);
+                    //elementsToRemove.add(subCommand);
                     continue;
                 }
 

@@ -7,11 +7,11 @@ import org.bukkit.command.CommandSender;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EditCommand extends BasicSubCommand {
+public class EditNameCommand extends BasicSubCommand {
     //Layout: /quests create <questID>
 
-    public EditCommand() {
-        super("quests", "anturniaquests.command.admin.edit", new String[]{"edit", "<questID>"});
+    public EditNameCommand() {
+        super("quests", "anturniaquests.command.admin.edit", new String[]{"jeff", "", "set", "name", "<name>"});
     }
 
     @Override
@@ -27,7 +27,6 @@ public class EditCommand extends BasicSubCommand {
             //tell player this questID does not exist
             return true;
         }
-
 
 
         return true;
@@ -63,21 +62,16 @@ public class EditCommand extends BasicSubCommand {
                     completions.add(questID);
                 }
             });
-        } else if (args.length == 3) {
+        }
 
-            List<BasicSubCommand> basicSubCommands = Main.getCommandManager().getSubCommands(Main.getCommandManager().getCommand(getMainCommand()));
+        if (args.length == 3) {
+            ArrayList<String> options = new ArrayList<>(List.of());
 
-            basicSubCommands.forEach(basicSubCommand -> {
-                if (basicSubCommand.getPath().length >= args.length && basicSubCommand.getPath()[0].startsWith(args[0])) {
-                    completions.add(basicSubCommand.getPath()[args.length - 1]);
+            options.forEach(option -> {
+                if (option.toLowerCase().startsWith(args[2])) {
+                    completions.add(option);
                 }
             });
-        } else {
-            BasicSubCommand subCommand = Main.getCommandManager().getSubCommand(Main.getCommandManager().getCommand(getMainCommand()), args);
-
-            if (subCommand != null) {
-                completions.addAll(subCommand.tabComplete(sender, args));
-            }
         }
 
         return completions;

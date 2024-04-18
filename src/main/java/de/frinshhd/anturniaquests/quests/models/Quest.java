@@ -65,6 +65,11 @@ public class Quest {
     public Quest() {}
 
     @JsonIgnore
+    public void setFriendlyName(String friendlyName) {
+        this.friendlyName = friendlyName;
+    }
+
+    @JsonIgnore
     public String getFriendlyName() {
         if (this.friendlyName == null) {
             return "";
@@ -73,8 +78,18 @@ public class Quest {
     }
 
     @JsonIgnore
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    @JsonIgnore
     public String getCategory() {
         return this.category;
+    }
+
+    @JsonIgnore
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @JsonIgnore
