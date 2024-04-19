@@ -102,6 +102,13 @@ public class Quest {
     }
 
     @JsonIgnore
+    public void setMaterial(String material) {
+        if (Material.getMaterial(material.toUpperCase()) != null) {
+            this.material = material;
+        }
+    }
+
+    @JsonIgnore
     public Material getMaterial() {
         if (this.material != null) {
             return Material.getMaterial(this.material);
@@ -120,6 +127,11 @@ public class Quest {
     }
 
     @JsonIgnore
+    public void setCooldown(Integer cooldown) {
+        this.cooldown = cooldown;
+    }
+
+    @JsonIgnore
     public Long getCooldown() {
         if (this.cooldown == null) {
             return null;
@@ -129,12 +141,22 @@ public class Quest {
     }
 
     @JsonIgnore
+    public void setShowCompletions(Boolean showCompletions) {
+        this.showCompletions = showCompletions;
+    }
+
+    @JsonIgnore
     public boolean isShowCompletions() {
         if (showCompletions == null) {
             return !isOneTimeUse();
         }
 
         return showCompletions;
+    }
+
+    @JsonIgnore
+    public void setAnnounce(Boolean announce) {
+        this.announce = announce;
     }
 
     @JsonIgnore
@@ -150,6 +172,11 @@ public class Quest {
         }
 
         return quests;
+    }
+
+    @JsonIgnore
+    public void setOneTime(Boolean oneTime) {
+        this.oneTime = oneTime;
     }
 
     @JsonIgnore

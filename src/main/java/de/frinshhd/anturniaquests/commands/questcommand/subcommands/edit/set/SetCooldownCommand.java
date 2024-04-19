@@ -11,17 +11,17 @@ import org.bukkit.command.CommandSender;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SetFriendlyNameCommand extends BasicSubCommand {
+public class SetCooldownCommand extends BasicSubCommand {
 
-    public SetFriendlyNameCommand() {
-        super("quests", "anturniaquests.command.admin.quests.set.friendlyname", new String[]{"edit", "<questID>", "set", "friendlyName", "<friendlyName>"});
-        setDescription("Set the friendly name of a quest.");
+    public SetCooldownCommand() {
+        super("quests", "anturniaquests.command.admin.quests.set.cooldown", new String[]{"edit", "<questID>", "set", "cooldown", "<cooldown>"});
+        setDescription("Set the cooldown of a quest in seconds.");
     }
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         if (args.length <= 4) {
-            Main.getCommandManager().getSubCommand(Main.getCommandManager().getCommand(getMainCommand()), "help").execute(sender, commandLabel, new String[]{"help", "edit", "<questID>", "set", "friendlyName" });
+            Main.getCommandManager().getSubCommand(Main.getCommandManager().getCommand(getMainCommand()), "help").execute(sender, commandLabel, new String[]{"help", "edit", "<questID>", "set", "cooldown" });
             return true;
         }
 
@@ -32,16 +32,22 @@ public class SetFriendlyNameCommand extends BasicSubCommand {
             return true;
         }
 
-        String friendlyName = args[4];
+        String cooldown = args[4];
+
+        if (!isInteger(cooldown)) {
+            //Todo: nicer image
+            sender.sendMessage("not an integer");
+            return true;
+        }
+
 
         Quest quest = Main.getQuestsManager().getEditableQuest(questID);
 
-        quest.setFriendlyName(friendlyName);
+        quest.setCooldown(Integer.valueOf(cooldown));
 
         Main.getQuestsManager().saveQuestToYml(questID, quest);
 
-        //Todo tell player that he changed the friendlyName of quest
-        ChatManager.sendMessage(sender, Translator.build("quest.command.edit.set.displayName", new TranslatorPlaceholder("questID", questID), new TranslatorPlaceholder("friendlyName", friendlyName)));
+        ChatManager.sendMessage(sender, Translator.build("quest.command.edit.set.cooldown", new TranslatorPlaceholder("questID", questID), new TranslatorPlaceholder("cooldown", String.valueOf(Integer.valueOf(cooldown)))));
         return true;
     }
 
@@ -53,7 +59,7 @@ public class SetFriendlyNameCommand extends BasicSubCommand {
         List<String> possibleCompletions = new ArrayList<>();
         List<String> completions = new ArrayList<>();
 
-        possibleCompletions.add("friendlyName");
+        possibleCompletions.add("cooldown");
 
         // Filter
         possibleCompletions.forEach(completion -> {
@@ -69,5 +75,15 @@ public class SetFriendlyNameCommand extends BasicSubCommand {
         });
 
         return completions;
+    }
+
+    private boolean isInteger( String input ) {
+        try {
+            Integer.parseInt( input );
+            return true;
+        }
+        catch( Exception e ) {
+            return false;
+        }
     }
 }

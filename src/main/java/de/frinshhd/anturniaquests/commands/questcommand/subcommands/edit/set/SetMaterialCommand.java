@@ -6,22 +6,23 @@ import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.utils.ChatManager;
 import de.frinshhd.anturniaquests.utils.Translator;
 import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SetFriendlyNameCommand extends BasicSubCommand {
+public class SetMaterialCommand extends BasicSubCommand {
 
-    public SetFriendlyNameCommand() {
-        super("quests", "anturniaquests.command.admin.quests.set.friendlyname", new String[]{"edit", "<questID>", "set", "friendlyName", "<friendlyName>"});
-        setDescription("Set the friendly name of a quest.");
+    public SetMaterialCommand() {
+        super("quests", "anturniaquests.command.admin.quests.set.material", new String[]{"edit", "<questID>", "set", "material", "<material>"});
+        setDescription("Set the material of a quest's item.");
     }
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         if (args.length <= 4) {
-            Main.getCommandManager().getSubCommand(Main.getCommandManager().getCommand(getMainCommand()), "help").execute(sender, commandLabel, new String[]{"help", "edit", "<questID>", "set", "friendlyName" });
+            Main.getCommandManager().getSubCommand(Main.getCommandManager().getCommand(getMainCommand()), "help").execute(sender, commandLabel, new String[]{"help", "edit", "<questID>", "set", "material" });
             return true;
         }
 
@@ -32,16 +33,21 @@ public class SetFriendlyNameCommand extends BasicSubCommand {
             return true;
         }
 
-        String friendlyName = args[4];
+        String material = args[4];
+
+        if (Material.getMaterial(material.toUpperCase()) == null) {
+            //Todo make nicer message
+            sender.sendMessage("material doesn't exist");
+            return true;
+        }
 
         Quest quest = Main.getQuestsManager().getEditableQuest(questID);
 
-        quest.setFriendlyName(friendlyName);
+        quest.setMaterial(material.toUpperCase());
 
         Main.getQuestsManager().saveQuestToYml(questID, quest);
 
-        //Todo tell player that he changed the friendlyName of quest
-        ChatManager.sendMessage(sender, Translator.build("quest.command.edit.set.displayName", new TranslatorPlaceholder("questID", questID), new TranslatorPlaceholder("friendlyName", friendlyName)));
+        ChatManager.sendMessage(sender, Translator.build("quest.command.edit.set.material", new TranslatorPlaceholder("questID", questID), new TranslatorPlaceholder("material", material.toUpperCase())));
         return true;
     }
 
@@ -53,7 +59,7 @@ public class SetFriendlyNameCommand extends BasicSubCommand {
         List<String> possibleCompletions = new ArrayList<>();
         List<String> completions = new ArrayList<>();
 
-        possibleCompletions.add("friendlyName");
+        possibleCompletions.add("material");
 
         // Filter
         possibleCompletions.forEach(completion -> {
@@ -67,6 +73,15 @@ public class SetFriendlyNameCommand extends BasicSubCommand {
                 return;
             }
         });
+
+        if (args.length == 5) {
+            for (Material material : Material.values()) {
+                String materialName = material.name();
+                if (materialName.toLowerCase().startsWith(args[4].toLowerCase())) {
+                    completions.add(materialName.toLowerCase());
+                }
+            }
+        }
 
         return completions;
     }
