@@ -32,27 +32,11 @@ public class RemoveCommand extends BasicSubCommand {
             List<BasicSubCommand> basicSubCommands = Main.getCommandManager().getSubCommands(Main.getCommandManager().getCommand(getMainCommand()));
 
             basicSubCommands.forEach(basicSubCommand -> {
-                if (basicSubCommand.getPath().length >= args.length && basicSubCommand.getPath()[0].startsWith(args[0])) {
+                if (basicSubCommand.getPath().length >= args.length && basicSubCommand.getPath()[2].startsWith(args[2])) {
                     completions.add(basicSubCommand.getPath()[args.length - 1]);
                 }
             });
-        } else {
-            BasicSubCommand subCommand = Main.getCommandManager().getSubCommand(Main.getCommandManager().getCommand(getMainCommand()), args);
-
-            if (subCommand != null) {
-                completions.addAll(subCommand.tabComplete(sender, args));
-            }
         }
-
-        /*BasicSubCommand subCommand = Main.getCommandManager().getSubCommand(this, args);
-
-        System.out.println(subCommand);
-
-        if (subCommand != null) {
-            completions.addAll(subCommand.tabComplete(sender, args));
-        } */
-
-        // first layer logic comes here
 
         return completions;
 

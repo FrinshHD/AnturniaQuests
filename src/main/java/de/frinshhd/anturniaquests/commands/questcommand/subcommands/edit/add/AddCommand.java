@@ -27,17 +27,16 @@ public class AddCommand extends BasicSubCommand {
         }
 
         List<String> completions = new ArrayList<>();
+        if (args.length == 4) {
 
+            List<BasicSubCommand> basicSubCommands = Main.getCommandManager().getSubCommands(Main.getCommandManager().getCommand(getMainCommand()));
 
-        /*BasicSubCommand subCommand = Main.getCommandManager().getSubCommand(this, args);
-
-        System.out.println(subCommand);
-
-        if (subCommand != null) {
-            completions.addAll(subCommand.tabComplete(sender, args));
-        } */
-
-        // first layer logic comes here
+            basicSubCommands.forEach(basicSubCommand -> {
+                if (basicSubCommand.getPath().length >= args.length && basicSubCommand.getPath()[2].startsWith(args[2])) {
+                    completions.add(basicSubCommand.getPath()[args.length - 1]);
+                }
+            });
+        }
 
         return completions;
     }

@@ -72,12 +72,6 @@ public class EditCommand extends BasicSubCommand {
                     completions.add(basicSubCommand.getPath()[args.length - 1]);
                 }
             });
-        } else {
-            BasicSubCommand subCommand = Main.getCommandManager().getSubCommand(Main.getCommandManager().getCommand(getMainCommand()), args);
-
-            if (subCommand != null) {
-                completions.addAll(subCommand.tabComplete(sender, args));
-            }
         }
 
         return completions;

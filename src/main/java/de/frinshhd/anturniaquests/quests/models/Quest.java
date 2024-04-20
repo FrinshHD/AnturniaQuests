@@ -459,4 +459,16 @@ public class Quest {
             });
         }
     }
+
+    public void addRequirement(String requirementID, LinkedHashMap<String, Object> map) {
+        ArrayList<Object> objects = new ArrayList<>();
+
+        if (getRequirement(requirementID) != null) {
+            objects = getRequirement(requirementID);
+        }
+
+        objects.add(map);
+
+        requirements.put(requirementID, objects);
+    }
 }

@@ -1,9 +1,9 @@
 package de.frinshhd.anturniaquests.quests;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -65,7 +65,6 @@ public class QuestsManager {
 
         try {
             this.questsRaw = mapper.readValue(new FileInputStream("plugins/AnturniaQuests/quests.yml"), mapTypeQuests);
-            //this.quests = mapper.readValue(this.getClass().getClassLoader().getResourceAsStream("quests.yml"), mapTypeQuests);
         } catch (IOException e) {
             Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading config.yml. AnturniaQuests will be disabled!\nError " + e.getMessage());
             Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
@@ -244,11 +243,15 @@ public class QuestsManager {
         questsRaw.put(questID, quest);
 
         ObjectMapper om = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER));
+
+
         om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         om.enable(SerializationFeature.INDENT_OUTPUT); // Enable pretty printing
         om.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS); // Order map entries by keys
         om.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL); // Ignore null properties
         om.disable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS);
+
+        om.disable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
 
         try {
             om.writeValue(new File("plugins/AnturniaQuests/quests.yml"), questsRaw);
@@ -263,3 +266,5 @@ public class QuestsManager {
         return this.questsRaw.get(questID);
     }
 }
+
+

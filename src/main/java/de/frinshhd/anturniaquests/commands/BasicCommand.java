@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class BasicCommand extends Command {
@@ -41,6 +42,7 @@ public abstract class BasicCommand extends Command {
     @Override
     public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
         super.tabComplete(sender, alias, args);
+
         List<String> completions = new ArrayList<>();
 
         if (getPermission() != null && !sender.hasPermission(getPermission())) {
