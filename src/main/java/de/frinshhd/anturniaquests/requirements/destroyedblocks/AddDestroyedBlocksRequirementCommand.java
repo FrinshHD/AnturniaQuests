@@ -65,15 +65,15 @@ public class AddDestroyedBlocksRequirementCommand extends BasicSubCommand {
 
         Quest quest = Main.getQuestsManager().getEditableQuest(questID);
 
-        LinkedHashMap<String, Object> map = new LinkedHashMap<>();
-        map.put("material", material.toUpperCase());
-        map.put("amount", Integer.valueOf(amount));
+        DestroyedBlocksModel destroyedBlocksModel = new DestroyedBlocksModel(new LinkedHashMap<>());
+        destroyedBlocksModel.setMaterial(Material.getMaterial(material.toUpperCase()));
+        destroyedBlocksModel.setAmount(Integer.valueOf(amount));
 
         if (!worlds.isEmpty()) {
-            map.put("worlds", worlds);
+            destroyedBlocksModel.setWorlds(worlds);
         }
 
-        quest.addRequirement("destroyedBlocks", map);
+        quest.addRequirement("destroyedBlocks", destroyedBlocksModel);
 
         Main.getQuestsManager().saveQuestToYml(questID, quest);
 

@@ -71,15 +71,15 @@ public class AddBlockInteractionsRequirementCommand extends BasicSubCommand {
 
         Quest quest = Main.getQuestsManager().getEditableQuest(questID);
 
-        LinkedHashMap<String, Object> map = new LinkedHashMap<>();
-        map.put("location", locations);
-        map.put("world", world);
+        BlockInteractionsModel blockInteractionsModel = new BlockInteractionsModel(new LinkedHashMap<>());
+        blockInteractionsModel.setLocation(new ArrayList<>(locations));
+        blockInteractionsModel.setWorld(world);
 
         if (interactAction != null) {
-            map.put("interactActions", List.of(interactAction.toUpperCase()));
+            blockInteractionsModel.setInteractActions(new ArrayList<>(List.of(interactAction)));
         }
 
-        quest.addRequirement("blockInteractions", map);
+        quest.addRequirement("blockInteractions", blockInteractionsModel);
 
         Main.getQuestsManager().saveQuestToYml(questID, quest);
 

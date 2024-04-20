@@ -7,6 +7,7 @@ import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.mysql.MysqlManager;
 import de.frinshhd.anturniaquests.mysql.entities.Quests;
 import de.frinshhd.anturniaquests.quests.QuestsManager;
+import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
 import de.frinshhd.anturniaquests.requirements.items.ItemModel;
 import de.frinshhd.anturniaquests.utils.*;
 import org.bukkit.Bukkit;
@@ -460,14 +461,14 @@ public class Quest {
         }
     }
 
-    public void addRequirement(String requirementID, LinkedHashMap<String, Object> map) {
+    public void addRequirement(String requirementID, BasicRequirementModel requirementModel) {
         ArrayList<Object> objects = new ArrayList<>();
 
         if (getRequirement(requirementID) != null) {
             objects = getRequirement(requirementID);
         }
 
-        objects.add(map);
+        objects.add(requirementModel);
 
         requirements.put(requirementID, objects);
     }
