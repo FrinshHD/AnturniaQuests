@@ -190,6 +190,11 @@ public class Quest {
     }
 
     @JsonIgnore
+    public void setRewards(Rewards rewards) {
+        this.rewards = rewards;
+    }
+
+    @JsonIgnore
     public Rewards getRewards() {
         if (rewards == null) {
             return new Rewards();
