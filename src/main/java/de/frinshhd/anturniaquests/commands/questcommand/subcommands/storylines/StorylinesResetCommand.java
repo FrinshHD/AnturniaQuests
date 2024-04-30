@@ -19,7 +19,7 @@ public class StorylinesResetCommand extends BasicSubCommand {
     private final PlayerHashMap<UUID, Long> lastExecution = new PlayerHashMap<>();
 
     public StorylinesResetCommand() {
-        super("quests", "anturniaquests.command.admin.storylines.reset", new String[]{"storylines", "reset", "<player>", "[questID}"});
+        super("quests", "anturniaquests.command.admin.storylines.reset", new String[]{"storylines", "reset", "<player>", "[storylineID]"});
         setDescription("Resets a player's storyline progress.");
     }
 

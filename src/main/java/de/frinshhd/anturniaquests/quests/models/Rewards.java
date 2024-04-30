@@ -17,13 +17,28 @@ public class Rewards {
     private List<Command> commands = new ArrayList<>();
 
     @JsonIgnore
+    public void addItem(ItemModel itemModel) {
+        items.add(itemModel);
+    }
+
+    @JsonIgnore
     public List<ItemModel> getItems() {
         return this.items;
     }
 
     @JsonIgnore
+    public void setMoney(double money) {
+        this.money = money;
+    }
+
+    @JsonIgnore
     public double getMoney() {
         return this.money;
+    }
+
+    @JsonIgnore
+    public void addCommand(Command command) {
+        commands.add(command);
     }
 
     @JsonIgnore

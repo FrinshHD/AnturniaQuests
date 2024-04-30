@@ -24,3 +24,47 @@ permissions:
     default: op
   anturniaquests.command.admin.storylines.reset:
     default: op
+  anturniaquests.command.admin.storylines.add:
+    default: op
+  anturniaquests.command.admin.storylines.remove:
+    default: op
+  anturniaquests.command.admin.quests.add.reward:
+    default: op
+  anturniaquests.command.admin.quests.add.requirement:
+    default: op
+  anturniaquests.command.admin.quests.remove:
+    default: op
+  anturniaquests.command.admin.quests.remove.announce:
+    default: op
+  anturniaquests.command.admin.quests.remove.cooldown:
+    default: op
+  anturniaquests.command.admin.quests.remove.description:
+    default: op
+  anturniaquests.command.admin.quests.remove.friendlyname:
+    default: op
+  anturniaquests.command.admin.quests.remove.material:
+    default: op
+  anturniaquests.command.admin.quests.remove.onetimeuse:
+    default: op
+  anturniaquests.command.admin.quests.remove.showcompletions:
+    default: op
+  anturniaquests.command.admin.quests.set.announce:
+    default: op
+  anturniaquests.command.admin.quests.set.category:
+    default: op
+  anturniaquests.command.admin.quests.set:
+    default: op
+  anturniaquests.command.admin.quests.set.cooldown:
+    default: op
+  anturniaquests.command.admin.quests.set.description:
+    default: op
+  anturniaquests.command.admin.quests.set.friendlyname:
+    default: op
+  anturniaquests.command.admin.quests.set.material:
+    default: op
+  anturniaquests.command.admin.quests.set.onetimeuse:
+    default: op
+  anturniaquests.command.admin.quests.set.showcompletions:
+    default: op
+  anturniaquests.command.admin.edit:
+    default: op

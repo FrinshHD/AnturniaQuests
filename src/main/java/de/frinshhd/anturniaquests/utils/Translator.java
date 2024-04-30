@@ -37,7 +37,7 @@ public class Translator {
             return;
         }
 
-        messages.store(new FileOutputStream(path), null);
+        //messages.store(new FileOutputStream(path), null);
     }
 
     public static String build(String messageKey, TranslatorPlaceholder... translatorPlaceholders) {

@@ -1,18 +1,17 @@
-package de.frinshhd.anturniaquests.commands.questcommand.subcommands.storylines;
+package de.frinshhd.anturniaquests.commands.questcommand.subcommands.edit.set;
 
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.commands.BasicSubCommand;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class StorylinesCommand extends BasicSubCommand {
+public class SetCommand extends BasicSubCommand {
 
-    public StorylinesCommand() {
-        super("quests", "anturniaquests.command.admin.storylines", new String[]{"storylines"});
-        setDescription("Manage storylines.");
+    public SetCommand() {
+        super("quests", "anturniaquests.command.admin.quests.set", new String[]{"edit", "<questID>", "set"});
+        setDescription("");
     }
 
     @Override
@@ -28,23 +27,18 @@ public class StorylinesCommand extends BasicSubCommand {
         }
 
         List<String> completions = new ArrayList<>();
-
-        if (args.length == 2) {
+        if (args.length == 4) {
 
             List<BasicSubCommand> basicSubCommands = Main.getCommandManager().getSubCommands(Main.getCommandManager().getCommand(getMainCommand()));
 
             basicSubCommands.forEach(basicSubCommand -> {
-                if (basicSubCommand.getPath().length >= args.length && !basicSubCommand.getPath()[0].equalsIgnoreCase(args[0])) {
-                    return;
-                }
-
-
-                if (basicSubCommand.getPath().length >= args.length && basicSubCommand.getPath()[1].startsWith(args[1])) {
+                if (basicSubCommand.getPath().length >= args.length && basicSubCommand.getPath()[2].startsWith(args[2])) {
                     completions.add(basicSubCommand.getPath()[args.length - 1]);
                 }
             });
         }
 
         return completions;
+
     }
 }

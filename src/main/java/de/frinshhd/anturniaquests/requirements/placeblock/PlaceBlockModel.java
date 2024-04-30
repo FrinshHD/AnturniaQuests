@@ -1,5 +1,7 @@
 package de.frinshhd.anturniaquests.requirements.placeblock;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
 import org.bukkit.Location;
@@ -11,11 +13,16 @@ import java.util.LinkedHashMap;
 
 public class PlaceBlockModel extends BasicRequirementModel {
 
+    @JsonProperty
     public ArrayList<Integer> location = new ArrayList<>();
+
+    @JsonProperty
     private String world = "world";
 
+    @JsonProperty
     private Material material = null;
 
+    @JsonIgnore
     public PlaceBlockModel(LinkedHashMap<String, Object> map) {
         super(map, "placeBlocks");
 
@@ -34,6 +41,12 @@ public class PlaceBlockModel extends BasicRequirementModel {
         }
     }
 
+    @JsonIgnore
+    public void setLocation(ArrayList<Integer> location) {
+        this.location = location;
+    }
+
+    @JsonIgnore
     public Location getLocation() {
 
         Location location;
@@ -46,10 +59,22 @@ public class PlaceBlockModel extends BasicRequirementModel {
         return location;
     }
 
+    @JsonIgnore
+    public void setWorld(String world) {
+        this.world = world;
+    }
+
+    @JsonIgnore
     public World getWorld() {
         return Main.getInstance().getServer().getWorld(this.world);
     }
 
+    @JsonIgnore
+    public void setMaterial(Material material) {
+        this.material = material;
+    }
+
+    @JsonIgnore
     public Material getMaterial() {
         return material;
     }

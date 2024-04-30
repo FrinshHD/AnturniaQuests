@@ -11,12 +11,22 @@ public class Command {
     private String command;
 
     @JsonIgnore
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @JsonIgnore
     public String getName() {
         if (this.name == null) {
             return getCommand();
         }
 
         return this.name;
+    }
+
+    @JsonProperty
+    public void setCommand(String command) {
+        this.command = command;
     }
 
     @JsonIgnore
