@@ -19,7 +19,7 @@ public class AddMoneyRewardCommand extends BasicSubCommand {
 
     public AddMoneyRewardCommand() {
         super("quests", "anturniaquests.command.admin.quests.add.reward", new String[]{"edit", "<questID>", "add", "reward", "money", "<amount>"});
-        setDescription("Add a reward to a quest.");
+        setDescription("Add a money reward to a quest.");
     }
 
     @Override

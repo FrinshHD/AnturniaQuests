@@ -21,7 +21,7 @@ public class AddCommandRewardCommand extends BasicSubCommand {
 
     public AddCommandRewardCommand() {
         super("quests", "anturniaquests.command.admin.quests.add.reward", new String[]{"edit", "<questID>", "add", "reward", "command", "<name>", "<command>"});
-        setDescription("Add a reward to a quest.");
+        setDescription("Add a command reward to a quest.");
     }
 
     @Override

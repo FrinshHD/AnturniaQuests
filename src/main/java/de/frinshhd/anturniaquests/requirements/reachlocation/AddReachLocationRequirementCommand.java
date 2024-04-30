@@ -19,7 +19,7 @@ public class AddReachLocationRequirementCommand extends BasicSubCommand {
     public AddReachLocationRequirementCommand() {
         super("quests", "anturniaquests.command.admin.quests.add.requirement", new String[]{"edit", "<questID>", "add", "requirement", "reachLocation", "<x1>", "<y1>", "<z1>", "<x2>",
                 "<y2>", "<z2>", "<world>", "[friendlyName]"});
-        setDescription("Add a requirement to a quest.");
+        setDescription("Adds a reachLocation requirement to a quest.");
     }
 
     @Override

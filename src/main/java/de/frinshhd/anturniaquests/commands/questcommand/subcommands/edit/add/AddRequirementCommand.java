@@ -11,7 +11,7 @@ public class AddRequirementCommand extends BasicSubCommand {
 
     public AddRequirementCommand() {
         super("quests", "anturniaquests.command.admin.quests.add.requirement", new String[]{"edit", "<questID>", "add", "requirement"});
-        setDescription("Add a requirement to a quest.");
+        setDescription("");
     }
 
     @Override

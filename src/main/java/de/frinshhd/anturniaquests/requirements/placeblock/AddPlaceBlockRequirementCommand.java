@@ -20,7 +20,7 @@ public class AddPlaceBlockRequirementCommand extends BasicSubCommand {
 
     public AddPlaceBlockRequirementCommand() {
         super("quests", "anturniaquests.command.admin.quests.add.requirement", new String[]{"edit", "<questID>", "add", "requirement", "placeBlock", "<x>", "<y>", "<z>", "<world>", "<material>"});
-        setDescription("Add a destroyedBlocks requirement to a quest.");
+        setDescription("Add a placeBlock requirement to a quest.");
     }
 
     @Override

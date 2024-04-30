@@ -17,7 +17,7 @@ public class AddKilledEntityRequirementCommand extends BasicSubCommand {
 
     public AddKilledEntityRequirementCommand() {
         super("quests", "anturniaquests.command.admin.quests.add.requirement", new String[]{"edit", "<questID>", "add", "requirement", "killedEntity", "<entity>", "<amount>"});
-        setDescription("Add a destroyedBlocks requirement to a quest.");
+        setDescription("Add a killed entity requirement to a quest.");
     }
 
     @Override

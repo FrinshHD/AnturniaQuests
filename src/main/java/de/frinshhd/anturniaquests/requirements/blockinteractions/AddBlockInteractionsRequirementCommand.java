@@ -19,7 +19,7 @@ public class AddBlockInteractionsRequirementCommand extends BasicSubCommand {
 
     public AddBlockInteractionsRequirementCommand() {
         super("quests", "anturniaquests.command.admin.quests.add.requirement", new String[]{"edit", "<questID>", "add", "requirement", "blockInteraction", "<x>", "<y>", "<z>", "<world>", "[interactAction]"});
-        setDescription("Add a requirement to a quest.");
+        setDescription("Adds a block interaction requirement to a quest.");
     }
 
     @Override

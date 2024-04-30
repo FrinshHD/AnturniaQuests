@@ -21,7 +21,7 @@ public class AddItemsRequirementCommand extends BasicSubCommand {
 
     public AddItemsRequirementCommand() {
         super("quests", "anturniaquests.command.admin.quests.add.requirement", new String[]{"edit", "<questID>", "add", "requirement", "item", "<material>", "<amount>", "[name]"});
-        setDescription("Add a destroyedBlocks requirement to a quest.");
+        setDescription("Add a item requirement to a quest.");
     }
 
     @Override
