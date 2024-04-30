@@ -78,7 +78,7 @@ public class AddPlacedBlockRequirementCommand extends BasicSubCommand {
 
         Main.getQuestsManager().saveQuestToYml(questID, quest);
 
-        ChatManager.sendMessage(sender, Translator.build("quest.command.edit.add.requirement.placedBlocks", new TranslatorPlaceholder("questID", questID)));
+        ChatManager.sendMessage(sender, Translator.build("quest.command.edit.add.requirement.placedBlocks", new TranslatorPlaceholder("questID", questID), new TranslatorPlaceholder("amount", String.valueOf(placedBlocksModel.getAmount())), new TranslatorPlaceholder("material", placedBlocksModel.getDisplayName())));
         return true;
     }
 

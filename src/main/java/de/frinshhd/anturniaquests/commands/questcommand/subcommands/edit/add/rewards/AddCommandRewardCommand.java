@@ -69,7 +69,7 @@ public class AddCommandRewardCommand extends BasicSubCommand {
 
         Main.getQuestsManager().saveQuestToYml(questID, quest);
 
-        ChatManager.sendMessage(sender, Translator.build("quest.command.edit.add.reward.command", new TranslatorPlaceholder("questID", questID)));
+        ChatManager.sendMessage(sender, Translator.build("quest.command.edit.add.reward.command", new TranslatorPlaceholder("questID", questID), new TranslatorPlaceholder("commandName", command.getName())));
         return true;
     }
 

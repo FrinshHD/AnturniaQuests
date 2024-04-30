@@ -89,7 +89,7 @@ public class AddReachLocationRequirementCommand extends BasicSubCommand {
 
         Main.getQuestsManager().saveQuestToYml(questID, quest);
 
-        ChatManager.sendMessage(sender, Translator.build("quest.command.edit.add.requirement.reachLocation", new TranslatorPlaceholder("questID", questID)));
+        ChatManager.sendMessage(sender, Translator.build("quest.command.edit.add.requirement.reachLocation", new TranslatorPlaceholder("questID", questID), new TranslatorPlaceholder("location1", reachLocationModel.getLocation1().toString().substring(1, reachLocationModel.getLocation1().toString().length() - 1)), new TranslatorPlaceholder("location2", reachLocationModel.getLocation2().toString().substring(1, reachLocationModel.getLocation2().toString().length() - 1))));
         return true;
     }
 

@@ -58,7 +58,7 @@ public class AddKilledEntityRequirementCommand extends BasicSubCommand {
 
         Main.getQuestsManager().saveQuestToYml(questID, quest);
 
-        ChatManager.sendMessage(sender, Translator.build("quest.command.edit.add.requirement.killedEntity", new TranslatorPlaceholder("questID", questID)));
+        ChatManager.sendMessage(sender, Translator.build("quest.command.edit.add.requirement.killedEntity", new TranslatorPlaceholder("questID", questID), new TranslatorPlaceholder("entityName", killedEntityModel.getName())));
         return true;
     }
 

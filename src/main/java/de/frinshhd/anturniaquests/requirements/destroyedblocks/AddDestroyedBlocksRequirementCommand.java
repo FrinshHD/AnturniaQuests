@@ -77,7 +77,7 @@ public class AddDestroyedBlocksRequirementCommand extends BasicSubCommand {
 
         Main.getQuestsManager().saveQuestToYml(questID, quest);
 
-        ChatManager.sendMessage(sender, Translator.build("quest.command.edit.add.requirement.destroyedBlock", new TranslatorPlaceholder("questID", questID)));
+        ChatManager.sendMessage(sender, Translator.build("quest.command.edit.add.requirement.destroyedBlocks", new TranslatorPlaceholder("questID", questID), new TranslatorPlaceholder("amount", String.valueOf(destroyedBlocksModel.getAmount())), new TranslatorPlaceholder("material", destroyedBlocksModel.getDisplayName())));
         return true;
     }
 

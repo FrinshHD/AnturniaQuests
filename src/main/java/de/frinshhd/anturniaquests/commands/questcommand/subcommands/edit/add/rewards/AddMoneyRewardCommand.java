@@ -53,7 +53,7 @@ public class AddMoneyRewardCommand extends BasicSubCommand {
 
         Main.getQuestsManager().saveQuestToYml(questID, quest);
 
-        ChatManager.sendMessage(sender, Translator.build("quest.command.edit.add.reward.money", new TranslatorPlaceholder("questID", questID)));
+        ChatManager.sendMessage(sender, Translator.build("quest.command.edit.add.reward.money", new TranslatorPlaceholder("questID", questID), new TranslatorPlaceholder("amount", String.valueOf(Integer.parseInt(money)))));
         return true;
     }
 

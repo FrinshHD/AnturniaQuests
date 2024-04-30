@@ -83,7 +83,7 @@ public class AddBlockInteractionsRequirementCommand extends BasicSubCommand {
 
         Main.getQuestsManager().saveQuestToYml(questID, quest);
 
-        ChatManager.sendMessage(sender, Translator.build("quest.command.edit.add.requirement.blockInteraction", new TranslatorPlaceholder("questID", questID)));
+        ChatManager.sendMessage(sender, Translator.build("quest.command.edit.add.requirement.blockInteraction", new TranslatorPlaceholder("questID", questID), new TranslatorPlaceholder("location", blockInteractionsModel.getLocation().toString().substring(1, blockInteractionsModel.getLocation().toString().length() - 1))));
         return true;
     }
 
