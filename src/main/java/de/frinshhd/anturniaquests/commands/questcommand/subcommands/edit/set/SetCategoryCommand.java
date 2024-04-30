@@ -14,7 +14,7 @@ import java.util.List;
 public class SetCategoryCommand extends BasicSubCommand {
 
     public SetCategoryCommand() {
-        super("quests", "anturniaquests.command.admin.quests.set.description", new String[]{"edit", "<questID>", "set", "category", "<category>"});
+        super("quests", "anturniaquests.command.admin.quests.set.category", new String[]{"edit", "<questID>", "set", "category", "<category>"});
         setDescription("Set the description of a quest.");
     }
 

@@ -14,7 +14,7 @@ import java.util.List;
 public class RemoveCategoryCommand extends BasicSubCommand {
 
     public RemoveCategoryCommand() {
-        super("quests", "anturniaquests.command.admin.quests.set.category", new String[]{"edit", "<questID>", "remove", "category"});
+        super("quests", "anturniaquests.command.admin.quests.remove.category", new String[]{"edit", "<questID>", "remove", "category"});
         setDescription("Remove the category of a quest.");
     }
 

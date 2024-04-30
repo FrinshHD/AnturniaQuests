@@ -10,7 +10,7 @@ import java.util.List;
 public class RemoveCommand extends BasicSubCommand {
 
     public RemoveCommand() {
-        super("quests", "anturniaquests.command.admin.quests.set", new String[]{"edit", "<questID>", "remove"});
+        super("quests", "anturniaquests.command.admin.quests.remove", new String[]{"edit", "<questID>", "remove"});
         setDescription("");
     }
 

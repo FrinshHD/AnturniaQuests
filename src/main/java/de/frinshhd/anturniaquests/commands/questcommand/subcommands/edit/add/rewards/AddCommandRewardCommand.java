@@ -20,7 +20,7 @@ import java.util.List;
 public class AddCommandRewardCommand extends BasicSubCommand {
 
     public AddCommandRewardCommand() {
-        super("quests", "anturniaquests.command.admin.quests.add.command", new String[]{"edit", "<questID>", "add", "reward", "command", "<name>", "<command>"});
+        super("quests", "anturniaquests.command.admin.quests.add.reward", new String[]{"edit", "<questID>", "add", "reward", "command", "<name>", "<command>"});
         setDescription("Add a reward to a quest.");
     }
 
