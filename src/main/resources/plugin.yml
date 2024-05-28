@@ -68,3 +68,5 @@ permissions:
     default: op
   anturniaquests.command.admin.edit:
     default: op
+  anturniaquests.command.quests:
+    default: true

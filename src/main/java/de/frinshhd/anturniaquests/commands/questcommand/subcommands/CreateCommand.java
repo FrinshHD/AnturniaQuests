@@ -10,14 +10,15 @@ import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.utils.ChatManager;
 import de.frinshhd.anturniaquests.utils.Translator;
 import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
+import org.bukkit.*;
 import org.bukkit.command.CommandSender;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.profile.PlayerProfile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CreateCommand extends BasicSubCommand {
 
@@ -42,6 +43,7 @@ public class CreateCommand extends BasicSubCommand {
 
         Main.getQuestsManager().saveQuestToYml(questID, new Quest());
         ChatManager.sendMessage(sender, Translator.build("quest.command.create", new TranslatorPlaceholder("questID", questID)));
+
         return true;
     }
 
