@@ -461,7 +461,7 @@ public class Quest {
 
         if (this.announce != null && this.announce) {
             Bukkit.getOnlinePlayers().forEach(players -> {
-                ChatManager.sendMessage(player, Translator.build("quest.announce", new TranslatorPlaceholder("player", player.getName()), new TranslatorPlaceholder("questName", getFriendlyName())));
+                ChatManager.sendMessage(players, Translator.build("quest.announce", new TranslatorPlaceholder("player", player.getName()), new TranslatorPlaceholder("questName", getFriendlyName())));
             });
         }
     }
