@@ -78,6 +78,10 @@ public class QuestsManager {
                 ArrayList<Object> models = new ArrayList<>();
                 modelList.forEach(requirement -> {
 
+                    if (Main.getRequirementManager().getRequirement(id) == null) {
+                        return;
+                    }
+
                     LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) requirement;
                     Class<?> cls = Main.getRequirementManager().getRequirement(id).getModellClass();
                     if (cls == null) {
@@ -94,8 +98,8 @@ public class QuestsManager {
                         models.add(basicRequirementModel);
 
                     } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
-                             IllegalAccessException e) {
-                        throw new RuntimeException(e);
+                             IllegalAccessException | NullPointerException e) {
+                        Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while loading the requirements. AnturniaQuests will be disabled!\nError " + e.getMessage());
                     }
 
                 });
