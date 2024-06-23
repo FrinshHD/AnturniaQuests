@@ -30,13 +30,13 @@ public class MobBreedModel extends BasicRequirementModel {
     }
 
     @JsonIgnore
-    public void setEntity(EntityType entity) {
-        this.entity = entity;
+    public EntityType getEntity() {
+        return this.entity;
     }
 
     @JsonIgnore
-    public EntityType getEntity() {
-        return this.entity;
+    public void setEntity(EntityType entity) {
+        this.entity = entity;
     }
 
     @JsonIgnore
@@ -44,13 +44,13 @@ public class MobBreedModel extends BasicRequirementModel {
         return new TranslatableComponent(getEntity().getTranslationKey()).toPlainText();
     }
 
-    @JsonIgnore
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
     @JsonProperty
     public int getAmount() {
         return this.amount;
+    }
+
+    @JsonIgnore
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 }

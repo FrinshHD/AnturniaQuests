@@ -42,11 +42,6 @@ public class PlaceBlockModel extends BasicRequirementModel {
     }
 
     @JsonIgnore
-    public void setLocation(ArrayList<Integer> location) {
-        this.location = location;
-    }
-
-    @JsonIgnore
     public Location getLocation() {
 
         Location location;
@@ -60,8 +55,8 @@ public class PlaceBlockModel extends BasicRequirementModel {
     }
 
     @JsonIgnore
-    public void setWorld(String world) {
-        this.world = world;
+    public void setLocation(ArrayList<Integer> location) {
+        this.location = location;
     }
 
     @JsonIgnore
@@ -70,12 +65,17 @@ public class PlaceBlockModel extends BasicRequirementModel {
     }
 
     @JsonIgnore
-    public void setMaterial(Material material) {
-        this.material = material;
+    public void setWorld(String world) {
+        this.world = world;
     }
 
     @JsonIgnore
     public Material getMaterial() {
         return material;
+    }
+
+    @JsonIgnore
+    public void setMaterial(Material material) {
+        this.material = material;
     }
 }

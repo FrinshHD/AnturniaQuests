@@ -20,6 +20,10 @@ public class RemoveAnnounceCommand extends BasicSubCommand {
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+        if (!super.execute(sender, commandLabel, args)) {
+            return false;
+        }
+
         String questID = args[1];
 
         if (Main.getQuestsManager().getEditableQuest(questID) == null) {

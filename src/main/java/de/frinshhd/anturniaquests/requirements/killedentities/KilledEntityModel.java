@@ -34,11 +34,6 @@ public class KilledEntityModel extends BasicRequirementModel {
     }
 
     @JsonIgnore
-    public void setEntity(EntityType entity) {
-        this.entity = entity;
-    }
-
-    @JsonIgnore
     public EntityType getEntity() {
         if (entity == null) {
             return EntityType.UNKNOWN;
@@ -48,12 +43,17 @@ public class KilledEntityModel extends BasicRequirementModel {
     }
 
     @JsonIgnore
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setEntity(EntityType entity) {
+        this.entity = entity;
     }
 
     @JsonIgnore
     public int getAmount() {
         return this.amount;
+    }
+
+    @JsonIgnore
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 }

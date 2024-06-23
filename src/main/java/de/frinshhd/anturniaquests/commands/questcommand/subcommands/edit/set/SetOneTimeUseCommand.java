@@ -6,7 +6,6 @@ import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.utils.ChatManager;
 import de.frinshhd.anturniaquests.utils.Translator;
 import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
-import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
@@ -21,8 +20,12 @@ public class SetOneTimeUseCommand extends BasicSubCommand {
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+        if (!super.execute(sender, commandLabel, args)) {
+            return false;
+        }
+
         if (args.length <= 4) {
-            Main.getCommandManager().getSubCommand(Main.getCommandManager().getCommand(getMainCommand()), "help").execute(sender, commandLabel, new String[]{"help", "edit", "<questID>", "set", "onetimeuse" });
+            Main.getCommandManager().getSubCommand(Main.getCommandManager().getCommand(getMainCommand()), "help").execute(sender, commandLabel, new String[]{"help", "edit", "<questID>", "set", "onetimeuse"});
             return true;
         }
 

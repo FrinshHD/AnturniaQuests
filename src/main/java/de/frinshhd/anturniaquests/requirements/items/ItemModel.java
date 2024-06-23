@@ -57,17 +57,17 @@ public class ItemModel extends BasicRequirementModel {
     }
 
     @JsonIgnore
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @JsonIgnore
     public String getName() {
         if (this.name != null) {
             return this.name;
         }
 
         return null;
+    }
+
+    @JsonIgnore
+    public void setName(String name) {
+        this.name = name;
     }
 
     @JsonIgnore
@@ -80,18 +80,13 @@ public class ItemModel extends BasicRequirementModel {
     }
 
     @JsonIgnore
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    @JsonIgnore
     public int getAmount() {
         return this.amount;
     }
 
     @JsonIgnore
-    public void setMaterial(Material material) {
-        this.material = material;
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     @JsonIgnore
@@ -100,13 +95,18 @@ public class ItemModel extends BasicRequirementModel {
     }
 
     @JsonIgnore
-    public void setLore(ArrayList<String> lore) {
-        this.lore = lore;
+    public void setMaterial(Material material) {
+        this.material = material;
     }
 
     @JsonIgnore
     public ArrayList<String> getLore() {
         return this.lore;
+    }
+
+    @JsonIgnore
+    public void setLore(ArrayList<String> lore) {
+        this.lore = lore;
     }
 
     @JsonIgnore

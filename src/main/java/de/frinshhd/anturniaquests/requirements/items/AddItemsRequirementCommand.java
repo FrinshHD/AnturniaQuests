@@ -3,17 +3,13 @@ package de.frinshhd.anturniaquests.requirements.items;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.commands.BasicSubCommand;
 import de.frinshhd.anturniaquests.quests.models.Quest;
-import de.frinshhd.anturniaquests.requirements.destroyedblocks.DestroyedBlocksModel;
 import de.frinshhd.anturniaquests.utils.ChatManager;
 import de.frinshhd.anturniaquests.utils.Translator;
 import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Item;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -31,7 +27,7 @@ public class AddItemsRequirementCommand extends BasicSubCommand {
             return true;
         }
 
-            String questID = args[1];
+        String questID = args[1];
 
         if (Main.getQuestsManager().getEditableQuest(questID) == null) {
             ChatManager.sendMessage(sender, Translator.build("quest.dontExists", new TranslatorPlaceholder("questID", questID)));
@@ -107,12 +103,11 @@ public class AddItemsRequirementCommand extends BasicSubCommand {
         return completions;
     }
 
-    private boolean isInteger( String input ) {
+    private boolean isInteger(String input) {
         try {
-            Integer.parseInt( input );
+            Integer.parseInt(input);
             return true;
-        }
-        catch( Exception e ) {
+        } catch (Exception e) {
             return false;
         }
     }

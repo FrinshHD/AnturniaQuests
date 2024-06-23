@@ -47,7 +47,7 @@ public class MobBreedRequirement extends BasicRequirement implements Listener {
         }
 
         interactions.forEach(interaction -> {
-            if (getPlayerMobBreed(player.getUniqueId(), interaction.getEntity()) >= interaction.getAmount()){
+            if (getPlayerMobBreed(player.getUniqueId(), interaction.getEntity()) >= interaction.getAmount()) {
                 lore.add(Translator.build("lore.requirements.mobBreed.fulfilled", new TranslatorPlaceholder("entityName", interaction.getName()), new TranslatorPlaceholder("amountBred", String.valueOf(getPlayerMobBreed(player.getUniqueId(), interaction.getEntity()))), new TranslatorPlaceholder("amount", String.valueOf(interaction.getAmount()))));
             } else {
                 lore.add(Translator.build("lore.requirements.mobBreed.notFulfilled", new TranslatorPlaceholder("entityName", interaction.getName()), new TranslatorPlaceholder("amountBred", String.valueOf(getPlayerMobBreed(player.getUniqueId(), interaction.getEntity()))), new TranslatorPlaceholder("amount", String.valueOf(interaction.getAmount()))));
@@ -130,7 +130,8 @@ public class MobBreedRequirement extends BasicRequirement implements Listener {
 
         HashMap<String, Integer> entities;
 
-        Type mapType = new TypeToken<HashMap<String, Integer>>() {}.getType();
+        Type mapType = new TypeToken<HashMap<String, Integer>>() {
+        }.getType();
 
         if (requirementsData.isEmpty()) {
             entities = new HashMap<>();

@@ -5,7 +5,6 @@ import de.frinshhd.anturniaquests.commands.BasicSubCommand;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class StorylinesCommand extends BasicSubCommand {
@@ -17,6 +16,10 @@ public class StorylinesCommand extends BasicSubCommand {
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+        if (!super.execute(sender, commandLabel, args)) {
+            return false;
+        }
+
         Main.getCommandManager().getSubCommand(Main.getCommandManager().getCommand(getMainCommand()), "help").execute(sender, commandLabel, new String[]{"help", "storylines"});
         return true;
     }

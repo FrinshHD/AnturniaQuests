@@ -27,13 +27,13 @@ public class Rewards {
     }
 
     @JsonIgnore
-    public void setMoney(double money) {
-        this.money = money;
+    public double getMoney() {
+        return this.money;
     }
 
     @JsonIgnore
-    public double getMoney() {
-        return this.money;
+    public void setMoney(double money) {
+        this.money = money;
     }
 
     @JsonIgnore

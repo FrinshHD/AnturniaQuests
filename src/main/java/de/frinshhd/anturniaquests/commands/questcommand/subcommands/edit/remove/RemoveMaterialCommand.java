@@ -6,7 +6,6 @@ import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.utils.ChatManager;
 import de.frinshhd.anturniaquests.utils.Translator;
 import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
-import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
@@ -21,6 +20,9 @@ public class RemoveMaterialCommand extends BasicSubCommand {
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+        if (!super.execute(sender, commandLabel, args)) {
+            return false;
+        }
 
         String questID = args[1];
 

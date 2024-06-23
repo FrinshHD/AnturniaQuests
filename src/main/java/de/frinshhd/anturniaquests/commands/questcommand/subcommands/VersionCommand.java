@@ -19,6 +19,10 @@ public class VersionCommand extends BasicSubCommand {
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+        if (!super.execute(sender, commandLabel, args)) {
+            return false;
+        }
+
         ChatManager.sendMessage(sender, Translator.build("quests.currentVersion", new TranslatorPlaceholder("version", Main.getInstance().getDescription().getVersion())));
         return true;
     }

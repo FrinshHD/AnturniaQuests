@@ -38,18 +38,13 @@ public class PlacedBlocksModel extends BasicRequirementModel {
     }
 
     @JsonIgnore
-    public void setMaterial(Material material) {
-        this.material = material;
-    }
-
-    @JsonIgnore
     public Material getMaterial() {
         return material;
     }
 
     @JsonIgnore
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setMaterial(Material material) {
+        this.material = material;
     }
 
     @JsonIgnore
@@ -58,13 +53,13 @@ public class PlacedBlocksModel extends BasicRequirementModel {
     }
 
     @JsonIgnore
-    public String getDisplayName() {
-        return new TranslatableComponent(getMaterial().getTranslationKey()).toPlainText();
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     @JsonIgnore
-    public void setWorlds(ArrayList<String> worlds) {
-        this.worlds = worlds;
+    public String getDisplayName() {
+        return new TranslatableComponent(getMaterial().getTranslationKey()).toPlainText();
     }
 
     @JsonIgnore
@@ -83,6 +78,11 @@ public class PlacedBlocksModel extends BasicRequirementModel {
         });
 
         return worlds; */
+    }
+
+    @JsonIgnore
+    public void setWorlds(ArrayList<String> worlds) {
+        this.worlds = worlds;
     }
 
     @JsonIgnore

@@ -42,11 +42,6 @@ public class BlockInteractionsModel extends BasicRequirementModel {
     }
 
     @JsonIgnore
-    public void setLocation(ArrayList<Integer> location) {
-        this.location = location;
-    }
-
-    @JsonIgnore
     public Location getLocation() {
 
         Location location;
@@ -60,8 +55,8 @@ public class BlockInteractionsModel extends BasicRequirementModel {
     }
 
     @JsonIgnore
-    public void setWorld(String world) {
-        this.world = world;
+    public void setLocation(ArrayList<Integer> location) {
+        this.location = location;
     }
 
     @JsonIgnore
@@ -70,12 +65,17 @@ public class BlockInteractionsModel extends BasicRequirementModel {
     }
 
     @JsonIgnore
-    public void setInteractActions(List<String> interactActions) {
-        this.interactActions = interactActions;
+    public void setWorld(String world) {
+        this.world = world;
     }
 
     @JsonIgnore
     public List<String> getInteractActions() {
         return interactActions;
+    }
+
+    @JsonIgnore
+    public void setInteractActions(List<String> interactActions) {
+        this.interactActions = interactActions;
     }
 }

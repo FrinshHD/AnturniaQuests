@@ -1,6 +1,5 @@
 package de.frinshhd.anturniaquests.commands;
 
-import de.frinshhd.anturniaquests.Main;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
@@ -61,15 +60,21 @@ public abstract class BasicSubCommand {
         this.description = description;
     }
 
-    public void setHidden(boolean hidden) {
-        this.hidden = hidden;
-    }
-
     public boolean isHidden() {
         return hidden;
     }
 
-    public abstract boolean execute(CommandSender sender, String commandLabel, String[] args);
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
+
+    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+        if (getPermission() != null && !sender.hasPermission(getPermission())) {
+            return false;
+        }
+
+        return true;
+    }
 
     public List<String> tabComplete(CommandSender sender, String[] args) {
         if (getPermission() != null && !sender.hasPermission(getPermission())) {

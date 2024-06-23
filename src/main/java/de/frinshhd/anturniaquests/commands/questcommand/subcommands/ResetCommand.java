@@ -29,7 +29,23 @@ public class ResetCommand extends BasicSubCommand {
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-        Player target = Bukkit.getPlayer(args[1]);
+        if (!super.execute(sender, commandLabel, args)) {
+            return false;
+        }
+
+        Player target;
+
+        if (args.length >= 2) {
+            target = Bukkit.getPlayer(args[1]);
+        } else {
+            if (sender instanceof Player player) {
+                target = player;
+            } else {
+                Main.getCommandManager().getSubCommand(Main.getCommandManager().getCommand(getMainCommand()), "help").execute(sender, commandLabel, new String[]{"help", "reset"});
+                return false;
+            }
+        }
+
         String questID = null;
 
         if (args.length >= 3) {
@@ -43,34 +59,12 @@ public class ResetCommand extends BasicSubCommand {
 
         UUID targetUUID = target.getUniqueId();
 
-        Dao<Quests, Long> questsDao;
-        try {
-            questsDao = MysqlManager.getQuestDao();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        Quests quest = null;
-        try {
-            quest = questsDao.queryForEq("uuid", targetUUID).stream().toList().get(0);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        if (questID == null || Main.getQuestsManager().getQuest(questID) == null) {
-            quest.resetQuests();
-        } else {
-            quest.setQuest(questID, 0);
-        }
-
-        try {
-            questsDao.update(quest);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
 
         if (questID == null || Main.getQuestsManager().getQuest(questID) == null) {
             if (canFullyReset(sender)) {
+                //reset logic
+                resetQuest(targetUUID, null);
+
                 ChatManager.sendMessage(sender, Translator.build("quest.command.reset.all",
                         new TranslatorPlaceholder("playerName", target.getName())));
                 putLastExecution(sender, -1L);
@@ -79,6 +73,9 @@ public class ResetCommand extends BasicSubCommand {
                 ChatManager.sendMessage(sender, Translator.build("quest.command.reset.confirm", new TranslatorPlaceholder("delay", "10")));
             }
         } else {
+            //reset quest with id
+            resetQuest(targetUUID, questID);
+
             ChatManager.sendMessage(sender, Translator.build("quest.command.reset",
                     new TranslatorPlaceholder("playerName", target.getName()),
                     new TranslatorPlaceholder("questName", Main.getQuestsManager().getQuest(questID).getFriendlyName())));
@@ -156,6 +153,35 @@ public class ResetCommand extends BasicSubCommand {
             this.lastExecution.put(player.getUniqueId(), time);
         } else {
             this.lastExecution.put(null, time);
+        }
+    }
+
+    private void resetQuest(UUID playerUUID, String questID) {
+        Dao<Quests, Long> questsDao;
+        try {
+            questsDao = MysqlManager.getQuestDao();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        Quests quest = null;
+        try {
+            quest = questsDao.queryForEq("uuid", playerUUID).stream().toList().get(0);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        if (questID == null || Main.getQuestsManager().getQuest(questID) == null) {
+            quest.resetQuests();
+        } else {
+            quest.setQuest(questID, 0);
+        }
+
+        try {
+            questsDao.update(quest);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }

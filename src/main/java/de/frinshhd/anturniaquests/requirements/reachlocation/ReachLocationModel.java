@@ -10,7 +10,6 @@ import org.bukkit.World;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * The ReachLocationModel class extends the BasicRequirementModel class.
@@ -68,12 +67,6 @@ public class ReachLocationModel extends BasicRequirementModel {
         }
     }
 
-
-    @JsonIgnore
-    public void setLocation1(ArrayList<Integer> location1) {
-        this.location1 = location1;
-    }
-
     /**
      * Getter for the first location.
      *
@@ -92,8 +85,8 @@ public class ReachLocationModel extends BasicRequirementModel {
     }
 
     @JsonIgnore
-    public void setLocation2(ArrayList<Integer> location2) {
-        this.location2 = location2;
+    public void setLocation1(ArrayList<Integer> location1) {
+        this.location1 = location1;
     }
 
     /**
@@ -114,8 +107,8 @@ public class ReachLocationModel extends BasicRequirementModel {
     }
 
     @JsonIgnore
-    public void setWorld(String world) {
-        this.world = world;
+    public void setLocation2(ArrayList<Integer> location2) {
+        this.location2 = location2;
     }
 
     /**
@@ -129,13 +122,18 @@ public class ReachLocationModel extends BasicRequirementModel {
     }
 
     @JsonIgnore
-    public void setFriendlyName(String friendlyName) {
-        this.friendlyName = friendlyName;
+    public void setWorld(String world) {
+        this.world = world;
     }
 
     @JsonIgnore
     public String getFriendlyName() {
         return friendlyName;
+    }
+
+    @JsonIgnore
+    public void setFriendlyName(String friendlyName) {
+        this.friendlyName = friendlyName;
     }
 
     /**

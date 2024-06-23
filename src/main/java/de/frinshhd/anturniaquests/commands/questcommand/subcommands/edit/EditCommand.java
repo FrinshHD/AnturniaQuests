@@ -16,6 +16,10 @@ public class EditCommand extends BasicSubCommand {
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+        if (!super.execute(sender, commandLabel, args)) {
+            return false;
+        }
+
         if (args.length < 2) {
             Main.getCommandManager().getSubCommand(Main.getCommandManager().getCommand(getMainCommand()), "help").execute(sender, commandLabel, new String[]{"help", "edit"});
             return true;
@@ -27,7 +31,6 @@ public class EditCommand extends BasicSubCommand {
             //tell player this questID does not exist
             return true;
         }
-
 
 
         return true;

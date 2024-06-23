@@ -63,11 +63,7 @@ public class Quest {
     @JsonProperty
     private Rewards rewards = null;
 
-    public Quest() {}
-
-    @JsonIgnore
-    public void setFriendlyName(String friendlyName) {
-        this.friendlyName = friendlyName;
+    public Quest() {
     }
 
     @JsonIgnore
@@ -79,8 +75,8 @@ public class Quest {
     }
 
     @JsonIgnore
-    public void setCategory(String category) {
-        this.category = category;
+    public void setFriendlyName(String friendlyName) {
+        this.friendlyName = friendlyName;
     }
 
     @JsonIgnore
@@ -89,8 +85,8 @@ public class Quest {
     }
 
     @JsonIgnore
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     @JsonIgnore
@@ -103,10 +99,8 @@ public class Quest {
     }
 
     @JsonIgnore
-    public void setMaterial(String material) {
-        if (Material.getMaterial(material.toUpperCase()) != null) {
-            this.material = material;
-        }
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @JsonIgnore
@@ -123,13 +117,15 @@ public class Quest {
     }
 
     @JsonIgnore
-    public String getID() {
-        return Main.getQuestsManager().getQuestID(this);
+    public void setMaterial(String material) {
+        if (Material.getMaterial(material.toUpperCase()) != null) {
+            this.material = material;
+        }
     }
 
     @JsonIgnore
-    public void setCooldown(Integer cooldown) {
-        this.cooldown = cooldown;
+    public String getID() {
+        return Main.getQuestsManager().getQuestID(this);
     }
 
     @JsonIgnore
@@ -142,8 +138,8 @@ public class Quest {
     }
 
     @JsonIgnore
-    public void setShowCompletions(Boolean showCompletions) {
-        this.showCompletions = showCompletions;
+    public void setCooldown(Integer cooldown) {
+        this.cooldown = cooldown;
     }
 
     @JsonIgnore
@@ -153,6 +149,11 @@ public class Quest {
         }
 
         return showCompletions;
+    }
+
+    @JsonIgnore
+    public void setShowCompletions(Boolean showCompletions) {
+        this.showCompletions = showCompletions;
     }
 
     @JsonIgnore
@@ -190,16 +191,16 @@ public class Quest {
     }
 
     @JsonIgnore
-    public void setRewards(Rewards rewards) {
-        this.rewards = rewards;
-    }
-
-    @JsonIgnore
     public Rewards getRewards() {
         if (rewards == null) {
             return new Rewards();
         }
         return this.rewards;
+    }
+
+    @JsonIgnore
+    public void setRewards(Rewards rewards) {
+        this.rewards = rewards;
     }
 
     @JsonIgnore
@@ -234,7 +235,7 @@ public class Quest {
             lore.add(" ");
         }
 
-        if (isOneTimeUse() && finishedQuests.containsKey(Main.getQuestsManager().getQuestID(this))) {
+        if (isOneTimeUse() && finishedQuests.containsKey(Main.getQuestsManager().getQuestID(this)) && finishedQuests.get(Main.getQuestsManager().getQuestID(this)) > 0) {
             lore.add(Translator.build("lore.alreadyCompleted"));
         } else if (getCooldown() != null &&
                 MysqlManager.getQuestPlayer(player.getUniqueId()).getCooldown().containsKey(Main.getQuestsManager().getQuestID(this)) &&
@@ -341,7 +342,7 @@ public class Quest {
 
     @JsonIgnore
     public boolean playerClick(Player player, boolean message) throws SQLException {
-        if (isOneTimeUse() && MysqlManager.getQuestPlayer(player.getUniqueId()).getFinishedQuests().containsKey(Main.getQuestsManager().getQuestID(this))) {
+        if (isOneTimeUse() && MysqlManager.getQuestPlayer(player.getUniqueId()).getFinishedQuests().containsKey(Main.getQuestsManager().getQuestID(this)) && MysqlManager.getQuestPlayer(player.getUniqueId()).getFinishedQuests().get(Main.getQuestsManager().getQuestID(this)) > 0) {
 
             if (message) {
                 ChatManager.sendMessage(player, Translator.build("quest.alreadyCompleted"));

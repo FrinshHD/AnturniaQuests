@@ -16,14 +16,18 @@ import java.util.List;
 public class AddMobBreedRequirementCommand extends BasicSubCommand {
 
     public AddMobBreedRequirementCommand() {
-        super("quests", "anturniaquests.command.admin.quests.add.requirement", new String[]{"edit", "<questID>", "add", "requirement", "mobBread", "<entity>", "[amount]"});
+        super("quests", "anturniaquests.command.admin.quests.add.requirement", new String[]{"edit", "<questID>", "add", "requirement", "mobBreed", "<entity>", "[amount]"});
         setDescription("Add a mob breed requirement to a quest.");
     }
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+        if (!super.execute(sender, commandLabel, args)) {
+            return false;
+        }
+
         if (args.length < 6) {
-            Main.getCommandManager().getSubCommand(Main.getCommandManager().getCommand(getMainCommand()), "help").execute(sender, commandLabel, new String[]{"edit", "<questID>", "add", "requirement", "mobBread"});
+            Main.getCommandManager().getSubCommand(Main.getCommandManager().getCommand(getMainCommand()), "help").execute(sender, commandLabel, new String[]{"edit", "<questID>", "add", "requirement", "mobBreed"});
             return true;
         }
 
@@ -61,7 +65,7 @@ public class AddMobBreedRequirementCommand extends BasicSubCommand {
             mobBreedModel.setAmount(Integer.parseInt(amount));
         }
 
-        quest.addRequirement("mobBread", mobBreedModel);
+        quest.addRequirement("mobBreed", mobBreedModel);
 
         Main.getQuestsManager().saveQuestToYml(questID, quest);
 
@@ -77,7 +81,7 @@ public class AddMobBreedRequirementCommand extends BasicSubCommand {
         List<String> possibleCompletions = new ArrayList<>();
         List<String> completions = new ArrayList<>();
 
-        possibleCompletions.add("mobBread");
+        possibleCompletions.add("mobBreed");
 
         // Filter
         possibleCompletions.forEach(completion -> {
@@ -98,12 +102,11 @@ public class AddMobBreedRequirementCommand extends BasicSubCommand {
         return completions;
     }
 
-    private boolean isInteger( String input ) {
+    private boolean isInteger(String input) {
         try {
-            Integer.parseInt( input );
+            Integer.parseInt(input);
             return true;
-        }
-        catch( Exception e ) {
+        } catch (Exception e) {
             return false;
         }
     }

@@ -19,6 +19,10 @@ public class HelpCommand extends BasicSubCommand {
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+        if (!super.execute(sender, commandLabel, args)) {
+            return false;
+        }
+
         StringBuilder message = new StringBuilder();
 
         String arg1;

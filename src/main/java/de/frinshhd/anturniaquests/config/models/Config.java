@@ -9,18 +9,14 @@ public class Config {
 
     @JsonProperty
     public Database database = new Database();
-
-    @JsonProperty
-    private List<Command> commands = new ArrayList<>();
-
     @JsonProperty
     public boolean questMenuEnabled = true;
-
     @JsonProperty
     public boolean storylinesEnabled = true;
-
     @JsonProperty
     public boolean debug = false;
+    @JsonProperty
+    private List<Command> commands = new ArrayList<>();
 
     public List<Command> getCommands() {
         return commands;

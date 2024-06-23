@@ -3,7 +3,6 @@ package de.frinshhd.anturniaquests.requirements.placedblocks;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.commands.BasicSubCommand;
 import de.frinshhd.anturniaquests.quests.models.Quest;
-import de.frinshhd.anturniaquests.requirements.placeblock.PlaceBlockModel;
 import de.frinshhd.anturniaquests.utils.ChatManager;
 import de.frinshhd.anturniaquests.utils.Translator;
 import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
@@ -25,12 +24,16 @@ public class AddPlacedBlockRequirementCommand extends BasicSubCommand {
 
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+        if (!super.execute(sender, commandLabel, args)) {
+            return false;
+        }
+
         if (args.length < 7) {
             Main.getCommandManager().getSubCommand(Main.getCommandManager().getCommand(getMainCommand()), "help").execute(sender, commandLabel, new String[]{"edit", "<questID>", "add", "requirement", "placedBlocks"});
             return true;
         }
 
-            String questID = args[1];
+        String questID = args[1];
 
         if (Main.getQuestsManager().getEditableQuest(questID) == null) {
             ChatManager.sendMessage(sender, Translator.build("quest.dontExists", new TranslatorPlaceholder("questID", questID)));
@@ -122,12 +125,11 @@ public class AddPlacedBlockRequirementCommand extends BasicSubCommand {
         return completions;
     }
 
-    private boolean isInteger( String input ) {
+    private boolean isInteger(String input) {
         try {
-            Integer.parseInt( input );
+            Integer.parseInt(input);
             return true;
-        }
-        catch( Exception e ) {
+        } catch (Exception e) {
             return false;
         }
     }

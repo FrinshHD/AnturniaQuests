@@ -8,7 +8,6 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public abstract class BasicCommand extends Command {
@@ -56,7 +55,7 @@ public abstract class BasicCommand extends Command {
             List<BasicSubCommand> basicSubCommands = Main.getCommandManager().getSubCommands(this);
 
             basicSubCommands.forEach(basicSubCommand -> {
-                if (basicSubCommand.isHidden()) {
+                if (basicSubCommand.isHidden() || (basicSubCommand.getPermission() != null && !sender.hasPermission(basicSubCommand.getPermission()))) {
                     return;
                 }
 

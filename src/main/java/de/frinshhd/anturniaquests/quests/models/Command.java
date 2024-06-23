@@ -11,11 +11,6 @@ public class Command {
     private String command;
 
     @JsonIgnore
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @JsonIgnore
     public String getName() {
         if (this.name == null) {
             return getCommand();
@@ -24,13 +19,18 @@ public class Command {
         return this.name;
     }
 
-    @JsonProperty
-    public void setCommand(String command) {
-        this.command = command;
+    @JsonIgnore
+    public void setName(String name) {
+        this.name = name;
     }
 
     @JsonIgnore
     public String getCommand() {
         return this.command;
+    }
+
+    @JsonProperty
+    public void setCommand(String command) {
+        this.command = command;
     }
 }

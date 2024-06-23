@@ -29,7 +29,7 @@ public class AddDestroyedBlocksRequirementCommand extends BasicSubCommand {
             return true;
         }
 
-            String questID = args[1];
+        String questID = args[1];
 
         if (Main.getQuestsManager().getEditableQuest(questID) == null) {
             ChatManager.sendMessage(sender, Translator.build("quest.dontExists", new TranslatorPlaceholder("questID", questID)));
@@ -121,12 +121,11 @@ public class AddDestroyedBlocksRequirementCommand extends BasicSubCommand {
         return completions;
     }
 
-    private boolean isInteger( String input ) {
+    private boolean isInteger(String input) {
         try {
-            Integer.parseInt( input );
+            Integer.parseInt(input);
             return true;
-        }
-        catch( Exception e ) {
+        } catch (Exception e) {
             return false;
         }
     }

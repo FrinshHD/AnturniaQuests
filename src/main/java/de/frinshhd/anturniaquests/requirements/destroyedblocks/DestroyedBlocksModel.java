@@ -38,18 +38,13 @@ public class DestroyedBlocksModel extends BasicRequirementModel {
     }
 
     @JsonIgnore
-    public void setMaterial(Material material) {
-        this.material = material;
-    }
-
-    @JsonIgnore
     public Material getMaterial() {
         return material;
     }
 
     @JsonIgnore
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setMaterial(Material material) {
+        this.material = material;
     }
 
     @JsonIgnore
@@ -58,18 +53,23 @@ public class DestroyedBlocksModel extends BasicRequirementModel {
     }
 
     @JsonIgnore
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    @JsonIgnore
     public String getDisplayName() {
         return new TranslatableComponent(getMaterial().getTranslationKey()).toPlainText();
     }
 
     @JsonIgnore
-    public void setWorlds(ArrayList<String> worlds) {
-        this.worlds = worlds;
+    public ArrayList<String> getWorlds() {
+        return this.worlds;
     }
 
     @JsonIgnore
-    public ArrayList<String> getWorlds() {
-        return this.worlds;
+    public void setWorlds(ArrayList<String> worlds) {
+        this.worlds = worlds;
     }
 
     @JsonIgnore
