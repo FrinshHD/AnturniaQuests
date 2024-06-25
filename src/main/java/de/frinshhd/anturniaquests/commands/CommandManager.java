@@ -68,7 +68,7 @@ public class CommandManager {
                         Main.getInstance().getLogger().info("[DynamicCommands] Successfully registered command " + className);
                     }
                 } catch (ClassNotFoundException | IllegalAccessException | InstantiationException |
-                         InvocationTargetException | IllegalArgumentException e) {
+                         InvocationTargetException | IllegalArgumentException | NoClassDefFoundError e) {
                     Main.getInstance().getLogger().warning("[DynamicCommands] Error loading command " + className + " " + e);
                 }
             }
@@ -107,7 +107,7 @@ public class CommandManager {
                         Main.getInstance().getLogger().info("[DynamicCommands] Successfully registered subcommand " + className);
                     }
                 } catch (ClassNotFoundException | IllegalAccessException | InstantiationException |
-                         InvocationTargetException | IllegalArgumentException e) {
+                         InvocationTargetException | IllegalArgumentException | NoClassDefFoundError e) {
                     Main.getInstance().getLogger().warning("[DynamicCommands] Error loading subcommand " + className + " " + e);
                 }
             }
