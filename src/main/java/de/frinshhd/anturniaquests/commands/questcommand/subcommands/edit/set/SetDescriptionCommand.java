@@ -36,16 +36,20 @@ public class SetDescriptionCommand extends BasicSubCommand {
             return true;
         }
 
-        String description = args[4];
+        StringBuilder description = new StringBuilder();
+        for (int i = 4; i < args.length; i++) {
+            description.append(args[i]).append(" ");
+        }
+
 
         Quest quest = Main.getQuestsManager().getEditableQuest(questID);
 
-        quest.setDescription(description);
+        quest.setDescription(description.toString());
 
         Main.getQuestsManager().saveQuestToYml(questID, quest);
 
         //Todo tell player that he changed the friendlyName of quest
-        ChatManager.sendMessage(sender, Translator.build("quest.command.edit.set.description", new TranslatorPlaceholder("questID", questID), new TranslatorPlaceholder("description", description)));
+        ChatManager.sendMessage(sender, Translator.build("quest.command.edit.set.description", new TranslatorPlaceholder("questID", questID), new TranslatorPlaceholder("description", description.toString())));
         return true;
     }
 

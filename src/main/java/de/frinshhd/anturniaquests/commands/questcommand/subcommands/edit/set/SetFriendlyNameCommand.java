@@ -36,16 +36,19 @@ public class SetFriendlyNameCommand extends BasicSubCommand {
             return true;
         }
 
-        String friendlyName = args[4];
+        StringBuilder friendlyName = new StringBuilder();
+        for (int i = 4; i < args.length; i++) {
+            friendlyName.append(args[i]).append(" ");
+        }
 
         Quest quest = Main.getQuestsManager().getEditableQuest(questID);
 
-        quest.setFriendlyName(friendlyName);
+        quest.setFriendlyName(friendlyName.toString());
 
         Main.getQuestsManager().saveQuestToYml(questID, quest);
 
         //Todo tell player that he changed the friendlyName of quest
-        ChatManager.sendMessage(sender, Translator.build("quest.command.edit.set.displayName", new TranslatorPlaceholder("questID", questID), new TranslatorPlaceholder("friendlyName", friendlyName)));
+        ChatManager.sendMessage(sender, Translator.build("quest.command.edit.set.displayName", new TranslatorPlaceholder("questID", questID), new TranslatorPlaceholder("friendlyName", friendlyName.toString())));
         return true;
     }
 
