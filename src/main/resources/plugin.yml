@@ -1,7 +1,7 @@
 name: AnturniaQuests
 version: '${project.version}'
 main: de.frinshhd.anturniaquests.Main
-api-version: '1.16'
+api-version: '1.19'
 author: "FrinshHD"
 softdepend: [ "Vault", "FancyNpcs", "Citizens", "PlaceholderAPI" ]
 
