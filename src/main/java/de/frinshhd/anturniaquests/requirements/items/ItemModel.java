@@ -2,6 +2,7 @@ package de.frinshhd.anturniaquests.requirements.items;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
 import net.md_5.bungee.api.chat.TranslatableComponent;
 import org.bukkit.Material;
@@ -280,11 +281,7 @@ public class ItemModel extends BasicRequirementModel {
         while (getAmount() > index) {
             ItemStack itemStack = getFittingItemStack(itemStacks, 1);
 
-            if (itemStack.getAmount() == 1) {
-                player.getInventory().remove(itemStack);
-            } else {
-                itemStack.setAmount(itemStack.getAmount() - 1);
-            }
+            itemStack.setAmount(itemStack.getAmount() - 1);
 
             index++;
         }
