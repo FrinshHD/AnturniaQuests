@@ -243,6 +243,29 @@ public class QuestsManager {
         return counter;
     }
 
+    public void deleteQuest(String questID) {
+        questsRaw.remove(questID);
+
+        ObjectMapper om = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER));
+
+
+        om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        om.enable(SerializationFeature.INDENT_OUTPUT); // Enable pretty printing
+        om.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS); // Order map entries by keys
+        om.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL); // Ignore null properties
+        om.disable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS);
+
+        om.disable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
+
+        try {
+            om.writeValue(new File("plugins/AnturniaQuests/quests.yml"), questsRaw);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        load();
+    }
+
     public void saveQuestToYml(String questID, Quest quest) {
         questsRaw.put(questID, quest);
 

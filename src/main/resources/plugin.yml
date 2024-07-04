@@ -70,3 +70,5 @@ permissions:
     default: op
   anturniaquests.command.quests:
     default: true
+  anturniaquests.command.admin.delete:
+    default: op

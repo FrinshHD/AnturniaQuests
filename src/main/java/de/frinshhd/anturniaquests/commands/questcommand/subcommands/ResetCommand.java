@@ -70,7 +70,7 @@ public class ResetCommand extends BasicSubCommand {
                 putLastExecution(sender, -1L);
             } else {
                 putLastExecution(sender, System.currentTimeMillis());
-                ChatManager.sendMessage(sender, Translator.build("quest.command.reset.confirm", new TranslatorPlaceholder("delay", "10")));
+                ChatManager.sendMessage(sender, Translator.build("quest.command.confirm", new TranslatorPlaceholder("delay", "10")));
             }
         } else {
             //reset quest with id
