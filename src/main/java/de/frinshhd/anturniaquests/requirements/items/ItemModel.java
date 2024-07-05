@@ -220,9 +220,8 @@ public class ItemModel extends BasicRequirementModel {
                     continue;
                 }
 
-                if (!itemStacks.contains(content)) {
-                    itemStacks.add(content);
-                }
+                itemStacks.add(content);
+
             }
         } else if (!getLore().isEmpty()) {
             for (ItemStack content : player.getInventory().getContents()) {
@@ -258,9 +257,8 @@ public class ItemModel extends BasicRequirementModel {
                     }
                 }
 
-                if (!itemStacks.contains(content)) {
-                    itemStacks.add(content);
-                }
+                itemStacks.add(content);
+
             }
         } else {
             for (ItemStack content : player.getInventory().getContents()) {
@@ -269,9 +267,7 @@ public class ItemModel extends BasicRequirementModel {
                 }
 
                 if (content.isSimilar(getItem())) {
-                    if (!itemStacks.contains(content)) {
-                        itemStacks.add(content);
-                    }
+                    itemStacks.add(content);
                 }
             }
         }
@@ -292,7 +288,13 @@ public class ItemModel extends BasicRequirementModel {
         ItemStack itemStack = null;
 
         for (ItemStack item : items) {
-            if (item.getAmount() > minAmount - 1) {
+            if (item == null) {
+                continue;
+            }
+
+            System.out.println(item.getAmount());
+
+            if (item.getAmount() >= minAmount) {
                 itemStack = item;
                 break;
             }
