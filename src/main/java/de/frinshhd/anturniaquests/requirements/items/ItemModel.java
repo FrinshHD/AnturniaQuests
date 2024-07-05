@@ -292,8 +292,6 @@ public class ItemModel extends BasicRequirementModel {
                 continue;
             }
 
-            System.out.println(item.getAmount());
-
             if (item.getAmount() >= minAmount) {
                 itemStack = item;
                 break;
