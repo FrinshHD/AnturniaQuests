@@ -12,23 +12,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class PlayerKillEntityListener implements Listener {
 
     @EventHandler
-    public void onPlayerKillEntity(EntityDeathEvent event) {
-        //check if entity was killed by another entity
-        if (event.getEntity().getKiller() == null) {
-            return;
-        }
-
-        //check if entity was killed by a player
-        if (!event.getEntity().getKiller().getType().equals(EntityType.PLAYER)) {
-            return;
-        }
-
-        Player player = event.getEntity().getKiller();
-
-        Main.getQuestsManager().addKilledEntity(player, event.getEntity().getType());
-    }
-
-    @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
