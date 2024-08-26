@@ -10,7 +10,7 @@ Get the latest dev version here: https://logic-jenkins.anturnia.net/job/Anturnia
 **Trailer:**  
 [![](https://markdown-videos-api.jorgenkh.no/youtube/EeggEVhBkbY)](https://youtu.be/EeggEVhBkbY)
 
-**Storylines trailer**:
+**Storylines trailer**:  
 [![](https://markdown-videos-api.jorgenkh.no/youtube/qcekK4j7mKg)](https://youtu.be/qcekK4j7mKg)
 
 **Features:**
