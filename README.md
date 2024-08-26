@@ -10,6 +10,9 @@ Get the latest dev version here: https://logic-jenkins.anturnia.net/job/Anturnia
 **Trailer:**  
 [![](https://markdown-videos-api.jorgenkh.no/youtube/EeggEVhBkbY)](https://youtu.be/EeggEVhBkbY)
 
+**Storylines trailer**:
+[![](https://markdown-videos-api.jorgenkh.no/youtube/qcekK4j7mKg)](https://youtu.be/qcekK4j7mKg)
+
 **Features:**
 
 - **Custom Quests:** Effortlessly create your own quests through an intuitive configuration file.
