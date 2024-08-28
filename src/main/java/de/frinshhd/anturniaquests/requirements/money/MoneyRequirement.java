@@ -26,7 +26,7 @@ import java.util.*;
 public class MoneyRequirement extends BasicRequirement {
 
     public MoneyRequirement(boolean notGenerated) {
-        super("money", true);
+        super("money", false);
     }
 
     @Override
@@ -71,10 +71,18 @@ public class MoneyRequirement extends BasicRequirement {
     public boolean check(Player player, String questID) {
         Quest quest = Main.getQuestsManager().getQuest(questID);
 
+        double amount = 0.0;
+
         for (Object rawRequirementModel : quest.getRequirement(getId())) {
             MoneyModel moneyModel = (MoneyModel) rawRequirementModel;
 
-            return hasPlayerMoney(player.getUniqueId(), moneyModel.getAmount());
+            amount += moneyModel.getAmount();
+
+            boolean hasMoney = hasPlayerMoney(player.getUniqueId(), amount);
+
+            if (!hasMoney) {
+                return false;
+            }
         }
 
         return true;
