@@ -76,13 +76,14 @@ public class QuestsManager {
         quests.values().forEach(quest -> {
             quest.getRequirements().forEach((id, modelList) -> {
                 ArrayList<Object> models = new ArrayList<>();
-                modelList.forEach(requirement -> {
+                for (Object requirement : modelList) {
 
                     if (Main.getRequirementManager().getRequirement(id) == null) {
                         return;
                     }
 
                     LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) requirement;
+
                     Class<?> cls = Main.getRequirementManager().getRequirement(id).getModellClass();
                     if (cls == null) {
                         return;
@@ -100,9 +101,14 @@ public class QuestsManager {
                     } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
                              IllegalAccessException | NullPointerException e) {
                         Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while loading the requirements. AnturniaQuests will be disabled!\nError " + e.getMessage());
+                        Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
                     }
 
-                });
+
+                    if (id.equals("money")) {
+                        break;
+                    }
+                };
 
                 quest.setRequirement(id, models);
             });

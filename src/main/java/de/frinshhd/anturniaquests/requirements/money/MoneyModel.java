@@ -14,14 +14,14 @@ import java.util.LinkedHashMap;
 public class MoneyModel extends BasicRequirementModel {
 
     @JsonProperty
-    public double amount = 0.0;
+    private double amount = 0.0;
 
     @JsonIgnore
     public MoneyModel(LinkedHashMap<String, Object> map) {
         super(map, "money");
 
         if (map.containsKey("amount")) {
-            this.amount = (double) map.get("amount");
+            this.amount = Double.parseDouble(map.get("amount").toString());
         }
     }
 

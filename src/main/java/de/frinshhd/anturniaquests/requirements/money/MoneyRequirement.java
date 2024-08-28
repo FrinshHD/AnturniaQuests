@@ -1,12 +1,11 @@
 package de.frinshhd.anturniaquests.requirements.money;
 
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.quests.QuestsManager;
 import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.requirements.BasicRequirement;
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
+import de.frinshhd.anturniaquests.requirements.killedentities.KilledEntityModel;
 import de.frinshhd.anturniaquests.utils.ChatManager;
 import de.frinshhd.anturniaquests.utils.Translator;
 import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
@@ -94,4 +93,5 @@ public class MoneyRequirement extends BasicRequirement {
         }
         return false;
     }
+
 }
