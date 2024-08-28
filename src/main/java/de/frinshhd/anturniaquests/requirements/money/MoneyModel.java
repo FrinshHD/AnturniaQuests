@@ -18,7 +18,7 @@ public class MoneyModel extends BasicRequirementModel {
 
     @JsonIgnore
     public MoneyModel(LinkedHashMap<String, Object> map) {
-        super(map, "placeBlocks");
+        super(map, "money");
 
         if (map.containsKey("amount")) {
             this.amount = (double) map.get("amount");
