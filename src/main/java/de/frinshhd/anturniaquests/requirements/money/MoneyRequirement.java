@@ -44,9 +44,9 @@ public class MoneyRequirement extends BasicRequirement {
 
         moneyModels.forEach(moneyModel -> {
             if (hasPlayerMoney(player.getUniqueId(), moneyModel.getAmount())) {
-                lore.add(Translator.build("lore.requirements.money.fulfilled", new TranslatorPlaceholder("money", String.valueOf(moneyModel.getAmount()))));
+                lore.add(Translator.build("lore.requirements.money.fulfilled", new TranslatorPlaceholder("amount", String.valueOf(moneyModel.getAmount()))));
             } else {
-                lore.add(Translator.build("lore.requirements.money.notFulfilled", new TranslatorPlaceholder("money", String.valueOf(moneyModel.getAmount()))));
+                lore.add(Translator.build("lore.requirements.money.notFulfilled", new TranslatorPlaceholder("amount", String.valueOf(moneyModel.getAmount()))));
             }
         });
         return lore;
@@ -62,7 +62,7 @@ public class MoneyRequirement extends BasicRequirement {
         MoneyModel moneyModel = (MoneyModel) requirementModel;
 
         if (!hasPlayerMoney(player.getUniqueId(), moneyModel.getAmount())) {
-            ChatManager.sendMessage(player, Translator.build("quest.missingRequirements.money", new TranslatorPlaceholder("money", String.valueOf(moneyModel.getAmount()))));
+            ChatManager.sendMessage(player, Translator.build("quest.missingRequirements.money", new TranslatorPlaceholder("amount", String.valueOf(moneyModel.getAmount()))));
         }
     }
 
