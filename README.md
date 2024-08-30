@@ -1,4 +1,4 @@
-![AnturniaQuests](https://i.imgur.com/J5TQIJs.png)
+![AnturniaQuests](https://i.imgur.com/J5TQIJs.png) 
 **Overview:**
 AnturniaQuests is a versatile quest plugin for Minecraft, allowing server administrators to create a personalized quest
 system. With this plugin, players can engage in captivating quests and earn exciting rewards. Configuration is
