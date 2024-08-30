@@ -6,6 +6,7 @@ import de.frinshhd.anturniaquests.mysql.MysqlManager;
 import de.frinshhd.anturniaquests.mysql.entities.Requirements;
 import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.requirements.items.ItemModel;
+import de.frinshhd.anturniaquests.requirements.money.MoneyModel;
 import de.frinshhd.anturniaquests.utils.PlayerHashMap;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -122,6 +123,14 @@ public class RequirementManager implements Listener {
                 ItemModel itemModel = (ItemModel) requirement;
 
                 itemModel.removeItemFromInventory(player);
+            });
+        }
+
+        if (quest.getRequirement("money") != null) {
+            quest.getRequirement("money").forEach(requirement -> {
+                MoneyModel moneyModel = (MoneyModel) requirement;
+
+                moneyModel.removePlayerMoney(player.getUniqueId());
             });
         }
     }

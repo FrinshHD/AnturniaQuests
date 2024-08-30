@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.UUID;
 
 public class MoneyModel extends BasicRequirementModel {
 
@@ -33,5 +35,12 @@ public class MoneyModel extends BasicRequirementModel {
     @JsonIgnore
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    @JsonIgnore
+    public void removePlayerMoney(UUID uuid) {
+        if (Main.getEconomy() != null) {
+            Main.getEconomy().withdrawPlayer(Bukkit.getOfflinePlayer(uuid), amount);
+        }
     }
 }
