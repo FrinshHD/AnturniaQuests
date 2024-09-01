@@ -93,6 +93,45 @@ public class BlockInteractionsRequirement extends BasicRequirement implements Li
         return true;
     }
 
+    @Override
+    public void complete(Player player, BasicRequirementModel requirementModel) {
+        BlockInteractionsModel model = (BlockInteractionsModel) requirementModel;
+        UUID playerUUID = player.getUniqueId();
+
+        Main.getInstance().getLogger().warning("BlockInteractionsRequirement complete" + model.getResetType());
+
+        switch (model.getResetType()) {
+            case NONE -> {break;}
+            case ONLY_AMOUNT -> {
+                Gson gson = new Gson();
+                JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());
+
+                List<String> locationsList;
+
+                if (!requirementsData.has("locations")) {
+                    break;
+                } else {
+                    Type listType = new TypeToken<List<String>>() {
+                    }.getType();
+
+                    locationsList = gson.fromJson(requirementsData.getString("locations"), listType);
+                }
+
+                locationsList.remove(gson.toJson(getLocationUnformated(model.getLocation())));
+
+                requirementsData.put("locations", gson.toJson(locationsList));
+
+                Main.getRequirementManager().putPlayerRequirement(playerUUID, getId(), requirementsData);
+            }
+            case COMPLETE -> {
+                JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(player.getUniqueId(), getId());
+                Main.getInstance().getLogger().warning(requirementsData.toString());
+                requirementsData.remove("locations");
+                Main.getRequirementManager().putPlayerRequirement(player.getUniqueId(), getId(), requirementsData);
+            }
+        }
+    }
+
     @EventHandler
     public void onBlockInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();

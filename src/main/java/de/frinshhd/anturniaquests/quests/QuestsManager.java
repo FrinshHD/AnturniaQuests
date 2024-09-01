@@ -59,6 +59,7 @@ public class QuestsManager {
      */
     public void load() {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         TypeFactory typeFactory = mapper.getTypeFactory();
         MapType mapTypeQuests = typeFactory.constructMapType(LinkedHashMap.class, String.class, Quest.class);

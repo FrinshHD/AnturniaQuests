@@ -145,4 +145,48 @@ public class MobBreedRequirement extends BasicRequirement implements Listener {
 
         return entities.get(entityType.toString());
     }
+
+    @Override
+    public void complete(Player player, BasicRequirementModel requirementModel) {
+        MobBreedModel mobBreedModel = (MobBreedModel) requirementModel;
+        UUID playerUUID = player.getUniqueId();
+
+        switch (mobBreedModel.getResetType()) {
+            case NONE -> {
+                break;
+            }
+            case ONLY_AMOUNT -> {
+                Gson gson = new Gson();
+                JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());
+
+                HashMap<String, Integer> bredMobs;
+                Type mapType = new TypeToken<HashMap<String, Integer>>() {
+                }.getType();
+
+                if (requirementsData.isEmpty()) {
+                    return;
+                } else {
+                    bredMobs = gson.fromJson(requirementsData.toString(), mapType);
+                }
+
+                String entityKey = mobBreedModel.getEntity().toString();
+
+                if (bredMobs.containsKey(entityKey)) {
+                    int currentCount = bredMobs.get(entityKey);
+                    int newCount = currentCount - mobBreedModel.getAmount();
+
+                    if (newCount > 0) {
+                        bredMobs.put(entityKey, newCount);
+                    } else {
+                        bredMobs.remove(entityKey);
+                    }
+
+                    Main.getRequirementManager().putPlayerRequirement(playerUUID, getId(), new JSONObject(bredMobs));
+                }
+            }
+            case COMPLETE -> {
+                Main.getRequirementManager().putPlayerRequirement(player.getUniqueId(), getId(), new JSONObject());
+            }
+        }
+    }
 }

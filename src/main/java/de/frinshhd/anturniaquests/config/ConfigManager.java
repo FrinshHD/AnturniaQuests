@@ -25,7 +25,7 @@ public class ConfigManager {
 
         if (getConfig().debug) {
             Main.getInstance().getLogger().setLevel(Level.ALL);
-            Logger.setGlobalLogLevel(com.j256.ormlite.logger.Level.DEBUG);
+            Logger.setGlobalLogLevel(com.j256.ormlite.logger.Level.FATAL);
             java.util.logging.Logger.getLogger("org.reflections").setLevel(Level.OFF);
         } else {
             Main.getInstance().getLogger().setLevel(Level.SEVERE);

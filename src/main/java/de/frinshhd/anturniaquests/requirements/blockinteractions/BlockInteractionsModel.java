@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
+import de.frinshhd.anturniaquests.utils.ResetType;
 import org.bukkit.Location;
 import org.bukkit.World;
 

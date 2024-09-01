@@ -48,4 +48,6 @@ public abstract class BasicRequirement {
     public List<BasicRequirementModel> getLoadedRequirementModels() {
         return loadedRequirementModels;
     }
+
+    public abstract void complete(Player player, BasicRequirementModel requirementModel);
 }

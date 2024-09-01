@@ -133,6 +133,12 @@ public class RequirementManager implements Listener {
                 moneyModel.removePlayerMoney(player.getUniqueId());
             });
         }
+
+        quest.getRequirements().forEach((requirementId, value) -> quest.getRequirement(requirementId).forEach(requirement -> {
+            BasicRequirementModel requirementModel = (BasicRequirementModel) requirement;
+            requirementModel.getBasicRequirement().complete(player, requirementModel);
+        }));
+
     }
 
     public void playerJoin(Player player) {

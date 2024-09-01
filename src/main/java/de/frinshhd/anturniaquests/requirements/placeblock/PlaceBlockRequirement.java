@@ -204,4 +204,49 @@ public class PlaceBlockRequirement extends BasicRequirement implements Listener 
 
         return false;
     }
+
+    @Override
+    public void complete(Player player, BasicRequirementModel requirementModel) {
+        PlaceBlockModel placeBlockModel = (PlaceBlockModel) requirementModel;
+        UUID playerUUID = player.getUniqueId();
+
+        switch (placeBlockModel.getResetType()) {
+            case NONE -> {
+                break;
+            }
+            case ONLY_AMOUNT -> {
+                Gson gson = new Gson();
+                JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());
+
+                HashMap<String, String> placedBlocks;
+                Type mapType = new TypeToken<HashMap<String, String>>() {
+                }.getType();
+
+                if (requirementsData.isEmpty()) {
+                    return;
+                } else {
+                    placedBlocks = gson.fromJson(requirementsData.getString("placeBlocks"), mapType);
+                }
+
+                String locationKey = gson.toJson(getLocationUnformated(placeBlockModel.getLocation()));
+
+                if (placedBlocks.containsKey(locationKey)) {
+                    int currentCount = Integer.parseInt(placedBlocks.get(locationKey));
+                    int newCount = currentCount - 1; // Decrease by 1 since only one block can be placed at a location
+
+                    if (newCount > 0) {
+                        placedBlocks.put(locationKey, String.valueOf(newCount));
+                    } else {
+                        placedBlocks.remove(locationKey);
+                    }
+
+                    requirementsData.put("placeBlocks", gson.toJson(placedBlocks, mapType));
+                    Main.getRequirementManager().putPlayerRequirement(playerUUID, getId(), requirementsData);
+                }
+            }
+            case COMPLETE -> {
+                Main.getRequirementManager().putPlayerRequirement(player.getUniqueId(), getId(), new JSONObject());
+            }
+        }
+    }
 }

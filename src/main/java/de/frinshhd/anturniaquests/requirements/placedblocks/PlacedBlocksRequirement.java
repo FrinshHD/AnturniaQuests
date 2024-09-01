@@ -165,4 +165,57 @@ public class PlacedBlocksRequirement extends BasicRequirement implements Listene
 
         return index;
     }
+
+    @Override
+    public void complete(Player player, BasicRequirementModel requirementModel) {
+        PlacedBlocksModel placedBlocksModel = (PlacedBlocksModel) requirementModel;
+        UUID playerUUID = player.getUniqueId();
+
+        switch (placedBlocksModel.getResetType()) {
+            case NONE -> {
+                break;
+            }
+            case ONLY_AMOUNT -> {
+                Gson gson = new Gson();
+                JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());
+
+                HashMap<String, HashMap<String, Integer>> worlds;
+                Type mapType = new TypeToken<HashMap<String, HashMap<String, Integer>>>() {
+                }.getType();
+
+                if (requirementsData.isEmpty()) {
+                    return;
+                } else {
+                    worlds = gson.fromJson(requirementsData.toString(), mapType);
+                }
+
+                for (String world : placedBlocksModel.getWorlds()) {
+                    if (worlds.containsKey(world)) {
+                        HashMap<String, Integer> blocks = worlds.get(world);
+                        String materialKey = placedBlocksModel.getMaterial().toString();
+
+                        if (blocks.containsKey(materialKey)) {
+                            int currentCount = blocks.get(materialKey);
+                            int newCount = currentCount - placedBlocksModel.getAmount(); // Decrease by 1
+
+                            if (newCount > 0) {
+                                blocks.put(materialKey, newCount);
+                            } else {
+                                blocks.remove(materialKey);
+                            }
+
+                            worlds.put(world, blocks);
+                        }
+                    }
+                }
+
+                requirementsData = new JSONObject(gson.toJson(worlds, mapType));
+                Main.getRequirementManager().putPlayerRequirement(playerUUID, getId(), requirementsData);
+            }
+            case COMPLETE -> {
+                Main.getRequirementManager().putPlayerRequirement(player.getUniqueId(), getId(), new JSONObject());
+            }
+        }
+    }
+
 }

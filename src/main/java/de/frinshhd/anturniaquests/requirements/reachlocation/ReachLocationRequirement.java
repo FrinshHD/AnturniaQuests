@@ -235,4 +235,42 @@ public class ReachLocationRequirement extends BasicRequirement implements Listen
 
         return locationsList;
     }
+
+    @Override
+    public void complete(Player player, BasicRequirementModel requirementModel) {
+        ReachLocationModel reachLocationModel = (ReachLocationModel) requirementModel;
+        UUID playerUUID = player.getUniqueId();
+
+        switch (reachLocationModel.getResetType()) {
+            case NONE -> {
+                break;
+            }
+            case ONLY_AMOUNT -> {
+                Gson gson = new Gson();
+                JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());
+
+                List<String> reachedLocations;
+                Type listType = new TypeToken<List<String>>() {
+                }.getType();
+
+                if (requirementsData.isEmpty()) {
+                    return;
+                } else {
+                    reachedLocations = gson.fromJson(requirementsData.getString("locations"), listType);
+                }
+
+                String locationKey = gson.toJson(getLocationUnformated(reachLocationModel.getLocation1()));
+
+                if (reachedLocations.contains(locationKey)) {
+                    reachedLocations.remove(locationKey);
+
+                    requirementsData.put("locations", gson.toJson(reachedLocations, listType));
+                    Main.getRequirementManager().putPlayerRequirement(playerUUID, getId(), requirementsData);
+                }
+            }
+            case COMPLETE -> {
+                Main.getRequirementManager().putPlayerRequirement(player.getUniqueId(), getId(), new JSONObject());
+            }
+        }
+    }
 }

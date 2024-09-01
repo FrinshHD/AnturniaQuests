@@ -87,6 +87,9 @@ public class MoneyRequirement extends BasicRequirement {
         return true;
     }
 
+    @Override
+    public void complete(Player player, BasicRequirementModel requirementModel) { }
+
     public boolean hasPlayerMoney(UUID uuid, double amount) {
         if (Main.getEconomy() != null) {
             return Main.getEconomy().getBalance(Bukkit.getOfflinePlayer(uuid)) >= amount;
