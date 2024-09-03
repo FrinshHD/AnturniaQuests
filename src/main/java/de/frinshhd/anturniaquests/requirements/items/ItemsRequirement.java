@@ -70,5 +70,6 @@ public class ItemsRequirement extends BasicRequirement {
     }
 
     @Override
-    public void complete(Player player, BasicRequirementModel requirementModel) {}
+    public void complete(Player player, BasicRequirementModel requirementModel) {
+    }
 }

@@ -5,11 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.UUID;
 

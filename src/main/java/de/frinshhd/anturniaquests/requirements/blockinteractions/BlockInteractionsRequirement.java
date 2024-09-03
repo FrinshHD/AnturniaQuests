@@ -101,7 +101,9 @@ public class BlockInteractionsRequirement extends BasicRequirement implements Li
         Main.getInstance().getLogger().warning("BlockInteractionsRequirement complete" + model.getResetType());
 
         switch (model.getResetType()) {
-            case NONE -> {break;}
+            case NONE -> {
+                break;
+            }
             case ONLY_AMOUNT -> {
                 Gson gson = new Gson();
                 JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());

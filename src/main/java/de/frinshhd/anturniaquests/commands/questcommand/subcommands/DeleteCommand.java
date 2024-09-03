@@ -2,7 +2,6 @@ package de.frinshhd.anturniaquests.commands.questcommand.subcommands;
 
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.commands.BasicSubCommand;
-import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.utils.ChatManager;
 import de.frinshhd.anturniaquests.utils.PlayerHashMap;
 import de.frinshhd.anturniaquests.utils.Translator;

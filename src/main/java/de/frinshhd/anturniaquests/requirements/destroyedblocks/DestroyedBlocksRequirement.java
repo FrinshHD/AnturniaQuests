@@ -81,56 +81,59 @@ public class DestroyedBlocksRequirement extends BasicRequirement implements List
     }
 
     @Override
-public void complete(Player player, BasicRequirementModel requirementModel) {
-    DestroyedBlocksModel destroyedBlocksModel = (DestroyedBlocksModel) requirementModel;
-    UUID playerUUID = player.getUniqueId();
+    public void complete(Player player, BasicRequirementModel requirementModel) {
+        DestroyedBlocksModel destroyedBlocksModel = (DestroyedBlocksModel) requirementModel;
+        UUID playerUUID = player.getUniqueId();
 
-    switch (destroyedBlocksModel.getResetType()) {
-        case NONE -> { break; }
-        case ONLY_AMOUNT -> {
-            Gson gson = new Gson();
-            JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());
-
-            HashMap<String, HashMap<String, Integer>> worlds;
-            Type mapType = new TypeToken<HashMap<String, HashMap<String, Integer>>>() {}.getType();
-
-            if (requirementsData.isEmpty()) {
-                return;
-            } else {
-                worlds = gson.fromJson(requirementsData.toString(), mapType);
+        switch (destroyedBlocksModel.getResetType()) {
+            case NONE -> {
+                break;
             }
+            case ONLY_AMOUNT -> {
+                Gson gson = new Gson();
+                JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());
 
-            for (String world : destroyedBlocksModel.getWorlds()) {
-                if (worlds.containsKey(world)) {
-                    HashMap<String, Integer> blocks = worlds.get(world);
-                    String materialKey = destroyedBlocksModel.getMaterial().toString();
+                HashMap<String, HashMap<String, Integer>> worlds;
+                Type mapType = new TypeToken<HashMap<String, HashMap<String, Integer>>>() {
+                }.getType();
 
-                    if (blocks.containsKey(materialKey)) {
-                        int currentCount = blocks.get(materialKey);
-                        int newCount = currentCount - destroyedBlocksModel.getAmount();
+                if (requirementsData.isEmpty()) {
+                    return;
+                } else {
+                    worlds = gson.fromJson(requirementsData.toString(), mapType);
+                }
 
-                        if (newCount > 0) {
-                            blocks.put(materialKey, newCount);
-                        } else {
-                            blocks.remove(materialKey);
-                        }
+                for (String world : destroyedBlocksModel.getWorlds()) {
+                    if (worlds.containsKey(world)) {
+                        HashMap<String, Integer> blocks = worlds.get(world);
+                        String materialKey = destroyedBlocksModel.getMaterial().toString();
 
-                        if (blocks.isEmpty()) {
-                            worlds.remove(world);
-                        } else {
-                            worlds.put(world, blocks);
+                        if (blocks.containsKey(materialKey)) {
+                            int currentCount = blocks.get(materialKey);
+                            int newCount = currentCount - destroyedBlocksModel.getAmount();
+
+                            if (newCount > 0) {
+                                blocks.put(materialKey, newCount);
+                            } else {
+                                blocks.remove(materialKey);
+                            }
+
+                            if (blocks.isEmpty()) {
+                                worlds.remove(world);
+                            } else {
+                                worlds.put(world, blocks);
+                            }
                         }
                     }
                 }
-            }
 
-            Main.getRequirementManager().putPlayerRequirement(playerUUID, getId(), new JSONObject(worlds));
-        }
-        case COMPLETE -> {
-            Main.getRequirementManager().putPlayerRequirement(player.getUniqueId(), getId(), new JSONObject());
+                Main.getRequirementManager().putPlayerRequirement(playerUUID, getId(), new JSONObject(worlds));
+            }
+            case COMPLETE -> {
+                Main.getRequirementManager().putPlayerRequirement(player.getUniqueId(), getId(), new JSONObject());
+            }
         }
     }
-}
 
     @EventHandler
     public void onBlockDestroy(BlockBreakEvent event) {

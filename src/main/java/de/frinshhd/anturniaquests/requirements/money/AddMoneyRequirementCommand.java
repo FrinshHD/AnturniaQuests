@@ -3,12 +3,10 @@ package de.frinshhd.anturniaquests.requirements.money;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.commands.BasicSubCommand;
 import de.frinshhd.anturniaquests.quests.models.Quest;
-import de.frinshhd.anturniaquests.requirements.mobbreed.MobBreedModel;
 import de.frinshhd.anturniaquests.utils.ChatManager;
 import de.frinshhd.anturniaquests.utils.Translator;
 import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

@@ -8,12 +8,11 @@ import de.frinshhd.anturniaquests.utils.ResetType;
 import java.util.LinkedHashMap;
 
 public abstract class BasicRequirementModel {
-    @JsonIgnore
-    private String id = null;
-
     //resetType: NONE, COMPLETE, ONLY_AMOUNT
     @JsonProperty
     protected String resetType = ResetType.NONE.name();
+    @JsonIgnore
+    private String id = null;
 
     @JsonIgnore
     public BasicRequirementModel(LinkedHashMap<String, Object> map) {

@@ -1,7 +1,5 @@
 package de.frinshhd.anturniaquests.requirements.killedentities;
 
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.mysql.MysqlManager;
 import de.frinshhd.anturniaquests.mysql.entities.KilledEntities;
@@ -16,10 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.json.JSONObject;
 
-import java.lang.reflect.Type;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;

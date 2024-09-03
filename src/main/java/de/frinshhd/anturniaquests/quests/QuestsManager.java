@@ -109,7 +109,8 @@ public class QuestsManager {
                     if (id.equals("money")) {
                         break;
                     }
-                };
+                }
+                ;
 
                 quest.setRequirement(id, models);
             });
