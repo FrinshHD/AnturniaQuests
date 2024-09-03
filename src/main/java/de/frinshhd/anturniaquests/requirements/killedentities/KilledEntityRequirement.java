@@ -128,19 +128,16 @@ public class KilledEntityRequirement extends BasicRequirement implements Listene
                 break;
             }
             case ONLY_AMOUNT -> {
-                Gson gson = new Gson();
-                JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());
-
-                HashMap<String, Integer> killedEntities;
-                Type mapType = new TypeToken<HashMap<String, Integer>>() {
-                }.getType();
-
-                if (requirementsData.isEmpty()) {
+                KilledEntities dbKilledEntities = MysqlManager.getKilledEntitiesPlayer(playerUUID);
+                if (dbKilledEntities == null) {
                     return;
-                } else {
-                    killedEntities = gson.fromJson(requirementsData.toString(), mapType);
                 }
 
+                if (!Main.getQuestsManager().playerKilledEntities.containsKey(playerUUID)) {
+                    break;
+                }
+
+                HashMap<String, Integer> killedEntities = Main.getQuestsManager().playerKilledEntities.get(playerUUID);
                 String entityKey = killedEntityModel.getEntity().toString();
 
                 if (killedEntities.containsKey(entityKey)) {
@@ -153,33 +150,15 @@ public class KilledEntityRequirement extends BasicRequirement implements Listene
                         killedEntities.remove(entityKey);
                     }
 
-                    // Update the player's killed entities in the database
-                    KilledEntities dbKilledEntities = MysqlManager.getKilledEntitiesPlayer(playerUUID);
-                    if (dbKilledEntities != null) {
-                        dbKilledEntities.putKilledEntity(entityKey, newCount > 0 ? newCount : 0);
-                        try {
-                            MysqlManager.getKilledEntityDao().update(dbKilledEntities);
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    Main.getRequirementManager().putPlayerRequirement(playerUUID, getId(), new JSONObject(killedEntities));
+                    Main.getQuestsManager().playerKilledEntities.put(playerUUID, killedEntities);
                 }
             }
             case COMPLETE -> {
-                Main.getRequirementManager().putPlayerRequirement(player.getUniqueId(), getId(), new JSONObject());
-
-                // Clear the player's killed entities in the database
-                KilledEntities dbKilledEntities = MysqlManager.getKilledEntitiesPlayer(player.getUniqueId());
-                if (dbKilledEntities != null) {
-                    dbKilledEntities.getKilledEntities().clear();
-                    try {
-                        MysqlManager.getKilledEntityDao().update(dbKilledEntities);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+                if (!Main.getQuestsManager().playerKilledEntities.containsKey(playerUUID)) {
+                    break;
                 }
+
+                Main.getQuestsManager().playerKilledEntities.put(playerUUID, new HashMap<>());
             }
         }
     }
