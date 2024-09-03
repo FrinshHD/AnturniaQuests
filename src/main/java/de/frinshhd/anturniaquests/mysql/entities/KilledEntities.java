@@ -79,7 +79,7 @@ public class KilledEntities {
         }
         return jsonString;
     }
-r
+
     public void clearKilledEntities() {
         killedEntities = hashMapToString(new HashMap<>());
     }
