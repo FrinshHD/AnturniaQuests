@@ -25,6 +25,7 @@ import org.bukkit.inventory.ItemStack;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
@@ -70,6 +71,43 @@ public class QuestsManager {
             Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading config.yml. AnturniaQuests will be disabled!\nError " + e.getMessage());
             Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
             return;
+        }
+
+        String folderPath = "plugins/AnturniaQuests/quests";
+        File folder = new File(folderPath);
+
+        if (folder.exists()) {
+            ArrayList<File> filesToLoad = new ArrayList<>();
+            LinkedHashMap<String, Quest> folderQuestsRaw = new LinkedHashMap<>();
+
+            for (File file : folder.listFiles()) {
+                if (!file.isFile()) {
+                    continue;
+                }
+
+                if (!file.getName().endsWith(".yml")) {
+                    continue;
+                }
+
+                if (file.length() == 0) {
+                    continue;
+                }
+
+                filesToLoad.add(file);
+            }
+
+            for (File file : filesToLoad) {
+                try {
+                    LinkedHashMap<String, Quest> quests = mapper.readValue(file, mapTypeQuests);
+                    folderQuestsRaw.putAll(quests);
+                } catch (IOException e) {
+                    Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading " + file.getName() + ". AnturniaQuests will be disabled!\nError " + e.getMessage());
+                    Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
+                    return;
+                }
+            }
+
+            this.questsRaw.putAll(folderQuestsRaw);
         }
 
         this.quests = (LinkedHashMap<String, Quest>) this.questsRaw.clone();

@@ -8,6 +8,7 @@ import com.j256.ormlite.dao.Dao;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.mysql.MysqlManager;
 import de.frinshhd.anturniaquests.mysql.entities.Storylines;
+import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.storylines.listener.CitizensNpcsListener;
 import de.frinshhd.anturniaquests.storylines.listener.FancyNpcsListener;
 import de.frinshhd.anturniaquests.storylines.listener.StorylinesListener;
@@ -22,6 +23,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -63,6 +65,43 @@ public class StorylinesManager {
         } catch (IOException e) {
             Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading storylines.yml. AnturniaQuests will be disabled!\nError " + e.getMessage());
             Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
+        }
+
+        String folderPath = "plugins/AnturniaQuests/storylines";
+        File folder = new File(folderPath);
+
+        if (folder.exists()) {
+            ArrayList<File> filesToLoad = new ArrayList<>();
+            LinkedHashMap<String, Storyline> folderStorylines = new LinkedHashMap<>();
+
+            for (File file : Objects.requireNonNull(folder.listFiles())) {
+                if (!file.isFile()) {
+                    continue;
+                }
+
+                if (!file.getName().endsWith(".yml")) {
+                    continue;
+                }
+
+                if (file.length() == 0) {
+                    continue;
+                }
+
+                filesToLoad.add(file);
+            }
+
+            for (File file : filesToLoad) {
+                try {
+                    LinkedHashMap<String, Storyline> storylines = mapper.readValue(file, mapTypeQuests);
+                    folderStorylines.putAll(storylines);
+                } catch (IOException e) {
+                    Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading " + file.getName() + ". AnturniaQuests will be disabled!\nError " + e.getMessage());
+                    Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
+                    return;
+                }
+            }
+
+            this.storylines.putAll(folderStorylines);
         }
     }
 
