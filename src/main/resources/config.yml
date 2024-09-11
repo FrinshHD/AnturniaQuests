@@ -11,7 +11,17 @@ commands:
     aliases:
       - "quest"
 
-questMenuEnabled: true
+questMenu:
+  - enabled: true
+    forwardItem:
+      material: "GREEN_STAINED_GLASS_PANE"
+      name: "&7Forward &a➡"
+      slot: 8
+    backwardItem:
+        material: "RED_STAINED_GLASS_PANE"
+        name: "&c⬅ &7Back "
+        slot: 0
+
 storylinesEnabled: true
 
 debug: false

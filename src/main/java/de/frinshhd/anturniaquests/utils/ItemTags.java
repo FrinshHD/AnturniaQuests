@@ -16,10 +16,12 @@ public class ItemTags {
         container.set(key, PersistentDataType.STRING, id);
     }
 
-    public static void tagItem(ItemStack itemStack, String id) {
+    public static ItemStack tagItem(ItemStack itemStack, String id) {
         ItemMeta meta = itemStack.getItemMeta();
         ItemTags.tagItemMeta(meta, id);
         itemStack.setItemMeta(meta);
+
+        return itemStack;
     }
 
     public static String extractItemId(ItemMeta itemMeta) {

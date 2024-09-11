@@ -27,6 +27,9 @@ public class ItemModel extends BasicRequirementModel {
     @JsonProperty
     private ArrayList<String> lore = new ArrayList<>();
 
+    @JsonProperty
+    private int slot = -1;
+
 
     public ItemModel() {
         super(null, null);
@@ -298,5 +301,10 @@ public class ItemModel extends BasicRequirementModel {
         }
 
         return itemStack;
+    }
+
+    @JsonIgnore
+    public int getSlot() {
+        return this.slot;
     }
 }

@@ -37,7 +37,7 @@ public class QuestCommand extends BasicCommand {
                 return false;
             }
 
-            if (!Main.getConfigManager().getConfig().questMenuEnabled) {
+            if (!Main.getConfigManager().getConfig().getQuestMenu().isEnabled()) {
                 //send message that quest menu is disabled
                 ChatManager.sendMessage(sender, Translator.build("quests.menuDisabled"));
                 return true;

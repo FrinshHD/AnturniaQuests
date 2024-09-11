@@ -21,6 +21,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static de.frinshhd.anturniaquests.Main.getConfigManager;
+
 public class QuestMenu extends Menu {
 
     private Category category;
@@ -249,11 +251,11 @@ public class QuestMenu extends Menu {
             }
 
             if (this.categoriesPage > 0) {
-                inventory.setItem(0, Items.getCategoriesBackwardItem());
+                inventory.setItem(getConfigManager().getConfig().getQuestMenu().getBackwardItem().getSlot(), ItemTags.tagItem(getConfigManager().getConfig().getQuestMenu().getBackwardItem().getItem(), "categories_backward"));
             }
 
             if (categories.size() > this.categoriesPage * 7 + 7 - 1) {
-                inventory.setItem(8, Items.getCategoriesForwardItem());
+                inventory.setItem(getConfigManager().getConfig().getQuestMenu().getForwardItem().getSlot(), ItemTags.tagItem(getConfigManager().getConfig().getQuestMenu().getForwardItem().getItem(), "categories_forward"));
             }
         }
 
