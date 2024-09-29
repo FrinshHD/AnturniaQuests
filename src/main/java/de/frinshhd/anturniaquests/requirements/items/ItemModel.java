@@ -307,4 +307,9 @@ public class ItemModel extends BasicRequirementModel {
     public int getSlot() {
         return this.slot;
     }
+
+    @JsonIgnore
+    public void setSlot(int slot) {
+        this.slot = slot;
+    }
 }

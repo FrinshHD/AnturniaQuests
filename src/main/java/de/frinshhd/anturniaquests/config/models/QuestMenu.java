@@ -27,11 +27,23 @@ public class QuestMenu {
 
     @JsonIgnore
     public ItemModel getForwardItem() {
+        ItemModel forwardItem = this.forwardItem;
+
+        if (forwardItem.getSlot() == -1) {
+            forwardItem.setSlot(8);
+        }
+
         return forwardItem;
     }
 
     @JsonIgnore
     public ItemModel getBackwardItem() {
+        ItemModel backwardItem = this.backwardItem;
+
+        if (backwardItem.getSlot() == -1) {
+            backwardItem.setSlot(0);
+        }
+
         return backwardItem;
     }
 
