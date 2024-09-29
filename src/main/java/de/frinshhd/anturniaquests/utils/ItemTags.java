@@ -10,6 +10,10 @@ import org.bukkit.persistence.PersistentDataType;
 
 public class ItemTags {
     public static void tagItemMeta(ItemMeta meta, String id) {
+        if (meta == null) {
+            return;
+        }
+
 
         PersistentDataContainer container = meta.getPersistentDataContainer();
         NamespacedKey key = new NamespacedKey(Main.getInstance(), "itemTag");
@@ -17,6 +21,10 @@ public class ItemTags {
     }
 
     public static ItemStack tagItem(ItemStack itemStack, String id) {
+        if (itemStack == null) {
+            return null;
+        }
+
         ItemMeta meta = itemStack.getItemMeta();
         ItemTags.tagItemMeta(meta, id);
         itemStack.setItemMeta(meta);

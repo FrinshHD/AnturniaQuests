@@ -12,7 +12,7 @@ import java.util.LinkedHashMap;
 public class DestroyedBlocksModel extends BasicRequirementModel {
 
     @JsonProperty
-    private Material material = null;
+    private String material = null;
 
     @JsonProperty
     private int amount = 1;
@@ -25,7 +25,7 @@ public class DestroyedBlocksModel extends BasicRequirementModel {
         super(map, "destroyedBlocks");
 
         if (map.containsKey("material")) {
-            this.material = Material.valueOf((String) map.get("material"));
+            this.material = (String) map.get("material");
         }
 
         if (map.containsKey("amount")) {
@@ -39,12 +39,18 @@ public class DestroyedBlocksModel extends BasicRequirementModel {
 
     @JsonIgnore
     public Material getMaterial() {
-        return material;
+        try {
+            Material material = Material.valueOf(this.material.toUpperCase());
+
+            return material;
+        } catch (IllegalArgumentException e) {
+            return Material.AIR;
+        }
     }
 
     @JsonIgnore
     public void setMaterial(Material material) {
-        this.material = material;
+        this.material = material.toString();
     }
 
     @JsonIgnore
