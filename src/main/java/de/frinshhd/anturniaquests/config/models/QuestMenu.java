@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.config.ConfigManager;
 import de.frinshhd.anturniaquests.requirements.items.ItemModel;
+import org.bukkit.Material;
 
 import java.util.Objects;
 
@@ -33,6 +34,14 @@ public class QuestMenu {
             forwardItem.setSlot(8);
         }
 
+        if (forwardItem.getMaterial() == Material.AIR) {
+            forwardItem.setMaterial(Material.GREEN_STAINED_GLASS_PANE);
+        }
+
+        if (forwardItem.getName() == null) {
+            forwardItem.setName("&7Forward &a➡");
+        }
+
         return forwardItem;
     }
 
@@ -42,6 +51,14 @@ public class QuestMenu {
 
         if (backwardItem.getSlot() == -1) {
             backwardItem.setSlot(0);
+        }
+
+        if (backwardItem.getMaterial() == Material.AIR) {
+            backwardItem.setMaterial(Material.RED_STAINED_GLASS_PANE);
+        }
+
+        if (backwardItem.getName() == null) {
+            backwardItem.setName("&c⬅ &7Back");
         }
 
         return backwardItem;
