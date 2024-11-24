@@ -33,8 +33,12 @@ public class Quest {
     @JsonProperty
     private String category = null;
 
+    @Deprecated
     @JsonProperty
     private String material = null;
+
+    @JsonProperty
+    private DisplayItem displayItem = null;
 
     @JsonProperty
     private Boolean oneTime = null;
@@ -101,6 +105,15 @@ public class Quest {
     @JsonIgnore
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @JsonIgnore
+    public ItemStack getDisplayItem() {
+        if (displayItem == null) {
+            return new ItemStack(getMaterial());
+        }
+
+        return displayItem.getItem();
     }
 
     @JsonIgnore
@@ -224,7 +237,7 @@ public class Quest {
 
     @JsonIgnore
     public ItemStack getItem(Player player, HashMap<String, Integer> finishedQuests) {
-        ItemStack item = new ItemStack(getMaterial());
+        ItemStack item = getDisplayItem();
         ItemMeta itemMeta = item.getItemMeta();
 
         itemMeta.setDisplayName(Translator.build("inventory.quest.color") + getFriendlyName());

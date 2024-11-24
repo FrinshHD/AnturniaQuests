@@ -24,4 +24,5 @@ questMenu:
 
 storylinesEnabled: true
 
+# Debug is only meant for developing purposes. Don't enable it on a live server!
 debug: false
