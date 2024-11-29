@@ -25,9 +25,9 @@ import static de.frinshhd.anturniaquests.Main.getConfigManager;
 
 public class QuestMenu extends Menu {
 
-    private Category category;
-    private int categoriesPage;
-    private int questsPage;
+    private final Category category;
+    private final int categoriesPage;
+    private final int questsPage;
 
 
     public QuestMenu(PlayerMenuUtility playerMenuUtility) {
@@ -180,7 +180,6 @@ public class QuestMenu extends Menu {
                 throw new RuntimeException(e);
             }
             new QuestMenu(Main.getPlayerMenuUtility(player), category.getID(), questsPage, categoriesPage).open(player);
-            return;
         }
     }
 

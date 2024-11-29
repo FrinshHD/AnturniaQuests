@@ -13,10 +13,10 @@ public class CommandManager {
 
 
     //command name; command
-    private Map<String, BasicCommand> commands = new HashMap<>();
+    private final Map<String, BasicCommand> commands = new HashMap<>();
 
     //main command; list of BasicSubCommands
-    private Map<BasicCommand, List<BasicSubCommand>> subCommands = new HashMap<>();
+    private final Map<BasicCommand, List<BasicSubCommand>> subCommands = new HashMap<>();
 
     public CommandManager() {
         //Todo: execute load function

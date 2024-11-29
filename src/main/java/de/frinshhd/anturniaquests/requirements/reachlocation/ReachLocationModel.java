@@ -190,17 +190,15 @@ public class ReachLocationModel extends BasicRequirementModel {
             return getFriendlyName();
         }
 
-        StringBuilder builder = new StringBuilder();
+        String builder = "[X: " +
+                location.getX() +
+                " Y: " +
+                location.getY() +
+                " Z: " +
+                location.getZ() +
+                "]";
 
-        builder.append("[X: ");
-        builder.append(location.getX());
-        builder.append(" Y: ");
-        builder.append(location.getY());
-        builder.append(" Z: ");
-        builder.append(location.getZ());
-        builder.append("]");
-
-        return builder.toString();
+        return builder;
     }
 
     /*public String getLocationFormated() {

@@ -99,7 +99,6 @@ public class AddPlacedBlockRequirementCommand extends BasicSubCommand {
         possibleCompletions.forEach(completion -> {
             if (args.length == 5 && completion.toLowerCase().startsWith(args[3])) {
                 completions.add(completion);
-                return;
             }
         });
 

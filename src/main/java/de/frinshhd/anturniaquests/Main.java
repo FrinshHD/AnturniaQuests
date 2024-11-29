@@ -107,7 +107,6 @@ public final class Main extends JavaPlugin {
         } catch (IOException e) {
             Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading config.yml. AnturniaQuests will be disabled!\nError " + e.getMessage());
             Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
-            return;
         }
     }
 
@@ -175,11 +174,7 @@ public final class Main extends JavaPlugin {
         } else {
             if (Main.getInstance().getServer().getPluginManager().getPlugin("Citizens") != null && Main.getInstance().getServer().getPluginManager().getPlugin("Citizens").isEnabled()) {
                 storylinesEnabled = true;
-            } else if (Main.getInstance().getServer().getPluginManager().getPlugin("FancyNpcs") != null && Main.getInstance().getServer().getPluginManager().getPlugin("FancyNpcs").isEnabled()) {
-                storylinesEnabled = true;
-            } else {
-                storylinesEnabled = false;
-            }
+            } else storylinesEnabled = Main.getInstance().getServer().getPluginManager().getPlugin("FancyNpcs") != null && Main.getInstance().getServer().getPluginManager().getPlugin("FancyNpcs").isEnabled();
         }
 
         if (isStorylinesEnabled()) {
@@ -196,8 +191,6 @@ public final class Main extends JavaPlugin {
         configManager.connectToDB();
 
         DynamicListeners.load(classNames, canonicalName);
-
-        this.registerCommands();
 
         //run playerJoinLogic for all online players in case of server reload
         if (!getServer().getOnlinePlayers().isEmpty()) {
@@ -237,9 +230,5 @@ public final class Main extends JavaPlugin {
                 }
             });
         }
-    }
-
-    public void registerCommands() {
-        //Objects.requireNonNull(Bukkit.getPluginCommand("quests")).setExecutor(new QuestCommand());
     }
 }

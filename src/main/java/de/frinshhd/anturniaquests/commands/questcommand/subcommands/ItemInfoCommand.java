@@ -91,7 +91,6 @@ public class ItemInfoCommand extends BasicSubCommand {
 
             if (args.length == 1 && completion.toLowerCase().startsWith(args[0])) {
                 completions.add(completion);
-                return;
             }
         });
 

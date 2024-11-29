@@ -69,11 +69,7 @@ public abstract class BasicSubCommand {
     }
 
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-        if (getPermission() != null && !sender.hasPermission(getPermission())) {
-            return false;
-        }
-
-        return true;
+        return getPermission() == null || sender.hasPermission(getPermission());
     }
 
     public List<String> tabComplete(CommandSender sender, String[] args) {

@@ -320,11 +320,7 @@ public class Quest {
 
     @JsonIgnore
     public boolean checkCanCompleteQuest(Player player) {
-        if (getQuestsToCompletePlayer(player).isEmpty()) {
-            return true;
-        }
-
-        return false;
+        return getQuestsToCompletePlayer(player).isEmpty();
     }
 
     @JsonIgnore

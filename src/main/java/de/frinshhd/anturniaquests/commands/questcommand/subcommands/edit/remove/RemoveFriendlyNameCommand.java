@@ -63,7 +63,6 @@ public class RemoveFriendlyNameCommand extends BasicSubCommand {
 
             if (args.length == 4 && completion.toLowerCase().startsWith(args[3])) {
                 completions.add(completion);
-                return;
             }
         });
 

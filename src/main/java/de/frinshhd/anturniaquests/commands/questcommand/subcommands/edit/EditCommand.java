@@ -56,7 +56,6 @@ public class EditCommand extends BasicSubCommand {
 
             if (args.length == 1 && completion.toLowerCase().startsWith(args[0])) {
                 completions.add(completion);
-                return;
             }
         });
 

@@ -148,7 +148,6 @@ public class QuestsManager {
                         break;
                     }
                 }
-                ;
 
                 quest.setRequirement(id, models);
             });

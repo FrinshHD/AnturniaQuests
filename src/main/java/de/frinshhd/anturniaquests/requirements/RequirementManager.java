@@ -26,7 +26,7 @@ import java.util.*;
 public class RequirementManager implements Listener {
 
     public PlayerHashMap<UUID, JSONObject> playerRequirements = new PlayerHashMap<>();
-    private HashMap<String, BasicRequirement> requirements = new HashMap<>();
+    private final HashMap<String, BasicRequirement> requirements = new HashMap<>();
 
     public RequirementManager(boolean notGenerated) {
         init();

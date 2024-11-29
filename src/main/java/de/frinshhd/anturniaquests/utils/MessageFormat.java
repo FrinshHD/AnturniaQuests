@@ -15,7 +15,7 @@ public class MessageFormat {
             String replaceSharp = hexCode.replace('#', 'x');
 
             char[] ch = replaceSharp.toCharArray();
-            StringBuilder builder = new StringBuilder("");
+            StringBuilder builder = new StringBuilder();
             for (char c : ch) {
                 builder.append("&" + c);
             }

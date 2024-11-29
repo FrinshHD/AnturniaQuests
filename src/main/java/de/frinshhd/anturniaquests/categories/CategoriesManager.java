@@ -39,7 +39,6 @@ public class CategoriesManager {
         } catch (IOException e) {
             Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading categories.yml. AnturniaQuests will be disabled!\nError " + e.getMessage());
             Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
-            return;
         }
     }
 
