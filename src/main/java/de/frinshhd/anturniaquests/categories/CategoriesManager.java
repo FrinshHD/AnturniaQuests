@@ -1,5 +1,6 @@
 package de.frinshhd.anturniaquests.categories;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -30,6 +31,7 @@ public class CategoriesManager {
      */
     public void load() {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         TypeFactory typeFactory = mapper.getTypeFactory();
         MapType mapTypeCategories = typeFactory.constructMapType(LinkedHashMap.class, String.class, Category.class);

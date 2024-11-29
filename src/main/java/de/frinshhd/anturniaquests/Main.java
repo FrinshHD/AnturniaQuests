@@ -33,7 +33,7 @@ public final class Main extends JavaPlugin {
 
     private static final HashMap<Player, PlayerMenuUtility> playerMenuUtilityMap = new HashMap<>();
     public static String version;
-    //Todo: implement storylinesEnabled bool
+
     private static boolean storylinesEnabled;
     private static Main INSTANCE;
     private static Economy econ = null;
