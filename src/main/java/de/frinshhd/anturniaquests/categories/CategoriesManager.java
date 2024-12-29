@@ -1,13 +1,12 @@
 package de.frinshhd.anturniaquests.categories;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.MapType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.categories.models.Category;
 import org.bukkit.ChatColor;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -30,14 +29,13 @@ public class CategoriesManager {
      * Search and register quests
      */
     public void load() {
-        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        Yaml yaml = Main.getYaml();
+        Gson gson = Main.getGson();
 
-        TypeFactory typeFactory = mapper.getTypeFactory();
-        MapType mapTypeCategories = typeFactory.constructMapType(LinkedHashMap.class, String.class, Category.class);
-
-        try {
-            this.categories = mapper.readValue(new FileInputStream("plugins/AnturniaQuests/categories.yml"), mapTypeCategories);
+        try (FileInputStream inputStream = new FileInputStream("plugins/AnturniaQuests/categories.yml")) {
+            LinkedHashMap<String, Object> yamlData = yaml.load(inputStream);
+            String jsonString = gson.toJson(yamlData);
+            this.categories = gson.fromJson(jsonString, new TypeToken<LinkedHashMap<String, Category>>(){}.getType());
         } catch (IOException e) {
             Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading categories.yml. AnturniaQuests will be disabled!\nError " + e.getMessage());
             Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());

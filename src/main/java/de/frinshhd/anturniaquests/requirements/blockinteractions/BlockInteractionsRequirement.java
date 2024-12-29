@@ -105,7 +105,7 @@ public class BlockInteractionsRequirement extends BasicRequirement implements Li
                 break;
             }
             case ONLY_AMOUNT -> {
-                Gson gson = new Gson();
+                Gson gson = Main.getGson();
                 JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());
 
                 List<String> locationsList;
@@ -167,7 +167,7 @@ public class BlockInteractionsRequirement extends BasicRequirement implements Li
     }
 
     public void savePlayerInteraction(UUID playerUUID, Location location) {
-        Gson gson = new Gson();
+        Gson gson = Main.getGson();
         JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());
 
         List<String> locationsList;
@@ -214,7 +214,7 @@ public class BlockInteractionsRequirement extends BasicRequirement implements Li
     }
 
     public boolean hasPlayerInteracted(UUID playerUUID, Location location) {
-        Gson gson = new Gson();
+        Gson gson = Main.getGson();
         JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());
 
         List<String> locationsList;

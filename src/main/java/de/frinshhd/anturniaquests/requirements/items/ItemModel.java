@@ -1,7 +1,6 @@
 package de.frinshhd.anturniaquests.requirements.items;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
 import net.md_5.bungee.api.chat.TranslatableComponent;
 import org.bukkit.Material;
@@ -15,27 +14,25 @@ import java.util.Objects;
 
 public class ItemModel extends BasicRequirementModel {
 
-    @JsonProperty
+    @SerializedName("name")
     private String name = null;
 
-    @JsonProperty
+    @SerializedName("amount")
     private int amount = 1;
 
-    @JsonProperty
+    @SerializedName("material")
     private Material material = Material.AIR;
 
-    @JsonProperty
+    @SerializedName("lore")
     private ArrayList<String> lore = new ArrayList<>();
 
-    @JsonProperty
+    @SerializedName("slot")
     private int slot = -1;
-
 
     public ItemModel() {
         super(null, null);
     }
 
-    @JsonIgnore
     public ItemModel(LinkedHashMap<String, Object> map) {
         super(map, "items");
 
@@ -54,12 +51,11 @@ public class ItemModel extends BasicRequirementModel {
         if (map.containsKey("lore")) {
             String loreRaw = (String) map.get("lore");
             loreRaw = loreRaw.substring(1, loreRaw.length() - 1);
-            ArrayList<String> lore = new ArrayList<String>(Arrays.asList(loreRaw.split(",")));
+            ArrayList<String> lore = new ArrayList<>(Arrays.asList(loreRaw.split(",")));
             this.lore = lore;
         }
     }
 
-    @JsonIgnore
     public String getName() {
         if (this.name != null) {
             return this.name;
@@ -68,12 +64,10 @@ public class ItemModel extends BasicRequirementModel {
         return null;
     }
 
-    @JsonIgnore
     public void setName(String name) {
         this.name = name;
     }
 
-    @JsonIgnore
     public String getDisplayName() {
         if (this.name != null) {
             return this.name;
@@ -82,42 +76,34 @@ public class ItemModel extends BasicRequirementModel {
         return new TranslatableComponent(getMaterial().getTranslationKey()).toPlainText();
     }
 
-    @JsonIgnore
     public int getAmount() {
         return this.amount;
     }
 
-    @JsonIgnore
     public void setAmount(int amount) {
         this.amount = amount;
     }
 
-    @JsonIgnore
     public Material getMaterial() {
         return this.material;
     }
 
-    @JsonIgnore
     public void setMaterial(Material material) {
         this.material = material;
     }
 
-    @JsonIgnore
     public ArrayList<String> getLore() {
         return this.lore;
     }
 
-    @JsonIgnore
     public void setLore(ArrayList<String> lore) {
         this.lore = lore;
     }
 
-    @JsonIgnore
     public ItemStack getItem() {
         return new ItemStack(getMaterial());
     }
 
-    @JsonIgnore
     public int getAmountInInventory(Player player) {
         if (getName() != null && getLore().isEmpty()) {
             int amountInInv = 0;
@@ -201,7 +187,6 @@ public class ItemModel extends BasicRequirementModel {
         return amountInInv;
     }
 
-    @JsonIgnore
     public void removeItemFromInventory(Player player) {
         ArrayList<ItemStack> itemStacks = new ArrayList<>();
 
@@ -274,7 +259,6 @@ public class ItemModel extends BasicRequirementModel {
             }
         }
 
-
         int index = 0;
         while (getAmount() > index) {
             ItemStack itemStack = getFittingItemStack(itemStacks, 1);
@@ -285,7 +269,6 @@ public class ItemModel extends BasicRequirementModel {
         }
     }
 
-    @JsonIgnore
     private ItemStack getFittingItemStack(ArrayList<ItemStack> items, int minAmount) {
         ItemStack itemStack = null;
 
@@ -303,12 +286,10 @@ public class ItemModel extends BasicRequirementModel {
         return itemStack;
     }
 
-    @JsonIgnore
     public int getSlot() {
         return this.slot;
     }
 
-    @JsonIgnore
     public void setSlot(int slot) {
         this.slot = slot;
     }

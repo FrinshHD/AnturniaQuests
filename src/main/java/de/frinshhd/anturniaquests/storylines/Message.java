@@ -1,13 +1,13 @@
 package de.frinshhd.anturniaquests.storylines;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 
 public class Message {
 
-    @JsonProperty
+    @SerializedName("message")
     private String message = null;
 
-    @JsonProperty
+    @SerializedName("delay")
     private long delay = -1;
 
 }

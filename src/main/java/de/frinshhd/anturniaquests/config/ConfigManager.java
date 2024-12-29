@@ -1,16 +1,18 @@
 package de.frinshhd.anturniaquests.config;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.j256.ormlite.logger.Logger;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.config.models.Config;
 import de.frinshhd.anturniaquests.mysql.MysqlManager;
 import org.bukkit.ChatColor;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.logging.Level;
 
 public class ConfigManager {
@@ -50,11 +52,13 @@ public class ConfigManager {
     }
 
     public boolean load() {
-        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        Yaml yaml = Main.getYaml();
+        Gson gson = Main.getGson();
 
-        try {
-            this.config = mapper.readValue(new FileInputStream("plugins/AnturniaQuests/config.yml"), Config.class);
+        try (FileInputStream inputStream = new FileInputStream("plugins/AnturniaQuests/config.yml")) {
+            LinkedHashMap<String, Object> yamlData = yaml.load(inputStream);
+            String jsonString = gson.toJson(yamlData);
+            this.config = gson.fromJson(jsonString, Config.class);
         } catch (IOException e) {
             Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading config.yml. AnturniaQuests will be disabled!\nError " + e.getMessage());
             Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
@@ -63,7 +67,6 @@ public class ConfigManager {
 
         return true;
     }
-
 
     public Config getConfig() {
         return this.config;

@@ -1,7 +1,7 @@
 package de.frinshhd.anturniaquests.requirements;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.utils.ResetType;
 
@@ -9,16 +9,15 @@ import java.util.LinkedHashMap;
 
 public abstract class BasicRequirementModel {
     //resetType: NONE, COMPLETE, ONLY_AMOUNT
-    @JsonProperty
+    @SerializedName("resetType")
     protected String resetType = ResetType.NONE.name();
-    @JsonIgnore
+
+    @Expose(serialize = false, deserialize = false)
     private String id = null;
 
-    @JsonIgnore
     public BasicRequirementModel(LinkedHashMap<String, Object> map) {
     }
 
-    @JsonIgnore
     public BasicRequirementModel(LinkedHashMap<String, Object> map, String id) {
         setId(id);
 
@@ -31,22 +30,18 @@ public abstract class BasicRequirementModel {
         }
     }
 
-    @JsonIgnore
     public String getId() {
         return this.id;
     }
 
-    @JsonIgnore
     public void setId(String id) {
         this.id = id;
     }
 
-    @JsonIgnore
     public BasicRequirement getBasicRequirement() {
         return Main.getRequirementManager().getRequirement(getId());
     }
 
-    @JsonIgnore
     public ResetType getResetType() {
         Main.getInstance().getLogger().warning(this.resetType);
 

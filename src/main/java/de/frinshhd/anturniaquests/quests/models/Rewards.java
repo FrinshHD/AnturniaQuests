@@ -1,7 +1,6 @@
 package de.frinshhd.anturniaquests.quests.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 import de.frinshhd.anturniaquests.requirements.items.ItemModel;
 
 import java.util.ArrayList;
@@ -9,41 +8,36 @@ import java.util.List;
 
 public class Rewards {
 
-    @JsonProperty
+    @SerializedName("items")
     private List<ItemModel> items = new ArrayList<>();
-    @JsonProperty
+
+    @SerializedName("money")
     private double money = 0.0;
-    @JsonProperty
+
+    @SerializedName("commands")
     private List<Command> commands = new ArrayList<>();
 
-    @JsonIgnore
     public void addItem(ItemModel itemModel) {
         items.add(itemModel);
     }
 
-    @JsonIgnore
     public List<ItemModel> getItems() {
         return this.items;
     }
 
-    @JsonIgnore
     public double getMoney() {
         return this.money;
     }
 
-    @JsonIgnore
     public void setMoney(double money) {
         this.money = money;
     }
 
-    @JsonIgnore
     public void addCommand(Command command) {
         commands.add(command);
     }
 
-    @JsonIgnore
     public List<Command> getCommands() {
         return this.commands;
     }
-
 }

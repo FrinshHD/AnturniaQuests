@@ -99,7 +99,7 @@ public class MobBreedRequirement extends BasicRequirement implements Listener {
     }
 
     public void addPlayerMobBreed(UUID playerUUID, EntityType entityType) {
-        Gson gson = new Gson();
+        Gson gson = Main.getGson();
         JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());
 
         HashMap<String, Integer> entities;
@@ -125,7 +125,7 @@ public class MobBreedRequirement extends BasicRequirement implements Listener {
     }
 
     public int getPlayerMobBreed(UUID playerUUID, EntityType entityType) {
-        Gson gson = new Gson();
+        Gson gson = Main.getGson();
         JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());
 
         HashMap<String, Integer> entities;
@@ -156,7 +156,7 @@ public class MobBreedRequirement extends BasicRequirement implements Listener {
                 break;
             }
             case ONLY_AMOUNT -> {
-                Gson gson = new Gson();
+                Gson gson = Main.getGson();
                 JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());
 
                 HashMap<String, Integer> bredMobs;

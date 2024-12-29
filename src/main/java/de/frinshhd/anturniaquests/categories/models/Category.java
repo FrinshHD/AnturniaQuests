@@ -1,6 +1,6 @@
 package de.frinshhd.anturniaquests.categories.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.utils.ItemTags;
 import de.frinshhd.anturniaquests.utils.LoreBuilder;
@@ -15,22 +15,22 @@ import java.util.List;
 
 public class Category {
 
-    @JsonProperty
+    @SerializedName("friendlyName")
     private String friendlyName = null;
 
-    @JsonProperty
+    @SerializedName("description")
     private String description = null;
 
-    @JsonProperty
+    @SerializedName("material")
     private String material = Material.STONE.toString();
 
-    @JsonProperty
+    @SerializedName("dailyQuestsCategory")
     private boolean dailyQuestsCategory = false;
 
-    @JsonProperty
+    @SerializedName("questsPerDay")
     private int questsPerDay = 3;
 
-    @JsonProperty
+    @SerializedName("timesToReset")
     private ArrayList<String> timesToReset = new ArrayList<>(List.of("24:00"));
 
     public String getID() {

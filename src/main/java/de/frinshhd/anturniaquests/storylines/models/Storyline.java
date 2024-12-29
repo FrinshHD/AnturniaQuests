@@ -1,28 +1,28 @@
 package de.frinshhd.anturniaquests.storylines.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 import de.frinshhd.anturniaquests.Main;
 
 import java.util.ArrayList;
 
 public class Storyline {
 
-    @JsonProperty
+    @SerializedName("friendlyName")
     private String friendlyName = null;
 
-    @JsonProperty
+    @SerializedName("cooldown")
     private int cooldown = -1;
 
-    @JsonProperty
+    @SerializedName("maxCompletions")
     private int maxCompletions = -1;
 
-    @JsonProperty
+    @SerializedName("timeToComplete")
     private int timeToComplete = -1;
 
-    @JsonProperty
+    @SerializedName("maxCurrentPlayers")
     private int maxCurrentPlayers = -1;
 
-    @JsonProperty
+    @SerializedName("npcs")
     private ArrayList<NPC> npcs = new ArrayList<>();
 
     public ArrayList<NPC> getNpcs() {

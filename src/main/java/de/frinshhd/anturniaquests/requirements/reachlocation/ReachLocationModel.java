@@ -1,7 +1,6 @@
 package de.frinshhd.anturniaquests.requirements.reachlocation;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
 import org.bukkit.Location;
@@ -17,25 +16,25 @@ import java.util.List;
  */
 public class ReachLocationModel extends BasicRequirementModel {
 
-    @JsonProperty
+    @SerializedName("friendlyName")
     private String friendlyName = null;
 
     /**
      * The first boundary location of the area to be reached.
      */
-    @JsonProperty
+    @SerializedName("location1")
     private ArrayList<Integer> location1 = new ArrayList<>();
 
     /**
      * The second boundary location of the area to be reached.
      */
-    @JsonProperty
+    @SerializedName("location2")
     private ArrayList<Integer> location2 = new ArrayList<>();
 
     /**
      * The world in which the locations are located.
      */
-    @JsonProperty
+    @SerializedName("world")
     private String world = "world";
 
     /**
@@ -72,7 +71,6 @@ public class ReachLocationModel extends BasicRequirementModel {
      *
      * @return The first location to reach
      */
-    @JsonIgnore
     public Location getLocation1() {
         Location location;
         if (this.location1.size() < 3) {
@@ -84,7 +82,6 @@ public class ReachLocationModel extends BasicRequirementModel {
         return location;
     }
 
-    @JsonIgnore
     public void setLocation1(ArrayList<Integer> location1) {
         this.location1 = location1;
     }
@@ -94,7 +91,6 @@ public class ReachLocationModel extends BasicRequirementModel {
      *
      * @return The second location to reach
      */
-    @JsonIgnore
     public Location getLocation2() {
         Location location;
         if (this.location2.size() < 3) {
@@ -106,7 +102,6 @@ public class ReachLocationModel extends BasicRequirementModel {
         return location;
     }
 
-    @JsonIgnore
     public void setLocation2(ArrayList<Integer> location2) {
         this.location2 = location2;
     }
@@ -116,22 +111,18 @@ public class ReachLocationModel extends BasicRequirementModel {
      *
      * @return The world in which the locations are located
      */
-    @JsonIgnore
     public World getWorld() {
         return Main.getInstance().getServer().getWorld(this.world);
     }
 
-    @JsonIgnore
     public void setWorld(String world) {
         this.world = world;
     }
 
-    @JsonIgnore
     public String getFriendlyName() {
         return friendlyName;
     }
 
-    @JsonIgnore
     public void setFriendlyName(String friendlyName) {
         this.friendlyName = friendlyName;
     }
@@ -146,7 +137,6 @@ public class ReachLocationModel extends BasicRequirementModel {
      *
      * @return A list of all locations within the boundaries defined by location1 and location2
      */
-    @JsonIgnore
     public List<Location> getAllLocationsBetween() {
         // Clone the first and second locations to avoid modifying the original ones
         Location loc1 = getLocation1().clone();
@@ -179,12 +169,10 @@ public class ReachLocationModel extends BasicRequirementModel {
         return locations;
     }
 
-    @JsonIgnore
     public boolean isLocationIncluded(Location location) {
         return getAllLocationsBetween().contains(location);
     }
 
-    @JsonIgnore
     public String getLocationFormated(Location location) {
         if (getFriendlyName() != null) {
             return getFriendlyName();

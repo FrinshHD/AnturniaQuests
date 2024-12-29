@@ -1,18 +1,19 @@
 package de.frinshhd.anturniaquests.mysql.entities;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import de.frinshhd.anturniaquests.Main;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 @DatabaseTable(tableName = "Quests")
 public class Quests {
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final Gson gson = Main.getGson();
 
     @DatabaseField(id = true)
     private UUID uuid;
@@ -97,44 +98,22 @@ public class Quests {
     }
 
     public Map<String, Integer> stringToHashMap(String jsonString) {
-        Map<String, Integer> resultMap = null;
-        try {
-            resultMap = objectMapper.readValue(jsonString, new TypeReference<HashMap<String, Integer>>() {
-            });
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return resultMap;
+        Type type = new TypeToken<HashMap<String, Integer>>() {
+        }.getType();
+        return gson.fromJson(jsonString, type);
     }
 
     public Map<String, Long> stringToHashMapLong(String jsonString) {
-        Map<String, Long> resultMap = null;
-        try {
-            resultMap = objectMapper.readValue(jsonString, new TypeReference<HashMap<String, Long>>() {
-            });
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return resultMap;
+        Type type = new TypeToken<HashMap<String, Long>>() {
+        }.getType();
+        return gson.fromJson(jsonString, type);
     }
 
     public String hashMapToString(Map<String, Integer> map) {
-        String jsonString = null;
-        try {
-            jsonString = objectMapper.writeValueAsString(map);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return jsonString;
+        return gson.toJson(map);
     }
 
     public String hashMapToStringLong(Map<String, Long> map) {
-        String jsonString = null;
-        try {
-            jsonString = objectMapper.writeValueAsString(map);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return jsonString;
+        return gson.toJson(map);
     }
 }

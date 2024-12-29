@@ -148,7 +148,7 @@ public class ReachLocationRequirement extends BasicRequirement implements Listen
     }
 
     public void savePlayerLocation(UUID playerUUID, Location location) {
-        Gson gson = new Gson();
+        Gson gson = Main.getGson();
         JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());
 
         List<String> locationsList;
@@ -206,7 +206,7 @@ public class ReachLocationRequirement extends BasicRequirement implements Listen
     }
 
     public List<Location> getPlayerAllLocations(UUID playerUUID) {
-        Gson gson = new Gson();
+        Gson gson = Main.getGson();
         JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());
 
         List<String> locationsListRaw;
@@ -246,7 +246,7 @@ public class ReachLocationRequirement extends BasicRequirement implements Listen
                 break;
             }
             case ONLY_AMOUNT -> {
-                Gson gson = new Gson();
+                Gson gson = Main.getGson();
                 JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());
 
                 List<String> reachedLocations;

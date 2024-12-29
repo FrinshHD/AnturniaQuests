@@ -1,7 +1,6 @@
 package de.frinshhd.anturniaquests.quests.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.dao.Dao;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.mysql.MysqlManager;
@@ -24,53 +23,52 @@ import java.util.LinkedHashMap;
 
 public class Quest {
 
-    @JsonProperty
+    @SerializedName("friendlyName")
     private String friendlyName = null;
 
-    @JsonProperty
+    @SerializedName("description")
     private String description = null;
 
-    @JsonProperty
+    @SerializedName("category")
     private String category = null;
 
     @Deprecated
-    @JsonProperty
+    @SerializedName("material")
     private String material = null;
 
-    @JsonProperty
+    @SerializedName("displayItem")
     private DisplayItem displayItem = null;
 
-    @JsonProperty
+    @SerializedName("oneTime")
     private Boolean oneTime = null;
 
-    @JsonProperty
+    @SerializedName("announce")
     private Boolean announce = null;
 
-    @JsonProperty
+    @SerializedName("cooldown")
     private Integer cooldown = null;
 
-    @JsonProperty
+    @SerializedName("showCompletions")
     private Boolean showCompletions = null;
 
-    @JsonProperty
+    @SerializedName("completionSound")
     private Sound completionSound = null;
 
-    @JsonProperty
+    @SerializedName("errorSound")
     private Sound errorSound = null;
 
-    @JsonProperty
+    @SerializedName("requiredQuests")
     private ArrayList<String> requiredQuests = new ArrayList<>();
 
-    @JsonProperty
+    @SerializedName("requirements")
     private LinkedHashMap<String, ArrayList<Object>> requirements = new LinkedHashMap<>();
 
-    @JsonProperty
+    @SerializedName("rewards")
     private Rewards rewards = null;
 
     public Quest() {
     }
 
-    @JsonIgnore
     public String getFriendlyName() {
         if (this.friendlyName == null) {
             return "";
@@ -78,22 +76,18 @@ public class Quest {
         return this.friendlyName;
     }
 
-    @JsonIgnore
     public void setFriendlyName(String friendlyName) {
         this.friendlyName = friendlyName;
     }
 
-    @JsonIgnore
     public String getCategory() {
         return this.category;
     }
 
-    @JsonIgnore
     public void setCategory(String category) {
         this.category = category;
     }
 
-    @JsonIgnore
     public String getDescription() {
         if (this.description == null) {
             return "";
@@ -102,12 +96,10 @@ public class Quest {
         return this.description;
     }
 
-    @JsonIgnore
     public void setDescription(String description) {
         this.description = description;
     }
 
-    @JsonIgnore
     public ItemStack getDisplayItem() {
         if (displayItem == null) {
             return new ItemStack(getMaterial());
@@ -116,7 +108,6 @@ public class Quest {
         return displayItem.getItem();
     }
 
-    @JsonIgnore
     public Material getMaterial() {
         if (this.material != null) {
             return Material.getMaterial(this.material);
@@ -129,19 +120,16 @@ public class Quest {
         return Material.STONE;
     }
 
-    @JsonIgnore
     public void setMaterial(String material) {
         if (Material.getMaterial(material.toUpperCase()) != null) {
             this.material = material;
         }
     }
 
-    @JsonIgnore
     public String getID() {
         return Main.getQuestsManager().getQuestID(this);
     }
 
-    @JsonIgnore
     public Long getCooldown() {
         if (this.cooldown == null) {
             return null;
@@ -150,12 +138,10 @@ public class Quest {
         return this.cooldown * 1000L;
     }
 
-    @JsonIgnore
     public void setCooldown(Integer cooldown) {
         this.cooldown = cooldown;
     }
 
-    @JsonIgnore
     public boolean isShowCompletions() {
         if (showCompletions == null) {
             return !isOneTimeUse();
@@ -164,17 +150,14 @@ public class Quest {
         return showCompletions;
     }
 
-    @JsonIgnore
     public void setShowCompletions(Boolean showCompletions) {
         this.showCompletions = showCompletions;
     }
 
-    @JsonIgnore
     public void setAnnounce(Boolean announce) {
         this.announce = announce;
     }
 
-    @JsonIgnore
     public ArrayList<Quest> getRequiredQuests() {
         ArrayList<Quest> quests = new ArrayList<>();
 
@@ -189,12 +172,10 @@ public class Quest {
         return quests;
     }
 
-    @JsonIgnore
     public void setOneTime(Boolean oneTime) {
         this.oneTime = oneTime;
     }
 
-    @JsonIgnore
     public boolean isOneTimeUse() {
         if (this.oneTime == null) {
             return true;
@@ -203,7 +184,6 @@ public class Quest {
         return this.oneTime;
     }
 
-    @JsonIgnore
     public Rewards getRewards() {
         if (rewards == null) {
             return new Rewards();
@@ -211,12 +191,10 @@ public class Quest {
         return this.rewards;
     }
 
-    @JsonIgnore
     public void setRewards(Rewards rewards) {
         this.rewards = rewards;
     }
 
-    @JsonIgnore
     public void setRequirement(String id, ArrayList<Object> objects) {
         if (getRequirement(id) == null) {
             return;
@@ -225,17 +203,14 @@ public class Quest {
         requirements.put(id, objects);
     }
 
-    @JsonIgnore
     public LinkedHashMap<String, ArrayList<Object>> getRequirements() {
         return this.requirements;
     }
 
-    @JsonIgnore
     public ArrayList<Object> getRequirement(String id) {
         return getRequirements().get(id);
     }
 
-    @JsonIgnore
     public ItemStack getItem(Player player, HashMap<String, Integer> finishedQuests) {
         ItemStack item = getDisplayItem();
         ItemMeta itemMeta = item.getItemMeta();
@@ -318,12 +293,10 @@ public class Quest {
         return item;
     }
 
-    @JsonIgnore
     public boolean checkCanCompleteQuest(Player player) {
         return getQuestsToCompletePlayer(player).isEmpty();
     }
 
-    @JsonIgnore
     public ArrayList<Quest> getQuestsToCompletePlayer(Player player) {
         ArrayList<Quest> quests = new ArrayList<>();
 
@@ -344,12 +317,10 @@ public class Quest {
         return quests;
     }
 
-    @JsonIgnore
     public void playerClick(Player player) throws SQLException {
         playerClick(player, false);
     }
 
-    @JsonIgnore
     public boolean playerClick(Player player, boolean message) throws SQLException {
         if (isOneTimeUse() && MysqlManager.getQuestPlayer(player.getUniqueId()).getFinishedQuests().containsKey(Main.getQuestsManager().getQuestID(this)) && MysqlManager.getQuestPlayer(player.getUniqueId()).getFinishedQuests().get(Main.getQuestsManager().getQuestID(this)) > 0) {
 
@@ -423,7 +394,6 @@ public class Quest {
         return true;
     }
 
-    @JsonIgnore
     public void claim(Player player, boolean message) {
 
         if (message) {

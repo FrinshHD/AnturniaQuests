@@ -18,9 +18,9 @@ questMenu:
     name: "&7Forward &a➡"
     slot: 8
   backwardItem:
-      material: "RED_STAINED_GLASS_PANE"
-      name: "&c⬅ &7Back "
-      slot: 0
+    material: "RED_STAINED_GLASS_PANE"
+    name: "&c⬅ &7Back "
+    slot: 0
 
 storylinesEnabled: true
 

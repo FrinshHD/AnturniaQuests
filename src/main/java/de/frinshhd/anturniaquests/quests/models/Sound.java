@@ -1,17 +1,17 @@
 package de.frinshhd.anturniaquests.quests.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 import org.bukkit.entity.Player;
 
 public class Sound {
 
-    @JsonProperty
+    @SerializedName("sound")
     private org.bukkit.Sound sound = null;
 
-    @JsonProperty
+    @SerializedName("volume")
     private Float volume = 50F;
 
-    @JsonProperty
+    @SerializedName("pitch")
     private Float pitch = 1F;
 
     public org.bukkit.Sound getSound() {
@@ -41,5 +41,4 @@ public class Sound {
 
         player.playSound(player.getLocation(), getSound(), getVolume(), getPitch());
     }
-
 }

@@ -1,24 +1,30 @@
 package de.frinshhd.anturniaquests.config.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Config {
 
-    @JsonProperty
+    @SerializedName("database")
     public Database database = new Database();
-    @JsonProperty
+
+    @SerializedName("questMenuEnabled")
     public Boolean questMenuEnabled = null;
-    @JsonProperty
+
+    @SerializedName("storylinesEnabled")
     public boolean storylinesEnabled = true;
-    @JsonProperty
+
+    @SerializedName("debug")
     public boolean debug = false;
-    @JsonProperty
+
+    @SerializedName("commands")
     private List<Command> commands = new ArrayList<>();
-    @JsonProperty
+
+    @SerializedName("questMenu")
+    @Expose(serialize = false, deserialize = false)
     private QuestMenu questMenu = new QuestMenu();
 
     public List<Command> getCommands() {
@@ -35,7 +41,6 @@ public class Config {
         return null;
     }
 
-    @JsonIgnore
     public QuestMenu getQuestMenu() {
         return questMenu;
     }

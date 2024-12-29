@@ -89,7 +89,7 @@ public class PlacedBlocksRequirement extends BasicRequirement implements Listene
     }
 
     public void addPlayerPlacedBlock(UUID playerUUID, Material material, String world) {
-        Gson gson = new Gson();
+        Gson gson = Main.getGson();
         JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());
 
         HashMap<String, HashMap<String, Integer>> worlds;
@@ -130,7 +130,7 @@ public class PlacedBlocksRequirement extends BasicRequirement implements Listene
     }
 
     public int getPlayerPlacedBlocks(UUID playerUUID, ArrayList<String> worldsToLookAt, Material material) {
-        Gson gson = new Gson();
+        Gson gson = Main.getGson();
         JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());
 
         HashMap<String, HashMap<String, Integer>> worlds;
@@ -176,7 +176,7 @@ public class PlacedBlocksRequirement extends BasicRequirement implements Listene
                 break;
             }
             case ONLY_AMOUNT -> {
-                Gson gson = new Gson();
+                Gson gson = Main.getGson();
                 JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());
 
                 HashMap<String, HashMap<String, Integer>> worlds;

@@ -108,7 +108,7 @@ public class PlaceBlockRequirement extends BasicRequirement implements Listener 
     }
 
     public void savePlayerPlaceBlock(UUID playerUUID, Location location, Material material) {
-        Gson gson = new Gson();
+        Gson gson = Main.getGson();
         JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());
 
         //Location, Material
@@ -165,7 +165,7 @@ public class PlaceBlockRequirement extends BasicRequirement implements Listener 
     }
 
     public boolean hasPlayerInteracted(UUID playerUUID, Location location, Material material) {
-        Gson gson = new Gson();
+        Gson gson = Main.getGson();
         JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());
 
         //Location, Material
@@ -215,7 +215,7 @@ public class PlaceBlockRequirement extends BasicRequirement implements Listener 
                 break;
             }
             case ONLY_AMOUNT -> {
-                Gson gson = new Gson();
+                Gson gson = Main.getGson();
                 JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());
 
                 HashMap<String, String> placedBlocks;

@@ -1,13 +1,10 @@
 package de.frinshhd.anturniaquests.quests;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.type.MapType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.reflect.TypeToken;
 import com.j256.ormlite.dao.Dao;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.mysql.MysqlManager;
@@ -16,16 +13,18 @@ import de.frinshhd.anturniaquests.mysql.entities.Quests;
 import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.requirements.BasicRequirement;
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
+import de.frinshhd.anturniaquests.utils.MapConverter;
 import de.frinshhd.anturniaquests.utils.PlayerHashMap;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
@@ -59,16 +58,17 @@ public class QuestsManager {
      * Search and register quests
      */
     public void load() {
-        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        Yaml yaml = Main.getYaml();
+        Gson gson = Main.getGson();
 
-        TypeFactory typeFactory = mapper.getTypeFactory();
-        MapType mapTypeQuests = typeFactory.constructMapType(LinkedHashMap.class, String.class, Quest.class);
-
-        try {
-            this.questsRaw = mapper.readValue(new FileInputStream("plugins/AnturniaQuests/quests.yml"), mapTypeQuests);
+        try (FileInputStream inputStream = new FileInputStream("plugins/AnturniaQuests/quests.yml")) {
+            LinkedHashMap<String, Object> yamlData = yaml.load(inputStream);
+            String jsonString = gson.toJson(yamlData);
+            Map<String, Quest> tempMap = gson.fromJson(jsonString, new TypeToken<Map<String, Quest>>() {
+            }.getType());
+            this.questsRaw = new LinkedHashMap<>(tempMap);
         } catch (IOException e) {
-            Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading config.yml. AnturniaQuests will be disabled!\nError " + e.getMessage());
+            Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading quests.yml. AnturniaQuests will be disabled!\nError " + e.getMessage());
             Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
             return;
         }
@@ -97,9 +97,12 @@ public class QuestsManager {
             }
 
             for (File file : filesToLoad) {
-                try {
-                    LinkedHashMap<String, Quest> quests = mapper.readValue(file, mapTypeQuests);
-                    folderQuestsRaw.putAll(quests);
+                try (FileInputStream fileInputStream = new FileInputStream(file)) {
+                    LinkedHashMap<String, Object> fileYamlData = yaml.load(fileInputStream);
+                    String fileJsonString = gson.toJson(fileYamlData);
+                    Map<String, Quest> tempFileMap = gson.fromJson(fileJsonString, new TypeToken<Map<String, Quest>>() {
+                    }.getType());
+                    folderQuestsRaw.putAll(tempFileMap);
                 } catch (IOException e) {
                     Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading " + file.getName() + ". AnturniaQuests will be disabled!\nError " + e.getMessage());
                     Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
@@ -110,7 +113,7 @@ public class QuestsManager {
             this.questsRaw.putAll(folderQuestsRaw);
         }
 
-        this.quests = (LinkedHashMap<String, Quest>) this.questsRaw.clone();
+        this.quests = new LinkedHashMap<>(this.questsRaw);
 
         quests.values().forEach(quest -> {
             quest.getRequirements().forEach((id, modelList) -> {
@@ -121,17 +124,26 @@ public class QuestsManager {
                         return;
                     }
 
-                    LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) requirement;
+                    LinkedTreeMap<String, Object> treeMap = (LinkedTreeMap<String, Object>) requirement;
+                    LinkedHashMap<String, Object> map = MapConverter.convertLinkedTreeMapToLinkedHashMap(treeMap);
+
 
                     Class<?> cls = Main.getRequirementManager().getRequirement(id).getModellClass();
                     if (cls == null) {
                         return;
                     }
 
+                    Main.getInstance().getLogger().info(map.toString());
+
                     try {
                         Constructor<?> constructor = cls.getConstructor(LinkedHashMap.class);
 
                         Object[] parameters = {map};
+
+                        Main.getInstance().getLogger().info("Requirement " + id + " loaded");
+                        Main.getInstance().getLogger().info(Arrays.toString(parameters));
+
+                        System.out.println(Arrays.toString(parameters));
 
                         BasicRequirementModel basicRequirementModel = (BasicRequirementModel) constructor.newInstance(parameters);
 
@@ -140,6 +152,7 @@ public class QuestsManager {
                     } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
                              IllegalAccessException | NullPointerException e) {
                         Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while loading the requirements. AnturniaQuests will be disabled!\nError " + e.getMessage());
+                        e.printStackTrace();
                         Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
                     }
 
@@ -291,19 +304,21 @@ public class QuestsManager {
     public void deleteQuest(String questID) {
         questsRaw.remove(questID);
 
-        ObjectMapper om = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER));
+        Gson gson = Main.getGson();
 
 
-        om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        om.enable(SerializationFeature.INDENT_OUTPUT); // Enable pretty printing
-        om.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS); // Order map entries by keys
-        om.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL); // Ignore null properties
-        om.disable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS);
-
-        om.disable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
+        Yaml yaml = Main.getYaml();
 
         try {
-            om.writeValue(new File("plugins/AnturniaQuests/quests.yml"), questsRaw);
+            String jsonString = gson.toJson(questsRaw);
+            LinkedHashMap<String, Object> yamlData = gson.fromJson(jsonString, new TypeToken<LinkedHashMap<String, Object>>() {
+            }.getType());
+            String yamlString = yaml.dump(yamlData);
+
+            File file = new File("plugins/AnturniaQuests/quests.yml");
+            try (FileWriter writer = new FileWriter(file)) {
+                writer.write(yamlString);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -314,19 +329,19 @@ public class QuestsManager {
     public void saveQuestToYml(String questID, Quest quest) {
         questsRaw.put(questID, quest);
 
-        ObjectMapper om = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER));
-
-
-        om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        om.enable(SerializationFeature.INDENT_OUTPUT); // Enable pretty printing
-        om.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS); // Order map entries by keys
-        om.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL); // Ignore null properties
-        om.disable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS);
-
-        om.disable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
+        Gson gson = Main.getGson();
+        Yaml yaml = Main.getYaml();
 
         try {
-            om.writeValue(new File("plugins/AnturniaQuests/quests.yml"), questsRaw);
+            String jsonString = gson.toJson(questsRaw);
+            LinkedHashMap<String, Object> yamlData = gson.fromJson(jsonString, new TypeToken<LinkedHashMap<String, Object>>() {
+            }.getType());
+            String yamlString = yaml.dump(yamlData);
+
+            File file = new File("plugins/AnturniaQuests/quests.yml");
+            try (FileWriter writer = new FileWriter(file)) {
+                writer.write(yamlString);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

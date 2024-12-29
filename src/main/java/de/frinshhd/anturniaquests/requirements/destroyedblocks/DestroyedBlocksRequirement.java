@@ -90,7 +90,7 @@ public class DestroyedBlocksRequirement extends BasicRequirement implements List
                 break;
             }
             case ONLY_AMOUNT -> {
-                Gson gson = new Gson();
+                Gson gson = Main.getGson();
                 JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());
 
                 HashMap<String, HashMap<String, Integer>> worlds;
@@ -144,7 +144,7 @@ public class DestroyedBlocksRequirement extends BasicRequirement implements List
     }
 
     public void addPlayerDestroyedBlock(UUID playerUUID, Material material, String world) {
-        Gson gson = new Gson();
+        Gson gson = Main.getGson();
         JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());
 
         HashMap<String, HashMap<String, Integer>> worlds;
@@ -185,7 +185,7 @@ public class DestroyedBlocksRequirement extends BasicRequirement implements List
     }
 
     public int getPlayerDestroyedBlocks(UUID playerUUID, ArrayList<String> worldsToLookAt, Material material) {
-        Gson gson = new Gson();
+        Gson gson = Main.getGson();
         JSONObject requirementsData = Main.getRequirementManager().getPlayerRequirementData(playerUUID, getId());
 
         HashMap<String, HashMap<String, Integer>> worlds;

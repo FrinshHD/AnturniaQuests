@@ -1,9 +1,7 @@
 package de.frinshhd.anturniaquests.config.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 import de.frinshhd.anturniaquests.Main;
-import de.frinshhd.anturniaquests.config.ConfigManager;
 import de.frinshhd.anturniaquests.requirements.items.ItemModel;
 import org.bukkit.Material;
 
@@ -11,22 +9,19 @@ import java.util.Objects;
 
 public class QuestMenu {
 
-    @JsonProperty
+    @SerializedName("enabled")
     private boolean enabled = true;
 
-    @JsonProperty
+    @SerializedName("forwardItem")
     private ItemModel forwardItem = new ItemModel();
 
-    @JsonProperty
+    @SerializedName("backwardItem")
     private ItemModel backwardItem = new ItemModel();
 
-    @JsonIgnore
     public boolean isEnabled() {
         return Objects.requireNonNullElseGet(Main.getConfigManager().getConfig().questMenuEnabled, () -> enabled);
-
     }
 
-    @JsonIgnore
     public ItemModel getForwardItem() {
         ItemModel forwardItem = this.forwardItem;
 
@@ -45,7 +40,6 @@ public class QuestMenu {
         return forwardItem;
     }
 
-    @JsonIgnore
     public ItemModel getBackwardItem() {
         ItemModel backwardItem = this.backwardItem;
 
@@ -63,5 +57,4 @@ public class QuestMenu {
 
         return backwardItem;
     }
-
 }

@@ -1,10 +1,8 @@
 package de.frinshhd.anturniaquests.storylines;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.MapType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.j256.ormlite.dao.Dao;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.mysql.MysqlManager;
@@ -22,6 +20,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -55,14 +54,14 @@ public class StorylinesManager {
     }
 
     public void load() {
-        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        Yaml yaml = Main.getYaml();
+        Gson gson = Main.getGson();
 
-        TypeFactory typeFactory = mapper.getTypeFactory();
-        MapType mapTypeQuests = typeFactory.constructMapType(LinkedHashMap.class, String.class, Storyline.class);
-
-        try {
-            this.storylines = mapper.readValue(new FileInputStream("plugins/AnturniaQuests/storylines.yml"), mapTypeQuests);
+        try (FileInputStream inputStream = new FileInputStream("plugins/AnturniaQuests/storylines.yml")) {
+            LinkedHashMap<String, Object> yamlData = yaml.load(inputStream);
+            String jsonString = gson.toJson(yamlData);
+            this.storylines = gson.fromJson(jsonString, new TypeToken<LinkedHashMap<String, Storyline>>() {
+            }.getType());
         } catch (IOException e) {
             Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading storylines.yml. AnturniaQuests will be disabled!\nError " + e.getMessage());
             Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
@@ -92,8 +91,11 @@ public class StorylinesManager {
             }
 
             for (File file : filesToLoad) {
-                try {
-                    LinkedHashMap<String, Storyline> storylines = mapper.readValue(file, mapTypeQuests);
+                try (FileInputStream fileInputStream = new FileInputStream(file)) {
+                    LinkedHashMap<String, Object> fileYamlData = yaml.load(fileInputStream);
+                    String fileJsonString = gson.toJson(fileYamlData);
+                    LinkedHashMap<String, Storyline> storylines = gson.fromJson(fileJsonString, new TypeToken<LinkedHashMap<String, Storyline>>() {
+                    }.getType());
                     folderStorylines.putAll(storylines);
                 } catch (IOException e) {
                     Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading " + file.getName() + ". AnturniaQuests will be disabled!\nError " + e.getMessage());

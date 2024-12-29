@@ -1,6 +1,6 @@
 package de.frinshhd.anturniaquests.storylines.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.quests.models.Sound;
@@ -13,22 +13,22 @@ import java.util.ArrayList;
 
 public class NPCAction {
 
-    @JsonProperty
+    @SerializedName("message")
     private String message = null;
 
-    @JsonProperty
+    @SerializedName("command")
     private String command = null;
 
-    @JsonProperty
+    @SerializedName("quest")
     private String quest = null;
 
-    @JsonProperty
+    @SerializedName("clickSound")
     private Sound clickSound = new Sound();
 
-    @JsonProperty
+    @SerializedName("actions")
     private ArrayList<NPCAction> actions = new ArrayList<>();
 
-    @JsonProperty
+    @SerializedName("delay")
     private Long delay = null;
 
     public String getMessage() {

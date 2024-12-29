@@ -1,7 +1,6 @@
 package de.frinshhd.anturniaquests.requirements.blockinteractions;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
 import org.bukkit.Location;
@@ -13,16 +12,15 @@ import java.util.List;
 
 public class BlockInteractionsModel extends BasicRequirementModel {
 
-    @JsonProperty
+    @SerializedName("interactActions")
     public List<String> interactActions = new ArrayList<>(List.of("LEFT_CLICK", "RIGHT_CLICK"));
 
-    @JsonProperty
+    @SerializedName("location")
     public ArrayList<Integer> location = new ArrayList<>();
 
-    @JsonProperty
+    @SerializedName("world")
     private String world = "world";
 
-    @JsonIgnore
     public BlockInteractionsModel(LinkedHashMap<String, Object> map) {
         super(map, "blockInteractions");
 
@@ -41,9 +39,7 @@ public class BlockInteractionsModel extends BasicRequirementModel {
         }
     }
 
-    @JsonIgnore
     public Location getLocation() {
-
         Location location;
         if (this.location.size() < 3) {
             location = new Location(getWorld(), 0, 0, 0);
@@ -54,27 +50,22 @@ public class BlockInteractionsModel extends BasicRequirementModel {
         return location;
     }
 
-    @JsonIgnore
     public void setLocation(ArrayList<Integer> location) {
         this.location = location;
     }
 
-    @JsonIgnore
     public World getWorld() {
         return Main.getInstance().getServer().getWorld(this.world);
     }
 
-    @JsonIgnore
     public void setWorld(String world) {
         this.world = world;
     }
 
-    @JsonIgnore
     public List<String> getInteractActions() {
         return interactActions;
     }
 
-    @JsonIgnore
     public void setInteractActions(List<String> interactActions) {
         this.interactActions = interactActions;
     }

@@ -1,23 +1,23 @@
 package de.frinshhd.anturniaquests.storylines.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
 public class NPC {
-    @JsonProperty
+    @SerializedName("npcID")
     private String npcID = null;
 
-    @JsonProperty
+    @SerializedName("friendlyName")
     private String friendlyName = null;
 
-    @JsonProperty
+    @SerializedName("timeToComplete")
     private int timeToComplete = -1;
 
-    @JsonProperty
+    @SerializedName("actions")
     private ArrayList<NPCAction> actions = new ArrayList<>();
 
-    @JsonProperty()
+    @SerializedName("group")
     private String group = null;
 
     public String getNpcID() {

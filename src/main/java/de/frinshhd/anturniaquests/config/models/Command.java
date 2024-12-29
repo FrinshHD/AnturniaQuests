@@ -1,16 +1,16 @@
 package de.frinshhd.anturniaquests.config.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Command {
 
-    @JsonProperty
+    @SerializedName("name")
     private String name;
 
-    @JsonProperty
+    @SerializedName("aliases")
     private List<String> aliases = new ArrayList<>();
 
     public String getName() {
@@ -20,5 +20,4 @@ public class Command {
     public List<String> getAliases() {
         return aliases;
     }
-
 }

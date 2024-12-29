@@ -1,15 +1,17 @@
 package de.frinshhd.anturniaquests.mysql.entities;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import de.frinshhd.anturniaquests.Main;
 import org.json.JSONObject;
 
 import java.util.UUID;
 
 @DatabaseTable(tableName = "Requirements")
 public class Requirements {
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final Gson gson = Main.getGson();
 
     @DatabaseField(id = true)
     private UUID uuid;

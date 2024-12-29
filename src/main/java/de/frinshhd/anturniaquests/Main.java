@@ -1,5 +1,8 @@
 package de.frinshhd.anturniaquests;
 
+import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import de.frinshhd.anturniaquests.categories.CategoriesManager;
 import de.frinshhd.anturniaquests.commands.CommandManager;
 import de.frinshhd.anturniaquests.config.ConfigManager;
@@ -19,15 +22,19 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
+import org.yaml.snakeyaml.LoaderOptions;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.nodes.Node;
+import org.yaml.snakeyaml.nodes.ScalarNode;
+import org.yaml.snakeyaml.nodes.Tag;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public final class Main extends JavaPlugin {
 
@@ -174,7 +181,8 @@ public final class Main extends JavaPlugin {
         } else {
             if (Main.getInstance().getServer().getPluginManager().getPlugin("Citizens") != null && Main.getInstance().getServer().getPluginManager().getPlugin("Citizens").isEnabled()) {
                 storylinesEnabled = true;
-            } else storylinesEnabled = Main.getInstance().getServer().getPluginManager().getPlugin("FancyNpcs") != null && Main.getInstance().getServer().getPluginManager().getPlugin("FancyNpcs").isEnabled();
+            } else
+                storylinesEnabled = Main.getInstance().getServer().getPluginManager().getPlugin("FancyNpcs") != null && Main.getInstance().getServer().getPluginManager().getPlugin("FancyNpcs").isEnabled();
         }
 
         if (isStorylinesEnabled()) {
@@ -230,5 +238,54 @@ public final class Main extends JavaPlugin {
                 }
             });
         }
+    }
+
+    public static Gson getGson() {
+        return new GsonBuilder()
+                .registerTypeAdapter(Integer.class, new JsonDeserializer<Integer>() {
+                    @Override
+                    public Integer deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                        if (json.getAsJsonPrimitive().isNumber()) {
+                            return json.getAsInt();  // Ensure it's an int
+                        }
+                        return null;
+                    }
+                })
+                .create();
+
+    }
+
+    public static Yaml getYaml() {
+        LoaderOptions loaderOptions = new LoaderOptions();
+
+        // Custom Constructor with Map.class as the root type and LoaderOptions
+        Constructor customConstructor = new Constructor(Map.class, loaderOptions) {
+            @Override
+            protected Object constructObject(Node node) {
+                if (node instanceof ScalarNode scalarNode) {
+                    String value = scalarNode.getValue();
+                    // Handle integers
+                    if (scalarNode.getTag().equals(Tag.INT)) {
+                        try {
+                            return Integer.parseInt(value);
+                        } catch (NumberFormatException e) {
+                            throw new IllegalArgumentException("Invalid integer: " + value, e);
+                        }
+                    }
+                    // Handle floats
+                    if (scalarNode.getTag().equals(Tag.FLOAT)) {
+                        try {
+                            return Double.parseDouble(value);
+                        } catch (NumberFormatException e) {
+                            throw new IllegalArgumentException("Invalid float: " + value, e);
+                        }
+                    }
+                }
+                return super.constructObject(node);
+            }
+        };
+
+        // Custom Yaml instance
+        return new Yaml(customConstructor);
     }
 }

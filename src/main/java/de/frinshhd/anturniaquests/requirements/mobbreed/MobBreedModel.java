@@ -1,7 +1,6 @@
 package de.frinshhd.anturniaquests.requirements.mobbreed;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.SerializedName;
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
 import net.md_5.bungee.api.chat.TranslatableComponent;
 import org.bukkit.entity.EntityType;
@@ -10,13 +9,12 @@ import java.util.LinkedHashMap;
 
 public class MobBreedModel extends BasicRequirementModel {
 
-    @JsonProperty
+    @SerializedName("entity")
     private EntityType entity = null;
 
-    @JsonProperty
+    @SerializedName("amount")
     private int amount = 1;
 
-    @JsonIgnore
     public MobBreedModel(LinkedHashMap<String, Object> map) {
         super(map, "mobBreed");
 
@@ -29,27 +27,22 @@ public class MobBreedModel extends BasicRequirementModel {
         }
     }
 
-    @JsonIgnore
     public EntityType getEntity() {
         return this.entity;
     }
 
-    @JsonIgnore
     public void setEntity(EntityType entity) {
         this.entity = entity;
     }
 
-    @JsonIgnore
     public String getName() {
         return new TranslatableComponent(getEntity().getTranslationKey()).toPlainText();
     }
 
-    @JsonProperty
     public int getAmount() {
         return this.amount;
     }
 
-    @JsonIgnore
     public void setAmount(int amount) {
         this.amount = amount;
     }
