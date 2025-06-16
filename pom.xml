@@ -54,6 +54,12 @@
                                     </excludes>
                                 </filter>
                             </filters>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.fasterxml.jackson</pattern>
+                                    <shadedPattern>de.frinshhd.shaded.jackson</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
@@ -93,9 +99,9 @@
             <url>https://maven.citizensnpcs.co/repo</url>
         </repository>
         <repository>
-            <id>fancyplugins-releases</id>
-            <name>FancyPlugins Repository</name>
-            <url>https://repo.fancyplugins.de/releases</url>
+            <id>fancyinnovations-releases</id>
+            <name>FancyInnovations Repository</name>
+            <url>https://repo.fancyinnovations.com/releases</url>
         </repository>
         <repository>
             <id>jitpack.io</id>
@@ -133,24 +139,30 @@
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
             <version>3.28.0-GA</version>
-            <scope>provided</scope>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.18.1</version>
-            <scope>provided</scope>
+            <version>2.18.3</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.18.1</version>
-            <scope>provided</scope>
+            <version>2.18.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.18.3</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-yaml</artifactId>
-            <version>2.18.1</version>
+            <version>2.18.3</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.github.MilkBowl</groupId>
@@ -180,7 +192,7 @@
         <dependency>
             <groupId>de.oliver</groupId>
             <artifactId>FancyNpcs</artifactId>
-            <version>2.0.8</version>
+            <version>2.5.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -217,12 +229,6 @@
             <artifactId>guava</artifactId>
             <version>32.1.2-jre</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>2.18.1</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.j256.ormlite</groupId>
