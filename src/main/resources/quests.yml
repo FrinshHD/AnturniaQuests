@@ -9,7 +9,6 @@ combat1:
     items:
       - material: ROTTEN_FLESH
         amount: 20
-        name: jeff
     killedEntities:
       - entity: ZOMBIE
         amount: 2
