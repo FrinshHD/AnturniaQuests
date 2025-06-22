@@ -4,8 +4,8 @@ import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.commands.BasicSubCommand;
 import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.utils.ChatManager;
-import de.frinshhd.anturniaquests.utils.Translator;
-import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
+import de.frinshhd.anturniaquests.utils.translations.Translatable;
+import de.frinshhd.anturniaquests.utils.translations.TranslationManager;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
@@ -32,12 +32,12 @@ public class CreateCommand extends BasicSubCommand {
         String questID = args[1];
 
         if (Main.getQuestsManager().getQuest(questID) != null) {
-            ChatManager.sendMessage(sender, Translator.build("quest.exists", new TranslatorPlaceholder("questID", questID)));
+            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.exists", new Translatable("questID", questID)));
             return true;
         }
 
         Main.getQuestsManager().saveQuestToYml(questID, new Quest());
-        ChatManager.sendMessage(sender, Translator.build("quest.command.create", new TranslatorPlaceholder("questID", questID)));
+        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.command.create", new Translatable("questID", questID)));
 
         return true;
     }

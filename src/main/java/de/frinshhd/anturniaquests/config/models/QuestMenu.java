@@ -3,7 +3,6 @@ package de.frinshhd.anturniaquests.config.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.frinshhd.anturniaquests.Main;
-import de.frinshhd.anturniaquests.config.ConfigManager;
 import de.frinshhd.anturniaquests.requirements.items.ItemModel;
 import org.bukkit.Material;
 

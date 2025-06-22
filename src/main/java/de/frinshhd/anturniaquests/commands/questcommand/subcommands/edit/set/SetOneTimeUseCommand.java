@@ -4,8 +4,8 @@ import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.commands.BasicSubCommand;
 import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.utils.ChatManager;
-import de.frinshhd.anturniaquests.utils.Translator;
-import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
+import de.frinshhd.anturniaquests.utils.translations.Translatable;
+import de.frinshhd.anturniaquests.utils.translations.TranslationManager;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class SetOneTimeUseCommand extends BasicSubCommand {
         String questID = args[1];
 
         if (Main.getQuestsManager().getEditableQuest(questID) == null) {
-            ChatManager.sendMessage(sender, Translator.build("quest.dontExists", new TranslatorPlaceholder("questID", questID)));
+            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.dontExists", new Translatable("questID", questID)));
             return true;
         }
 
@@ -44,7 +44,7 @@ public class SetOneTimeUseCommand extends BasicSubCommand {
 
         Main.getQuestsManager().saveQuestToYml(questID, quest);
 
-        ChatManager.sendMessage(sender, Translator.build("quest.command.edit.set.oneTimeUse", new TranslatorPlaceholder("questID", questID), new TranslatorPlaceholder("oneTimeUse", String.valueOf(Boolean.parseBoolean(oneTimeUse)))));
+        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.command.edit.set.oneTimeUse", new Translatable("questID", questID), new Translatable("oneTimeUse", String.valueOf(Boolean.parseBoolean(oneTimeUse)))));
         return true;
     }
 

@@ -3,7 +3,7 @@ package de.frinshhd.anturniaquests.commands.questcommand.subcommands;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.commands.BasicSubCommand;
 import de.frinshhd.anturniaquests.utils.ChatManager;
-import de.frinshhd.anturniaquests.utils.Translator;
+import de.frinshhd.anturniaquests.utils.translations.TranslationManager;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class ReloadCommand extends BasicSubCommand {
         }
 
         Main.reload();
-        ChatManager.sendMessage(sender, Translator.build("quests.reload"));
+        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quests.reload"));
         return true;
     }
 

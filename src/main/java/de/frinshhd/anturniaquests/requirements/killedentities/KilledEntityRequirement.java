@@ -7,8 +7,8 @@ import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.requirements.BasicRequirement;
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
 import de.frinshhd.anturniaquests.utils.ChatManager;
-import de.frinshhd.anturniaquests.utils.Translator;
-import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
+import de.frinshhd.anturniaquests.utils.translations.Translatable;
+import de.frinshhd.anturniaquests.utils.translations.TranslationManager;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -49,9 +49,9 @@ public class KilledEntityRequirement extends BasicRequirement implements Listene
             }
 
             if (amount >= killedEntity.getAmount()) {
-                lore.add(Translator.build("lore.requirements.killedEntities.fulfilled", new TranslatorPlaceholder("amountKilled", String.valueOf(amount)), new TranslatorPlaceholder("amount", String.valueOf(killedEntity.getAmount())), new TranslatorPlaceholder("entityName", killedEntity.getName())));
+                lore.add(TranslationManager.getInstance().build("lore.requirements.killedEntities.fulfilled", new Translatable("amountKilled", String.valueOf(amount)), new Translatable("amount", String.valueOf(killedEntity.getAmount())), new Translatable("entityName", killedEntity.getName())));
             } else {
-                lore.add(Translator.build("lore.requirements.killedEntities.notFulfilled", new TranslatorPlaceholder("amountKilled", String.valueOf(amount)), new TranslatorPlaceholder("amount", String.valueOf(killedEntity.getAmount())), new TranslatorPlaceholder("entityName", killedEntity.getName())));
+                lore.add(TranslationManager.getInstance().build("lore.requirements.killedEntities.notFulfilled", new Translatable("amountKilled", String.valueOf(amount)), new Translatable("amount", String.valueOf(killedEntity.getAmount())), new Translatable("entityName", killedEntity.getName())));
             }
         });
 
@@ -93,7 +93,7 @@ public class KilledEntityRequirement extends BasicRequirement implements Listene
         }
 
         if (amount < killedEntityModel.getAmount()) {
-            ChatManager.sendMessage(player, Translator.build("quest.missingRequirements.killedEntity", new TranslatorPlaceholder("amountKilled", String.valueOf(amount)), new TranslatorPlaceholder("amount", String.valueOf(killedEntityModel.getAmount())), new TranslatorPlaceholder("entityName", killedEntityModel.getName())));
+            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.missingRequirements.killedEntity", new Translatable("amountKilled", String.valueOf(amount)), new Translatable("amount", String.valueOf(killedEntityModel.getAmount())), new Translatable("entityName", killedEntityModel.getName())));
         }
     }
 

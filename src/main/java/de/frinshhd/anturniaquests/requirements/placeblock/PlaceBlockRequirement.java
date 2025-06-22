@@ -8,8 +8,8 @@ import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.requirements.BasicRequirement;
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
 import de.frinshhd.anturniaquests.utils.ChatManager;
-import de.frinshhd.anturniaquests.utils.Translator;
-import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
+import de.frinshhd.anturniaquests.utils.translations.Translatable;
+import de.frinshhd.anturniaquests.utils.translations.TranslationManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -55,9 +55,9 @@ public class PlaceBlockRequirement extends BasicRequirement implements Listener 
 
         placeBlockModels.forEach(placeBlockModel -> {
             if (hasPlayerInteracted(player.getUniqueId(), placeBlockModel.getLocation(), placeBlockModel.getMaterial())) {
-                lore.add(Translator.build("lore.requirements.placeBlock.fulfilled", new TranslatorPlaceholder("location", placeBlockModel.location.toString().substring(1, placeBlockModel.location.toString().length() - 1))));
+                lore.add(TranslationManager.getInstance().build("lore.requirements.placeBlock.fulfilled", new Translatable("location", placeBlockModel.location.toString().substring(1, placeBlockModel.location.toString().length() - 1))));
             } else {
-                lore.add(Translator.build("lore.requirements.placeBlock.notFulfilled", new TranslatorPlaceholder("location", placeBlockModel.location.toString().substring(1, placeBlockModel.location.toString().length() - 1))));
+                lore.add(TranslationManager.getInstance().build("lore.requirements.placeBlock.notFulfilled", new Translatable("location", placeBlockModel.location.toString().substring(1, placeBlockModel.location.toString().length() - 1))));
             }
         });
         return lore;
@@ -73,7 +73,7 @@ public class PlaceBlockRequirement extends BasicRequirement implements Listener 
         PlaceBlockModel placeBlockModel = (PlaceBlockModel) requirementModel;
 
         if (!hasPlayerInteracted(player.getUniqueId(), placeBlockModel.getLocation(), placeBlockModel.getMaterial())) {
-            ChatManager.sendMessage(player, Translator.build("quest.missingRequirements.placeBlock", new TranslatorPlaceholder("location", placeBlockModel.location.toString().substring(1, placeBlockModel.location.toString().length() - 1))));
+            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.missingRequirements.placeBlock", new Translatable("location", placeBlockModel.location.toString().substring(1, placeBlockModel.location.toString().length() - 1))));
         }
     }
 

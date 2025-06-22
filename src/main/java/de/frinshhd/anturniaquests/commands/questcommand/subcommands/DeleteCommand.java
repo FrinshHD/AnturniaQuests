@@ -4,8 +4,8 @@ import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.commands.BasicSubCommand;
 import de.frinshhd.anturniaquests.utils.ChatManager;
 import de.frinshhd.anturniaquests.utils.PlayerHashMap;
-import de.frinshhd.anturniaquests.utils.Translator;
-import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
+import de.frinshhd.anturniaquests.utils.translations.Translatable;
+import de.frinshhd.anturniaquests.utils.translations.TranslationManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -36,7 +36,7 @@ public class DeleteCommand extends BasicSubCommand {
         String questID = args[1];
 
         if (Main.getQuestsManager().getQuest(questID) == null) {
-            ChatManager.sendMessage(sender, Translator.build("quest.dontExists", new TranslatorPlaceholder("questID", questID)));
+            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.dontExists", new Translatable("questID", questID)));
             return true;
         }
 
@@ -44,7 +44,7 @@ public class DeleteCommand extends BasicSubCommand {
             //delete logic
             Main.getQuestsManager().deleteQuest(questID);
 
-            ChatManager.sendMessage(sender, Translator.build("quest.command.delete", new TranslatorPlaceholder("questID", questID)));
+            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.command.delete", new Translatable("questID", questID)));
 
             putLastExecution(sender, -1L);
 
@@ -52,7 +52,7 @@ public class DeleteCommand extends BasicSubCommand {
         }
 
         putLastExecution(sender, System.currentTimeMillis());
-        ChatManager.sendMessage(sender, Translator.build("quest.command.confirm", new TranslatorPlaceholder("delay", "10")));
+        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.command.confirm", new Translatable("delay", "10")));
 
 
         return true;

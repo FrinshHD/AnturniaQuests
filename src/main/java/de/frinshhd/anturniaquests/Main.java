@@ -10,7 +10,7 @@ import de.frinshhd.anturniaquests.storylines.StorylinesManager;
 import de.frinshhd.anturniaquests.utils.DynamicListeners;
 import de.frinshhd.anturniaquests.utils.DynamicPlaceholderExpansion;
 import de.frinshhd.anturniaquests.utils.SpigotMCCommunication;
-import de.frinshhd.anturniaquests.utils.Translator;
+import de.frinshhd.anturniaquests.utils.translations.TranslationManager;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -99,14 +99,10 @@ public final class Main extends JavaPlugin {
         Main.getQuestsManager().load();
         Main.getDynamicCategories().load();
 
+        TranslationManager.getInstance().reload();
+
         if (isStorylinesEnabled()) {
             Main.getStorylinesManager().load();
-        }
-        try {
-            Translator.register("plugins/AnturniaQuests/messages.properties");
-        } catch (IOException e) {
-            Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading config.yml. AnturniaQuests will be disabled!\nError " + e.getMessage());
-            Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
         }
     }
 
@@ -143,15 +139,6 @@ public final class Main extends JavaPlugin {
 
         int pluginId = 20180;
         Metrics metrics = new Metrics(this, pluginId);
-
-        // register messages
-        try {
-            Translator.register("plugins/AnturniaQuests/messages.properties");
-        } catch (IOException e) {
-            Main.getInstance().getLogger().severe(ChatColor.RED + "An error occurred while reading messages.properties. AnturniaQuests will be disabled!\nError " + e.getMessage());
-            Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
-            return;
-        }
 
         // Find plugin class names for dynamic loading
         String fullCanonicalName = Main.getInstance().getClass().getCanonicalName();

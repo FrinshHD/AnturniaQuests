@@ -3,8 +3,8 @@ package de.frinshhd.anturniaquests.commands.questcommand.subcommands;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.commands.BasicSubCommand;
 import de.frinshhd.anturniaquests.utils.ChatManager;
-import de.frinshhd.anturniaquests.utils.Translator;
-import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
+import de.frinshhd.anturniaquests.utils.translations.Translatable;
+import de.frinshhd.anturniaquests.utils.translations.TranslationManager;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class VersionCommand extends BasicSubCommand {
             return false;
         }
 
-        ChatManager.sendMessage(sender, Translator.build("quests.currentVersion", new TranslatorPlaceholder("version", Main.getInstance().getDescription().getVersion())));
+        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quests.currentVersion", new Translatable("version", Main.getInstance().getDescription().getVersion())));
         return true;
     }
 

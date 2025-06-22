@@ -7,8 +7,8 @@ import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.requirements.BasicRequirement;
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
 import de.frinshhd.anturniaquests.utils.ChatManager;
-import de.frinshhd.anturniaquests.utils.Translator;
-import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
+import de.frinshhd.anturniaquests.utils.translations.Translatable;
+import de.frinshhd.anturniaquests.utils.translations.TranslationManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -42,9 +42,9 @@ public class DestroyedBlocksRequirement extends BasicRequirement implements List
         placedBlocks.forEach(placedBlock -> {
 
             if (hasPlayerDestroyedBlocks(player.getUniqueId(), placedBlock.getWorlds(), placedBlock.getMaterial(), placedBlock.getAmount())) {
-                lore.add(Translator.build("lore.requirements.destroyedBlocks.fulfilled", new TranslatorPlaceholder("material", placedBlock.getDisplayName()), new TranslatorPlaceholder("amountDestroyed", String.valueOf(getPlayerDestroyedBlocks(player.getUniqueId(), placedBlock.getWorlds(), placedBlock.getMaterial()))), new TranslatorPlaceholder("amount", String.valueOf(placedBlock.getAmount())), new TranslatorPlaceholder("worlds", placedBlock.getWorldFormated())));
+                lore.add(TranslationManager.getInstance().build("lore.requirements.destroyedBlocks.fulfilled", new Translatable("material", placedBlock.getDisplayName()), new Translatable("amountDestroyed", String.valueOf(getPlayerDestroyedBlocks(player.getUniqueId(), placedBlock.getWorlds(), placedBlock.getMaterial()))), new Translatable("amount", String.valueOf(placedBlock.getAmount())), new Translatable("worlds", placedBlock.getWorldFormated())));
             } else {
-                lore.add(Translator.build("lore.requirements.destroyedBlocks.notFulfilled", new TranslatorPlaceholder("material", placedBlock.getDisplayName()), new TranslatorPlaceholder("amountDestroyed", String.valueOf(getPlayerDestroyedBlocks(player.getUniqueId(), placedBlock.getWorlds(), placedBlock.getMaterial()))), new TranslatorPlaceholder("amount", String.valueOf(placedBlock.getAmount())), new TranslatorPlaceholder("worlds", placedBlock.getWorldFormated())));
+                lore.add(TranslationManager.getInstance().build("lore.requirements.destroyedBlocks.notFulfilled", new Translatable("material", placedBlock.getDisplayName()), new Translatable("amountDestroyed", String.valueOf(getPlayerDestroyedBlocks(player.getUniqueId(), placedBlock.getWorlds(), placedBlock.getMaterial()))), new Translatable("amount", String.valueOf(placedBlock.getAmount())), new Translatable("worlds", placedBlock.getWorldFormated())));
             }
         });
 
@@ -61,7 +61,7 @@ public class DestroyedBlocksRequirement extends BasicRequirement implements List
         DestroyedBlocksModel destroyedBlocksModel = (DestroyedBlocksModel) requirementModel;
 
         if (!hasPlayerDestroyedBlocks(player.getUniqueId(), destroyedBlocksModel.getWorlds(), destroyedBlocksModel.getMaterial(), destroyedBlocksModel.getAmount())) {
-            ChatManager.sendMessage(player, Translator.build("quest.missingRequirements.destroyedBlocks", new TranslatorPlaceholder("material", destroyedBlocksModel.getDisplayName()), new TranslatorPlaceholder("amountDestroyed", String.valueOf(getPlayerDestroyedBlocks(player.getUniqueId(), destroyedBlocksModel.getWorlds(), destroyedBlocksModel.getMaterial()))), new TranslatorPlaceholder("amount", String.valueOf(destroyedBlocksModel.getAmount())), new TranslatorPlaceholder("worlds", destroyedBlocksModel.getWorldFormated())));
+            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.missingRequirements.destroyedBlocks", new Translatable("material", destroyedBlocksModel.getDisplayName()), new Translatable("amountDestroyed", String.valueOf(getPlayerDestroyedBlocks(player.getUniqueId(), destroyedBlocksModel.getWorlds(), destroyedBlocksModel.getMaterial()))), new Translatable("amount", String.valueOf(destroyedBlocksModel.getAmount())), new Translatable("worlds", destroyedBlocksModel.getWorldFormated())));
         }
     }
 

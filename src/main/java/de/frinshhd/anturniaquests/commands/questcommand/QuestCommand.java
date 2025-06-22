@@ -4,7 +4,7 @@ import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.QuestMenu;
 import de.frinshhd.anturniaquests.commands.BasicCommand;
 import de.frinshhd.anturniaquests.utils.ChatManager;
-import de.frinshhd.anturniaquests.utils.Translator;
+import de.frinshhd.anturniaquests.utils.translations.TranslationManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +39,7 @@ public class QuestCommand extends BasicCommand {
 
             if (!Main.getConfigManager().getConfig().getQuestMenu().isEnabled()) {
                 //send message that quest menu is disabled
-                ChatManager.sendMessage(sender, Translator.build("quests.menuDisabled"));
+                ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quests.menuDisabled"));
                 return true;
             }
 
@@ -47,7 +47,7 @@ public class QuestCommand extends BasicCommand {
                 new QuestMenu(Main.getPlayerMenuUtility(player)).open(player);
                 return true;
             } else {
-                ChatManager.sendMessage(player, Translator.build("noPermission"));
+                ChatManager.sendMessage(player, TranslationManager.getInstance().build("noPermission"));
                 return false;
             }
         }

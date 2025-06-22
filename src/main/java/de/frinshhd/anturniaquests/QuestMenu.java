@@ -8,7 +8,7 @@ import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.utils.ItemTags;
 import de.frinshhd.anturniaquests.utils.Placeholder;
 import de.frinshhd.anturniaquests.utils.Sounds;
-import de.frinshhd.anturniaquests.utils.Translator;
+import de.frinshhd.anturniaquests.utils.translations.TranslationManager;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -101,7 +101,7 @@ public class QuestMenu extends Menu {
 
     @Override
     public String getMenuName() {
-        return Translator.build("inventory.heading.color") + category.getFriendlyName() + " Quests";
+        return TranslationManager.getInstance().build("inventory.heading.color") + category.getFriendlyName() + " Quests";
     }
 
     @Override

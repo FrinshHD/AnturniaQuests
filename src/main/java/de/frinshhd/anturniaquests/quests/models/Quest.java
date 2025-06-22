@@ -9,7 +9,12 @@ import de.frinshhd.anturniaquests.mysql.entities.Quests;
 import de.frinshhd.anturniaquests.quests.QuestsManager;
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
 import de.frinshhd.anturniaquests.requirements.items.ItemModel;
-import de.frinshhd.anturniaquests.utils.*;
+import de.frinshhd.anturniaquests.utils.ChatManager;
+import de.frinshhd.anturniaquests.utils.ItemTags;
+import de.frinshhd.anturniaquests.utils.LoreBuilder;
+import de.frinshhd.anturniaquests.utils.SurvivalQuestSounds;
+import de.frinshhd.anturniaquests.utils.translations.Translatable;
+import de.frinshhd.anturniaquests.utils.translations.TranslationManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -240,7 +245,7 @@ public class Quest {
         ItemStack item = getDisplayItem();
         ItemMeta itemMeta = item.getItemMeta();
 
-        itemMeta.setDisplayName(Translator.build("inventory.quest.color") + getFriendlyName());
+        itemMeta.setDisplayName(TranslationManager.getInstance().build("inventory.quest.color") + getFriendlyName());
 
         ArrayList<String> lore = new ArrayList<>();
         if (!getDescription().isEmpty()) {
@@ -249,24 +254,24 @@ public class Quest {
         }
 
         if (isOneTimeUse() && finishedQuests.containsKey(Main.getQuestsManager().getQuestID(this)) && finishedQuests.get(Main.getQuestsManager().getQuestID(this)) > 0) {
-            lore.add(Translator.build("lore.alreadyCompleted"));
+            lore.add(TranslationManager.getInstance().build("lore.alreadyCompleted"));
         } else if (getCooldown() != null &&
                 MysqlManager.getQuestPlayer(player.getUniqueId()).getCooldown().containsKey(Main.getQuestsManager().getQuestID(this)) &&
                 MysqlManager.getQuestPlayer(player.getUniqueId()).getCooldown().get(Main.getQuestsManager().getQuestID(this)) + getCooldown() >= System.currentTimeMillis()) {
-            lore.addAll(LoreBuilder.build(Translator.build("lore.cooldown", new TranslatorPlaceholder("cooldown", String.valueOf((MysqlManager.getQuestPlayer(player.getUniqueId()).getCooldown().get(Main.getQuestsManager().getQuestID(this)) + getCooldown() - System.currentTimeMillis()) / 1000))), ChatColor.GRAY));
+            lore.addAll(LoreBuilder.build(TranslationManager.getInstance().build("lore.cooldown", new Translatable("cooldown", String.valueOf((MysqlManager.getQuestPlayer(player.getUniqueId()).getCooldown().get(Main.getQuestsManager().getQuestID(this)) + getCooldown() - System.currentTimeMillis()) / 1000))), ChatColor.GRAY));
 
             if (isShowCompletions()) {
                 lore.add(" ");
-                lore.add(Translator.build("lore.completions", new TranslatorPlaceholder("completions", String.valueOf(Main.getQuestsManager().getPlayerQuestCompletions(player, Main.getQuestsManager().getQuestID(this))))));
+                lore.add(TranslationManager.getInstance().build("lore.completions", new Translatable("completions", String.valueOf(Main.getQuestsManager().getPlayerQuestCompletions(player, Main.getQuestsManager().getQuestID(this))))));
             }
         } else if (!checkCanCompleteQuest(player)) {
-            lore.addAll(LoreBuilder.build(Translator.build("lore.requiredQuests"), ChatColor.RED));
+            lore.addAll(LoreBuilder.build(TranslationManager.getInstance().build("lore.requiredQuests.base"), ChatColor.RED));
 
             for (Quest quest : getQuestsToCompletePlayer(player)) {
-                lore.add(Translator.build("lore.requiredQuests.quest", new TranslatorPlaceholder("questName", quest.getFriendlyName())));
+                lore.add(TranslationManager.getInstance().build("lore.requiredQuests.quest", new Translatable("questName", quest.getFriendlyName())));
             }
         } else {
-            lore.add(Translator.build("lore.requirements"));
+            lore.add(TranslationManager.getInstance().build("lore.requirements.header"));
 
             getRequirements().keySet().forEach(id -> {
                 ArrayList<String> loreRequirements = Main.getRequirementManager().getRequirement(id).getLore(player, getRequirements().get(id));
@@ -281,31 +286,31 @@ public class Quest {
 
             lore.add(" ");
 
-            lore.add(Translator.build("lore.rewards"));
+            lore.add(TranslationManager.getInstance().build("lore.rewards.header"));
 
             //money
             if (getRewards().getMoney() > 0.0) {
-                lore.add(Translator.build("lore.rewards.money", new TranslatorPlaceholder("amount", String.valueOf(getRewards().getMoney()))));
+                lore.add(TranslationManager.getInstance().build("lore.rewards.money", new Translatable("amount", String.valueOf(getRewards().getMoney()))));
             }
 
             //items
             for (ItemModel rewardItemModel : getRewards().getItems()) {
-                lore.add(Translator.build("lore.rewards.item", new TranslatorPlaceholder("amount", String.valueOf(rewardItemModel.getAmount())), new TranslatorPlaceholder("itemName", rewardItemModel.getDisplayName())));
+                lore.add(TranslationManager.getInstance().build("lore.rewards.item", new Translatable("amount", String.valueOf(rewardItemModel.getAmount())), new Translatable("itemName", rewardItemModel.getDisplayName())));
             }
 
             //commands
             for (Command command : getRewards().getCommands()) {
-                lore.add(Translator.build("lore.rewards.commands", new TranslatorPlaceholder("name", command.getName())));
+                lore.add(TranslationManager.getInstance().build("lore.rewards.commands", new Translatable("name", command.getName())));
             }
 
             if (isShowCompletions()) {
                 lore.add(" ");
-                lore.add(Translator.build("lore.completions", new TranslatorPlaceholder("completions", String.valueOf(Main.getQuestsManager().getPlayerQuestCompletions(player, Main.getQuestsManager().getQuestID(this))))));
+                lore.add(TranslationManager.getInstance().build("lore.completions", new Translatable("completions", String.valueOf(Main.getQuestsManager().getPlayerQuestCompletions(player, Main.getQuestsManager().getQuestID(this))))));
             }
 
             if (!isOneTimeUse()) {
                 lore.add(" ");
-                lore.add(Translator.build("quests.tip.useMultipleTimes"));
+                lore.add(TranslationManager.getInstance().build("quests.tip.useMultipleTimes"));
             }
 
         }
@@ -354,7 +359,7 @@ public class Quest {
         if (isOneTimeUse() && MysqlManager.getQuestPlayer(player.getUniqueId()).getFinishedQuests().containsKey(Main.getQuestsManager().getQuestID(this)) && MysqlManager.getQuestPlayer(player.getUniqueId()).getFinishedQuests().get(Main.getQuestsManager().getQuestID(this)) > 0) {
 
             if (message) {
-                ChatManager.sendMessage(player, Translator.build("quest.alreadyCompleted"));
+                ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.alreadyCompleted"));
             }
 
             SurvivalQuestSounds.questError(player);
@@ -367,7 +372,7 @@ public class Quest {
                 MysqlManager.getQuestPlayer(player.getUniqueId()).getCooldown().get(Main.getQuestsManager().getQuestID(this)) + getCooldown() >= System.currentTimeMillis()) {
 
             if (message) {
-                ChatManager.sendMessage(player, Translator.build("quest.cooldown", new TranslatorPlaceholder("cooldown", String.valueOf((MysqlManager.getQuestPlayer(player.getUniqueId()).getCooldown().get(Main.getQuestsManager().getQuestID(this)) + getCooldown() - System.currentTimeMillis()) / 1000))));
+                ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.cooldown", new Translatable("cooldown", String.valueOf((MysqlManager.getQuestPlayer(player.getUniqueId()).getCooldown().get(Main.getQuestsManager().getQuestID(this)) + getCooldown() - System.currentTimeMillis()) / 1000))));
             }
 
             SurvivalQuestSounds.questError(player);
@@ -379,10 +384,10 @@ public class Quest {
         if (!checkCanCompleteQuest(player)) {
 
             if (message) {
-                ChatManager.sendMessage(player, Translator.build("quest.requiredQuests"));
+                ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.requiredQuests.base"));
 
                 for (Quest quest : getQuestsToCompletePlayer(player)) {
-                    ChatManager.sendMessage(player, Translator.build("quest.requiredQuests.quest", new TranslatorPlaceholder("questName", quest.getFriendlyName())));
+                    ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.requiredQuests.quest", new Translatable("questName", quest.getFriendlyName())));
                 }
             }
 
@@ -392,7 +397,7 @@ public class Quest {
 
         if (!Main.getRequirementManager().check(player, getID())) {
             if (message) {
-                ChatManager.sendMessage(player, Translator.build("quest.missingRequirements"));
+                ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.missingRequirements"));
 
                 Main.getRequirementManager().sendPlayerMissing(player, getID());
             }
@@ -427,7 +432,7 @@ public class Quest {
     public void claim(Player player, boolean message) {
 
         if (message) {
-            ChatManager.sendMessage(player, Translator.build("quest.complete", new TranslatorPlaceholder("questName", getFriendlyName())));
+            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.complete", new Translatable("questName", getFriendlyName())));
         }
 
         SurvivalQuestSounds.questComplete(player);
@@ -438,7 +443,7 @@ public class Quest {
                 Main.getEconomy().depositPlayer(player, getRewards().getMoney());
 
                 if (message) {
-                    ChatManager.sendMessage(player, Translator.build("quest.addMoney", new TranslatorPlaceholder("amount", String.valueOf(getRewards().getMoney()))));
+                    ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.addMoney", new Translatable("amount", String.valueOf(getRewards().getMoney()))));
                 }
             }
         }
@@ -448,7 +453,7 @@ public class Quest {
             QuestsManager.addItem(player, rewardItemModel.getItem(), rewardItemModel.getAmount());
 
             if (message) {
-                ChatManager.sendMessage(player, Translator.build("quest.addItem", new TranslatorPlaceholder("amount", String.valueOf(rewardItemModel.getAmount())), new TranslatorPlaceholder("itemName", rewardItemModel.getDisplayName())));
+                ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.addItem", new Translatable("amount", String.valueOf(rewardItemModel.getAmount())), new Translatable("itemName", rewardItemModel.getDisplayName())));
             }
         }
 
@@ -465,13 +470,13 @@ public class Quest {
             Main.getInstance().getServer().dispatchCommand(Main.getInstance().getServer().getConsoleSender(), commandString);
 
             if (message) {
-                ChatManager.sendMessage(player, Translator.build("quest.addCommand", new TranslatorPlaceholder("commandName", command.getName())));
+                ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.addCommand", new Translatable("commandName", command.getName())));
             }
         }
 
         if (this.announce != null && this.announce) {
             Bukkit.getOnlinePlayers().forEach(players -> {
-                ChatManager.sendMessage(players, Translator.build("quest.announce", new TranslatorPlaceholder("player", player.getName()), new TranslatorPlaceholder("questName", getFriendlyName())));
+                ChatManager.sendMessage(players, TranslationManager.getInstance().build("quest.announce", new Translatable("player", player.getName()), new Translatable("questName", getFriendlyName())));
             });
         }
     }

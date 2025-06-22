@@ -8,8 +8,8 @@ import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.requirements.BasicRequirement;
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
 import de.frinshhd.anturniaquests.utils.ChatManager;
-import de.frinshhd.anturniaquests.utils.Translator;
-import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
+import de.frinshhd.anturniaquests.utils.translations.Translatable;
+import de.frinshhd.anturniaquests.utils.translations.TranslationManager;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -56,9 +56,9 @@ public class BlockInteractionsRequirement extends BasicRequirement implements Li
 
         interactions.forEach(interaction -> {
             if (hasPlayerInteracted(player.getUniqueId(), interaction.getLocation())) {
-                lore.add(Translator.build("lore.requirements.blockInteraction.fulfilled", new TranslatorPlaceholder("location", interaction.location.toString().substring(1, interaction.location.toString().length() - 1))));
+                lore.add(TranslationManager.getInstance().build("lore.requirements.blockInteraction.fulfilled", new Translatable("location", interaction.location.toString().substring(1, interaction.location.toString().length() - 1))));
             } else {
-                lore.add(Translator.build("lore.requirements.blockInteraction.notFulfilled", new TranslatorPlaceholder("location", interaction.location.toString().substring(1, interaction.location.toString().length() - 1))));
+                lore.add(TranslationManager.getInstance().build("lore.requirements.blockInteraction.notFulfilled", new Translatable("location", interaction.location.toString().substring(1, interaction.location.toString().length() - 1))));
             }
         });
         return lore;
@@ -74,7 +74,7 @@ public class BlockInteractionsRequirement extends BasicRequirement implements Li
         BlockInteractionsModel interaction = (BlockInteractionsModel) requirementModel;
 
         if (!hasPlayerInteracted(player.getUniqueId(), interaction.getLocation())) {
-            ChatManager.sendMessage(player, Translator.build("quest.missingRequirements.blockInteraction", new TranslatorPlaceholder("location", interaction.location.toString().substring(1, interaction.location.toString().length() - 1))));
+            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.missingRequirements.blockInteraction", new Translatable("location", interaction.location.toString().substring(1, interaction.location.toString().length() - 1))));
         }
     }
 

@@ -2,7 +2,7 @@ package de.frinshhd.anturniaquests.commands;
 
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.utils.ChatManager;
-import de.frinshhd.anturniaquests.utils.Translator;
+import de.frinshhd.anturniaquests.utils.translations.TranslationManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +22,7 @@ public abstract class BasicCommand extends Command {
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
         if (getPermission() != null && !sender.hasPermission(getPermission())) {
-            ChatManager.sendMessage(sender, Translator.build("noPermission"));
+            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("noPermission"));
             return false;
         }
 

@@ -6,8 +6,8 @@ import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.requirements.BasicRequirement;
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
 import de.frinshhd.anturniaquests.utils.ChatManager;
-import de.frinshhd.anturniaquests.utils.Translator;
-import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
+import de.frinshhd.anturniaquests.utils.translations.Translatable;
+import de.frinshhd.anturniaquests.utils.translations.TranslationManager;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -34,9 +34,9 @@ public class PermissionRequirement extends BasicRequirement {
 
         permissionModels.forEach(permissionModel -> {
             if (player.hasPermission(permissionModel.getPermission())) {
-                lore.add(Translator.build("lore.requirements.permissions.fulfilled", new TranslatorPlaceholder("permission", String.valueOf(permissionModel.getPermission()))));
+                lore.add(TranslationManager.getInstance().build("lore.requirements.permissions.fulfilled", new Translatable("permission", String.valueOf(permissionModel.getPermission()))));
             } else {
-                lore.add(Translator.build("lore.requirements.permissions.notFulfilled", new TranslatorPlaceholder("permission", String.valueOf(permissionModel.getPermission()))));
+                lore.add(TranslationManager.getInstance().build("lore.requirements.permissions.notFulfilled", new Translatable("permission", String.valueOf(permissionModel.getPermission()))));
             }
         });
         return lore;
@@ -52,7 +52,7 @@ public class PermissionRequirement extends BasicRequirement {
         PermissionModel permissionModel = (PermissionModel) requirementModel;
 
         if (!player.hasPermission(permissionModel.getPermission())) {
-            ChatManager.sendMessage(player, Translator.build("quest.missingRequirements.permission", new TranslatorPlaceholder("permission", String.valueOf(permissionModel.getPermission()))));
+            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.missingRequirements.permission", new Translatable("permission", String.valueOf(permissionModel.getPermission()))));
         }
     }
 

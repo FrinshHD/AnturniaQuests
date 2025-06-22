@@ -7,8 +7,8 @@ import de.frinshhd.anturniaquests.mysql.MysqlManager;
 import de.frinshhd.anturniaquests.mysql.entities.Quests;
 import de.frinshhd.anturniaquests.utils.ChatManager;
 import de.frinshhd.anturniaquests.utils.PlayerHashMap;
-import de.frinshhd.anturniaquests.utils.Translator;
-import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
+import de.frinshhd.anturniaquests.utils.translations.Translatable;
+import de.frinshhd.anturniaquests.utils.translations.TranslationManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -65,20 +65,20 @@ public class ResetCommand extends BasicSubCommand {
                 //reset logic
                 resetQuest(targetUUID, null);
 
-                ChatManager.sendMessage(sender, Translator.build("quest.command.reset.all",
-                        new TranslatorPlaceholder("playerName", target.getName())));
+                ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.command.reset.all",
+                        new Translatable("playerName", target.getName())));
                 putLastExecution(sender, -1L);
             } else {
                 putLastExecution(sender, System.currentTimeMillis());
-                ChatManager.sendMessage(sender, Translator.build("quest.command.confirm", new TranslatorPlaceholder("delay", "10")));
+                ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.command.confirm", new Translatable("delay", "10")));
             }
         } else {
             //reset quest with id
             resetQuest(targetUUID, questID);
 
-            ChatManager.sendMessage(sender, Translator.build("quest.command.reset",
-                    new TranslatorPlaceholder("playerName", target.getName()),
-                    new TranslatorPlaceholder("questName", Main.getQuestsManager().getQuest(questID).getFriendlyName())));
+            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.command.reset",
+                    new Translatable("playerName", target.getName()),
+                    new Translatable("questName", Main.getQuestsManager().getQuest(questID).getFriendlyName())));
         }
 
         return true;

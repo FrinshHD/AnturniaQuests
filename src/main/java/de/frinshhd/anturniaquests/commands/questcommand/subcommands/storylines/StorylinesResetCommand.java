@@ -4,8 +4,8 @@ import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.commands.BasicSubCommand;
 import de.frinshhd.anturniaquests.utils.ChatManager;
 import de.frinshhd.anturniaquests.utils.PlayerHashMap;
-import de.frinshhd.anturniaquests.utils.Translator;
-import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
+import de.frinshhd.anturniaquests.utils.translations.Translatable;
+import de.frinshhd.anturniaquests.utils.translations.TranslationManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -49,19 +49,19 @@ public class StorylinesResetCommand extends BasicSubCommand {
         if (storylineID == null || Main.getStorylinesManager().getStoryline(storylineID) == null) {
             if (canFullyReset(sender)) {
                 Main.getStorylinesManager().resetPlayerStorylines(target);
-                ChatManager.sendMessage(sender, Translator.build("storyline.command.reset.all",
-                        new TranslatorPlaceholder("playerName", target.getName())));
+                ChatManager.sendMessage(sender, TranslationManager.getInstance().build("storyline.command.reset.all",
+                        new Translatable("playerName", target.getName())));
 
                 putLastExecution(sender, -1L);
             } else {
                 putLastExecution(sender, System.currentTimeMillis());
-                ChatManager.sendMessage(sender, Translator.build("quest.command.confirm", new TranslatorPlaceholder("delay", "10")));
+                ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.command.confirm", new Translatable("delay", "10")));
             }
         } else {
             Main.getStorylinesManager().removePlayerStoryline(target, storylineID);
-            ChatManager.sendMessage(sender, Translator.build("storyline.command.reset",
-                    new TranslatorPlaceholder("playerName", target.getName()),
-                    new TranslatorPlaceholder("storylineName", Main.getStorylinesManager().getStoryline(storylineID).getName())));
+            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("storyline.command.reset",
+                    new Translatable("playerName", target.getName()),
+                    new Translatable("storylineName", Main.getStorylinesManager().getStoryline(storylineID).getName())));
         }
 
         return true;

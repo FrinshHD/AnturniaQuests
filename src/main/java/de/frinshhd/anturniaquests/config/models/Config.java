@@ -8,6 +8,9 @@ import java.util.List;
 
 public class Config {
 
+
+    @JsonProperty
+    private String language = "en";
     @JsonProperty
     public Database database = new Database();
     @JsonProperty
@@ -38,5 +41,9 @@ public class Config {
     @JsonIgnore
     public QuestMenu getQuestMenu() {
         return questMenu;
+    }
+
+    public String getLanguage() {
+        return language;
     }
 }

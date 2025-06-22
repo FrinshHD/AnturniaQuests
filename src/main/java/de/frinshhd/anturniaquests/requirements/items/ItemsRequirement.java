@@ -5,8 +5,8 @@ import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.requirements.BasicRequirement;
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
 import de.frinshhd.anturniaquests.utils.ChatManager;
-import de.frinshhd.anturniaquests.utils.Translator;
-import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
+import de.frinshhd.anturniaquests.utils.translations.Translatable;
+import de.frinshhd.anturniaquests.utils.translations.TranslationManager;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -30,9 +30,9 @@ public class ItemsRequirement extends BasicRequirement {
             int amountInInv = item.getAmountInInventory(player);
 
             if (amountInInv >= item.getAmount()) {
-                lore.add(Translator.build("lore.requirements.items.inInventory", new TranslatorPlaceholder("amountInInv", String.valueOf(amountInInv)), new TranslatorPlaceholder("amount", String.valueOf(item.getAmount())), new TranslatorPlaceholder("itemName", item.getDisplayName())));
+                lore.add(TranslationManager.getInstance().build("lore.requirements.items.inInventory", new Translatable("amountInInv", String.valueOf(amountInInv)), new Translatable("amount", String.valueOf(item.getAmount())), new Translatable("itemName", item.getDisplayName())));
             } else {
-                lore.add(Translator.build("lore.requirements.items.notInInventory", new TranslatorPlaceholder("amountInInv", String.valueOf(amountInInv)), new TranslatorPlaceholder("amount", String.valueOf(item.getAmount())), new TranslatorPlaceholder("itemName", item.getDisplayName())));
+                lore.add(TranslationManager.getInstance().build("lore.requirements.items.notInInventory", new Translatable("amountInInv", String.valueOf(amountInInv)), new Translatable("amount", String.valueOf(item.getAmount())), new Translatable("itemName", item.getDisplayName())));
             }
         });
         return lore;
@@ -49,7 +49,7 @@ public class ItemsRequirement extends BasicRequirement {
         int amountInInv = itemModel.getAmountInInventory(player);
 
         if (amountInInv < itemModel.getAmount()) {
-            ChatManager.sendMessage(player, Translator.build("quest.missingRequirements.item", new TranslatorPlaceholder("amountInInv", String.valueOf(amountInInv)), new TranslatorPlaceholder("amount", String.valueOf(itemModel.getAmount())), new TranslatorPlaceholder("itemName", itemModel.getDisplayName())));
+            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.missingRequirements.item", new Translatable("amountInInv", String.valueOf(amountInInv)), new Translatable("amount", String.valueOf(itemModel.getAmount())), new Translatable("itemName", itemModel.getDisplayName())));
         }
     }
 

@@ -3,8 +3,8 @@ package de.frinshhd.anturniaquests.commands.questcommand.subcommands;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.commands.BasicSubCommand;
 import de.frinshhd.anturniaquests.utils.ChatManager;
-import de.frinshhd.anturniaquests.utils.Translator;
-import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
+import de.frinshhd.anturniaquests.utils.translations.Translatable;
+import de.frinshhd.anturniaquests.utils.translations.TranslationManager;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
@@ -50,8 +50,8 @@ public class HelpCommand extends BasicSubCommand {
             if (!filteredSubCommands.isEmpty()) {
                 message.append("\n");
                 message.append(
-                                Translator.build("help.title",
-                                        new TranslatorPlaceholder("commandName", "/" + commandLabel + " " + arg1)))
+                                TranslationManager.getInstance().build("help.title",
+                                        new Translatable("commandName", "/" + commandLabel + " " + arg1)))
                         .append("\n");
 
                 filteredSubCommands.forEach(subCommand -> {
@@ -61,14 +61,14 @@ public class HelpCommand extends BasicSubCommand {
 
                     if (subCommand.getDescription() == null || subCommand.getDescription().isEmpty()) {
                         message.append(
-                                        Translator.build("help.command.noDescription",
-                                                new TranslatorPlaceholder("command", "/" + commandLabel + " " + subCommand.getCommand())))
+                                        TranslationManager.getInstance().build("help.command.noDescription",
+                                                new Translatable("command", "/" + commandLabel + " " + subCommand.getCommand())))
                                 .append("\n");
                     } else {
                         message.append(
-                                        Translator.build("help.command",
-                                                new TranslatorPlaceholder("command", "/" + commandLabel + " " + subCommand.getCommand()),
-                                                new TranslatorPlaceholder("description", subCommand.getDescription())))
+                                        TranslationManager.getInstance().build("help.command",
+                                                new Translatable("command", "/" + commandLabel + " " + subCommand.getCommand()),
+                                                new Translatable("description", subCommand.getDescription())))
                                 .append("\n");
                     }
                 });
@@ -80,20 +80,20 @@ public class HelpCommand extends BasicSubCommand {
 
         message.append("\n");
         message.append(
-                        Translator.build("help.title",
-                                new TranslatorPlaceholder("commandName", "/" + commandLabel)))
+                        TranslationManager.getInstance().build("help.title",
+                                new Translatable("commandName", "/" + commandLabel)))
                 .append("\n");
 
         if (Main.getCommandManager().getCommand(getMainCommand()).getDescription().isEmpty()) {
             message.append(
-                            Translator.build("help.command.noDescription",
-                                    new TranslatorPlaceholder("command", "/" + commandLabel)))
+                            TranslationManager.getInstance().build("help.command.noDescription",
+                                    new Translatable("command", "/" + commandLabel)))
                     .append("\n");
         } else {
             message.append(
-                            Translator.build("help.command",
-                                    new TranslatorPlaceholder("command", "/" + commandLabel),
-                                    new TranslatorPlaceholder("description", Main.getCommandManager().getCommand(getMainCommand()).getDescription())))
+                            TranslationManager.getInstance().build("help.command",
+                                    new Translatable("command", "/" + commandLabel),
+                                    new Translatable("description", Main.getCommandManager().getCommand(getMainCommand()).getDescription())))
                     .append("\n");
         }
 
@@ -107,14 +107,14 @@ public class HelpCommand extends BasicSubCommand {
             if (subCommand.getPermission() == null || sender.hasPermission(subCommand.getPermission())) {
                 if (subCommand.getDescription() == null || subCommand.getDescription().isEmpty()) {
                     message.append(
-                                    Translator.build("help.command.noDescription",
-                                            new TranslatorPlaceholder("command", "/" + commandLabel + " " + subCommand.getCommand())))
+                                    TranslationManager.getInstance().build("help.command.noDescription",
+                                            new Translatable("command", "/" + commandLabel + " " + subCommand.getCommand())))
                             .append("\n");
                 } else {
                     message.append(
-                                    Translator.build("help.command",
-                                            new TranslatorPlaceholder("command", "/" + commandLabel + " " + subCommand.getCommand()),
-                                            new TranslatorPlaceholder("description", subCommand.getDescription())))
+                                    TranslationManager.getInstance().build("help.command",
+                                            new Translatable("command", "/" + commandLabel + " " + subCommand.getCommand()),
+                                            new Translatable("description", subCommand.getDescription())))
                             .append("\n");
                 }
             }

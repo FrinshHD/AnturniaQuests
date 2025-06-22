@@ -1,6 +1,7 @@
 package de.frinshhd.anturniaquests.utils;
 
 import de.frinshhd.anturniaquests.Main;
+import de.frinshhd.anturniaquests.utils.translations.Translatable;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -24,19 +25,19 @@ public class ChatManager {
             return false;
         }
 
-        List<TranslatorPlaceholder> placeholders = new ArrayList<>(List.of(
-                new TranslatorPlaceholder("player", sender.getName())
+        List<Translatable> placeholders = new ArrayList<>(List.of(
+                new Translatable("player", sender.getName())
         ));
 
-        for (TranslatorPlaceholder placeholder : placeholders) {
-            if (placeholder.key == null) {
+        for (Translatable placeholder : placeholders) {
+            if (placeholder.key() == null) {
                 continue;
             }
-            if (placeholder.value == null) {
+            if (placeholder.value() == null) {
                 continue;
             }
 
-            message = message.replace("%" + placeholder.key + "%", placeholder.value);
+            message = message.replace("%" + placeholder.key() + "%", placeholder.value());
         }
 
         if (sender instanceof Player player && Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null && Main.getInstance().getServer().getPluginManager().getPlugin("PlaceholderAPI").isEnabled()) {

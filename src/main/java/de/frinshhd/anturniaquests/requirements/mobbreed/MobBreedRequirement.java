@@ -8,8 +8,8 @@ import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.requirements.BasicRequirement;
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
 import de.frinshhd.anturniaquests.utils.ChatManager;
-import de.frinshhd.anturniaquests.utils.Translator;
-import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
+import de.frinshhd.anturniaquests.utils.translations.Translatable;
+import de.frinshhd.anturniaquests.utils.translations.TranslationManager;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
@@ -48,9 +48,9 @@ public class MobBreedRequirement extends BasicRequirement implements Listener {
 
         interactions.forEach(interaction -> {
             if (getPlayerMobBreed(player.getUniqueId(), interaction.getEntity()) >= interaction.getAmount()) {
-                lore.add(Translator.build("lore.requirements.mobBreed.fulfilled", new TranslatorPlaceholder("entityName", interaction.getName()), new TranslatorPlaceholder("amountBred", String.valueOf(getPlayerMobBreed(player.getUniqueId(), interaction.getEntity()))), new TranslatorPlaceholder("amount", String.valueOf(interaction.getAmount()))));
+                lore.add(TranslationManager.getInstance().build("lore.requirements.mobBreed.fulfilled", new Translatable("entityName", interaction.getName()), new Translatable("amountBred", String.valueOf(getPlayerMobBreed(player.getUniqueId(), interaction.getEntity()))), new Translatable("amount", String.valueOf(interaction.getAmount()))));
             } else {
-                lore.add(Translator.build("lore.requirements.mobBreed.notFulfilled", new TranslatorPlaceholder("entityName", interaction.getName()), new TranslatorPlaceholder("amountBred", String.valueOf(getPlayerMobBreed(player.getUniqueId(), interaction.getEntity()))), new TranslatorPlaceholder("amount", String.valueOf(interaction.getAmount()))));
+                lore.add(TranslationManager.getInstance().build("lore.requirements.mobBreed.notFulfilled", new Translatable("entityName", interaction.getName()), new Translatable("amountBred", String.valueOf(getPlayerMobBreed(player.getUniqueId(), interaction.getEntity()))), new Translatable("amount", String.valueOf(interaction.getAmount()))));
             }
         });
         return lore;
@@ -66,10 +66,10 @@ public class MobBreedRequirement extends BasicRequirement implements Listener {
         MobBreedModel interaction = (MobBreedModel) requirementModel;
 
         if (getPlayerMobBreed(player.getUniqueId(), interaction.getEntity()) < interaction.getAmount()) {
-            ChatManager.sendMessage(player, Translator.build("quest.missingRequirements.mobBreed",
-                    new TranslatorPlaceholder("entityName", interaction.getName()),
-                    new TranslatorPlaceholder("amountBred", String.valueOf(getPlayerMobBreed(player.getUniqueId(), interaction.getEntity()))),
-                    new TranslatorPlaceholder("amount", String.valueOf(interaction.getAmount()))));
+            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.missingRequirements.mobBreed",
+                    new Translatable("entityName", interaction.getName()),
+                    new Translatable("amountBred", String.valueOf(getPlayerMobBreed(player.getUniqueId(), interaction.getEntity()))),
+                    new Translatable("amount", String.valueOf(interaction.getAmount()))));
         }
     }
 

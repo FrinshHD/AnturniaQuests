@@ -15,7 +15,11 @@ import de.frinshhd.anturniaquests.storylines.listener.StorylinesListener;
 import de.frinshhd.anturniaquests.storylines.models.NPC;
 import de.frinshhd.anturniaquests.storylines.models.NPCAction;
 import de.frinshhd.anturniaquests.storylines.models.Storyline;
-import de.frinshhd.anturniaquests.utils.*;
+import de.frinshhd.anturniaquests.utils.ChatManager;
+import de.frinshhd.anturniaquests.utils.PlayerArrayList;
+import de.frinshhd.anturniaquests.utils.PlayerHashMap;
+import de.frinshhd.anturniaquests.utils.translations.Translatable;
+import de.frinshhd.anturniaquests.utils.translations.TranslationManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -185,7 +189,7 @@ public class StorylinesManager {
 
         //check if player already completed the quest for the max amount
         if (storylineMaxCompletions > -1 && playerCompletions >= storylineMaxCompletions) {
-            ChatManager.sendMessage(player, Translator.build("storyline.alreadyCompleted", new TranslatorPlaceholder("storylineName", storyline.getName())));
+            ChatManager.sendMessage(player, TranslationManager.getInstance().build("storyline.alreadyCompleted", new Translatable("storylineName", storyline.getName())));
             return;
         }
 
@@ -194,7 +198,7 @@ public class StorylinesManager {
 
         //check if a cooldown for this quest is active
         if (playerLastCompletion + storylineCooldown > System.currentTimeMillis()) {
-            ChatManager.sendMessage(player, Translator.build("storyline.cooldownActive", new TranslatorPlaceholder("cooldown", String.valueOf((playerLastCompletion + storylineCooldown - System.currentTimeMillis()) / 1000))));
+            ChatManager.sendMessage(player, TranslationManager.getInstance().build("storyline.cooldownActive", new Translatable("cooldown", String.valueOf((playerLastCompletion + storylineCooldown - System.currentTimeMillis()) / 1000))));
             return;
         }
 
@@ -221,7 +225,7 @@ public class StorylinesManager {
         }
 
         if (npc == null) {
-            ChatManager.sendMessage(player, Translator.build("storyline.falseStageNPC.alreadyCompleted"));
+            ChatManager.sendMessage(player, TranslationManager.getInstance().build("storyline.falseStageNPC.alreadyCompleted"));
             return;
         }
 
@@ -230,24 +234,24 @@ public class StorylinesManager {
         //check if currentStage of the player is the same as the one of the npc
         if (!npcClicked.getNpcID().equals(npcID)) {
             if (npc.getGroup() == null) {
-                ChatManager.sendMessage(player, Translator.build("storyline.falseStageNPC"));
+                ChatManager.sendMessage(player, TranslationManager.getInstance().build("storyline.falseStageNPC"));
                 return;
             }
 
             if (getPlayerCurrentNpcStageID(player, storylineID) != -1 && getPlayerCurrentNpcStageID(player, storylineID) != getNpcStageID(storylineID, npc)) {
-                ChatManager.sendMessage(player, Translator.build("storyline.falseStageNPC.finishCurrent", new TranslatorPlaceholder("npcName", storyline.getNPCStageID(getPlayerCurrentNpcStageID(player, storylineID)).getName())));
+                ChatManager.sendMessage(player, TranslationManager.getInstance().build("storyline.falseStageNPC.finishCurrent", new Translatable("npcName", storyline.getNPCStageID(getPlayerCurrentNpcStageID(player, storylineID)).getName())));
                 return;
             }
 
             //if the first npc has no group
             if (getPlayerCompletedStages(player, storylineID).isEmpty()) {
                 if (storyline.getNPCStageID(0).getGroup() == null || !storyline.getNPCStageID(0).getGroup().equals(npc.getGroup())) {
-                    ChatManager.sendMessage(player, Translator.build("storyline.falseStageNPC"));
+                    ChatManager.sendMessage(player, TranslationManager.getInstance().build("storyline.falseStageNPC"));
                     return;
                 }
             } else {
                 if (getPlayerCompletedStages(player, storylineID).contains(getNpcStageID(storylineID, npc))) {
-                    ChatManager.sendMessage(player, Translator.build("storyline.falseStageNPC"));
+                    ChatManager.sendMessage(player, TranslationManager.getInstance().build("storyline.falseStageNPC"));
                     return;
                 }
 
@@ -257,7 +261,7 @@ public class StorylinesManager {
                         !npcBefore.getGroup().equals(npc.getGroup())) {
                     if (storyline.getNPCStageID(getNpcStageID(storylineID, npcBefore) + 1).getGroup() == null ||
                             !storyline.getNPCStageID(getNpcStageID(storylineID, npcBefore) + 1).getGroup().equals(npc.getGroup())) {
-                        ChatManager.sendMessage(player, Translator.build("storyline.falseStageNPC"));
+                        ChatManager.sendMessage(player, TranslationManager.getInstance().build("storyline.falseStageNPC"));
                         return;
                     }
                 }
@@ -292,7 +296,7 @@ public class StorylinesManager {
         if (storyline.getMaxCurrentPlayers() > -1) {
             //already too much players completing
             if (getStorylineCurrentPlayers(storylineID).size() >= storyline.getMaxCurrentPlayers()) {
-                ChatManager.sendMessage(player, Translator.build("storyline.tooManyCurrentPlayers", new TranslatorPlaceholder("storylineName", storyline.getName())));
+                ChatManager.sendMessage(player, TranslationManager.getInstance().build("storyline.tooManyCurrentPlayers", new Translatable("storylineName", storyline.getName())));
                 return;
             }
 
@@ -630,7 +634,7 @@ public class StorylinesManager {
                             if (storylineTimeToComplete > -1) {
                                 if (playerStartTime + storylineTimeToComplete < System.currentTimeMillis()) {
                                     //Todo: tell player that he didn't completed the storyline in the required time; cancel / reset the storyline
-                                    ChatManager.sendMessage(player, Translator.build("storyline.timeOut", new TranslatorPlaceholder("storylineName", storyline.getName())));
+                                    ChatManager.sendMessage(player, TranslationManager.getInstance().build("storyline.timeOut", new Translatable("storylineName", storyline.getName())));
                                     resetPlayerStoryline(player, storylineID);
                                 }
                             }
@@ -651,7 +655,7 @@ public class StorylinesManager {
                             if (stageTimeToComplete > -1) {
                                 if (playerStageStartTime + stageTimeToComplete < System.currentTimeMillis()) {
                                     //Todo: tell player that he didn't completed the stage in the required time; cancel / reset the storyline
-                                    ChatManager.sendMessage(player, Translator.build("storyline.timeOut.npc", new TranslatorPlaceholder("npcName", npc.getName()), new TranslatorPlaceholder("storylineName", storylineID)));
+                                    ChatManager.sendMessage(player, TranslationManager.getInstance().build("storyline.timeOut.npc", new Translatable("npcName", npc.getName()), new Translatable("storylineName", storylineID)));
                                     resetPlayerStoryline(player, storylineID);
                                 }
                             }

@@ -9,8 +9,8 @@ import de.frinshhd.anturniaquests.requirements.BasicRequirement;
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
 import de.frinshhd.anturniaquests.utils.ChatManager;
 import de.frinshhd.anturniaquests.utils.PlayerHashMap;
-import de.frinshhd.anturniaquests.utils.Translator;
-import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
+import de.frinshhd.anturniaquests.utils.translations.Translatable;
+import de.frinshhd.anturniaquests.utils.translations.TranslationManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -59,9 +59,9 @@ public class ReachLocationRequirement extends BasicRequirement implements Listen
 
         reachLocations.forEach(reachLocation -> {
             if (hasPlayerReached(player.getUniqueId(), reachLocation.getAllLocationsBetween())) {
-                lore.add(Translator.build("lore.requirements.reachLocation.fulfilled", new TranslatorPlaceholder("location1", reachLocation.getLocationFormated(reachLocation.getLocation1())), new TranslatorPlaceholder("location2", reachLocation.getLocationFormated(reachLocation.getLocation2())), new TranslatorPlaceholder("world", reachLocation.getWorld().getName())));
+                lore.add(TranslationManager.getInstance().build("lore.requirements.reachLocation.fulfilled", new Translatable("location1", reachLocation.getLocationFormated(reachLocation.getLocation1())), new Translatable("location2", reachLocation.getLocationFormated(reachLocation.getLocation2())), new Translatable("world", reachLocation.getWorld().getName())));
             } else {
-                lore.add(Translator.build("lore.requirements.reachLocation.notFulfilled", new TranslatorPlaceholder("location1", reachLocation.getLocationFormated(reachLocation.getLocation1())), new TranslatorPlaceholder("location2", reachLocation.getLocationFormated(reachLocation.getLocation2())), new TranslatorPlaceholder("world", reachLocation.getWorld().getName())));
+                lore.add(TranslationManager.getInstance().build("lore.requirements.reachLocation.notFulfilled", new Translatable("location1", reachLocation.getLocationFormated(reachLocation.getLocation1())), new Translatable("location2", reachLocation.getLocationFormated(reachLocation.getLocation2())), new Translatable("world", reachLocation.getWorld().getName())));
             }
         });
         return lore;
@@ -77,7 +77,7 @@ public class ReachLocationRequirement extends BasicRequirement implements Listen
         ReachLocationModel reachLocation = (ReachLocationModel) requirementModel;
 
         if (!hasPlayerReached(player.getUniqueId(), reachLocation.getAllLocationsBetween())) {
-            ChatManager.sendMessage(player, Translator.build("quest.missingRequirements.reachLocation", new TranslatorPlaceholder("location1", reachLocation.getLocationFormated(reachLocation.getLocation1())), new TranslatorPlaceholder("location2", reachLocation.getLocationFormated(reachLocation.getLocation2())), new TranslatorPlaceholder("world", reachLocation.getWorld().getName())));
+            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.missingRequirements.reachLocation", new Translatable("location1", reachLocation.getLocationFormated(reachLocation.getLocation1())), new Translatable("location2", reachLocation.getLocationFormated(reachLocation.getLocation2())), new Translatable("world", reachLocation.getWorld().getName())));
         }
     }
 

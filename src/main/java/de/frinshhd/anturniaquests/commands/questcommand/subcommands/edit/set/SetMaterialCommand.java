@@ -4,8 +4,8 @@ import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.commands.BasicSubCommand;
 import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.utils.ChatManager;
-import de.frinshhd.anturniaquests.utils.Translator;
-import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
+import de.frinshhd.anturniaquests.utils.translations.Translatable;
+import de.frinshhd.anturniaquests.utils.translations.TranslationManager;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 
@@ -33,7 +33,7 @@ public class SetMaterialCommand extends BasicSubCommand {
         String questID = args[1];
 
         if (Main.getQuestsManager().getEditableQuest(questID) == null) {
-            ChatManager.sendMessage(sender, Translator.build("quest.dontExists", new TranslatorPlaceholder("questID", questID)));
+            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.dontExists", new Translatable("questID", questID)));
             return true;
         }
 
@@ -51,7 +51,7 @@ public class SetMaterialCommand extends BasicSubCommand {
 
         Main.getQuestsManager().saveQuestToYml(questID, quest);
 
-        ChatManager.sendMessage(sender, Translator.build("quest.command.edit.set.material", new TranslatorPlaceholder("questID", questID), new TranslatorPlaceholder("material", material.toUpperCase())));
+        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.command.edit.set.material", new Translatable("questID", questID), new Translatable("material", material.toUpperCase())));
         return true;
     }
 

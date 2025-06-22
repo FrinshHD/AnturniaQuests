@@ -2,8 +2,8 @@ package de.frinshhd.anturniaquests.listener;
 
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.utils.ChatManager;
-import de.frinshhd.anturniaquests.utils.Translator;
-import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
+import de.frinshhd.anturniaquests.utils.translations.Translatable;
+import de.frinshhd.anturniaquests.utils.translations.TranslationManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,7 +17,7 @@ public class JoinListener implements Listener {
         Player player = event.getPlayer();
         if (player.hasPermission("anturniaquests.admin.updateNotify") && Main.version != null) {
             if (!Main.version.equals(Main.getInstance().getDescription().getVersion())) {
-                ChatManager.sendMessage(player, Translator.build("updateAvailable", new TranslatorPlaceholder("newVersion", Main.version), new TranslatorPlaceholder("currentVersion", Main.getInstance().getDescription().getVersion())));
+                ChatManager.sendMessage(player, TranslationManager.getInstance().build("updateAvailable", new Translatable("newVersion", Main.version), new Translatable("currentVersion", Main.getInstance().getDescription().getVersion())));
             }
         }
 

@@ -7,8 +7,8 @@ import de.frinshhd.anturniaquests.quests.models.Quest;
 import de.frinshhd.anturniaquests.requirements.BasicRequirement;
 import de.frinshhd.anturniaquests.requirements.BasicRequirementModel;
 import de.frinshhd.anturniaquests.utils.ChatManager;
-import de.frinshhd.anturniaquests.utils.Translator;
-import de.frinshhd.anturniaquests.utils.TranslatorPlaceholder;
+import de.frinshhd.anturniaquests.utils.translations.Translatable;
+import de.frinshhd.anturniaquests.utils.translations.TranslationManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -42,9 +42,9 @@ public class PlacedBlocksRequirement extends BasicRequirement implements Listene
         placedBlocks.forEach(placedBlock -> {
 
             if (hasPlayerPlacedBlocks(player.getUniqueId(), placedBlock.getWorlds(), placedBlock.getMaterial(), placedBlock.getAmount())) {
-                lore.add(Translator.build("lore.requirements.placedBlocks.fulfilled", new TranslatorPlaceholder("material", placedBlock.getDisplayName()), new TranslatorPlaceholder("amountPlaced", String.valueOf(getPlayerPlacedBlocks(player.getUniqueId(), placedBlock.getWorlds(), placedBlock.getMaterial()))), new TranslatorPlaceholder("amount", String.valueOf(placedBlock.getAmount())), new TranslatorPlaceholder("worlds", placedBlock.getWorldFormated())));
+                lore.add(TranslationManager.getInstance().build("lore.requirements.placedBlocks.fulfilled", new Translatable("material", placedBlock.getDisplayName()), new Translatable("amountPlaced", String.valueOf(getPlayerPlacedBlocks(player.getUniqueId(), placedBlock.getWorlds(), placedBlock.getMaterial()))), new Translatable("amount", String.valueOf(placedBlock.getAmount())), new Translatable("worlds", placedBlock.getWorldFormated())));
             } else {
-                lore.add(Translator.build("lore.requirements.placedBlocks.notFulfilled", new TranslatorPlaceholder("material", placedBlock.getDisplayName()), new TranslatorPlaceholder("amountPlaced", String.valueOf(getPlayerPlacedBlocks(player.getUniqueId(), placedBlock.getWorlds(), placedBlock.getMaterial()))), new TranslatorPlaceholder("amount", String.valueOf(placedBlock.getAmount())), new TranslatorPlaceholder("worlds", placedBlock.getWorldFormated())));
+                lore.add(TranslationManager.getInstance().build("lore.requirements.placedBlocks.notFulfilled", new Translatable("material", placedBlock.getDisplayName()), new Translatable("amountPlaced", String.valueOf(getPlayerPlacedBlocks(player.getUniqueId(), placedBlock.getWorlds(), placedBlock.getMaterial()))), new Translatable("amount", String.valueOf(placedBlock.getAmount())), new Translatable("worlds", placedBlock.getWorldFormated())));
             }
         });
 
@@ -61,7 +61,7 @@ public class PlacedBlocksRequirement extends BasicRequirement implements Listene
         PlacedBlocksModel placedBlocksModel = (PlacedBlocksModel) requirementModel;
 
         if (!hasPlayerPlacedBlocks(player.getUniqueId(), placedBlocksModel.getWorlds(), placedBlocksModel.getMaterial(), placedBlocksModel.getAmount())) {
-            ChatManager.sendMessage(player, Translator.build("quest.missingRequirements.placedBlocks", new TranslatorPlaceholder("material", placedBlocksModel.getDisplayName()), new TranslatorPlaceholder("amountPlaced", String.valueOf(getPlayerPlacedBlocks(player.getUniqueId(), placedBlocksModel.getWorlds(), placedBlocksModel.getMaterial()))), new TranslatorPlaceholder("amount", String.valueOf(placedBlocksModel.getAmount())), new TranslatorPlaceholder("worlds", placedBlocksModel.getWorldFormated())));
+            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.missingRequirements.placedBlocks", new Translatable("material", placedBlocksModel.getDisplayName()), new Translatable("amountPlaced", String.valueOf(getPlayerPlacedBlocks(player.getUniqueId(), placedBlocksModel.getWorlds(), placedBlocksModel.getMaterial()))), new Translatable("amount", String.valueOf(placedBlocksModel.getAmount())), new Translatable("worlds", placedBlocksModel.getWorldFormated())));
         }
     }
 
