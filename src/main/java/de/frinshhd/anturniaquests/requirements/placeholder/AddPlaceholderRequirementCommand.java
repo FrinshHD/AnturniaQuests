@@ -33,7 +33,7 @@ public class AddPlaceholderRequirementCommand extends BasicSubCommand {
         String questID = args[1];
 
         if (Main.getQuestsManager().getEditableQuest(questID) == null) {
-            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.dontExists", new Translatable("questID", questID)));
+            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quests.dontExists", new Translatable("questID", questID)));
             return true;
         }
 
@@ -49,7 +49,7 @@ public class AddPlaceholderRequirementCommand extends BasicSubCommand {
 
         Main.getQuestsManager().saveQuestToYml(questID, quest);
 
-        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.command.edit.add.requirement.permission", new Translatable("questID", questID), new Translatable("permission", permission)));
+        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quests.command.edit.add.requirement.permission", new Translatable("questID", questID), new Translatable("permission", permission)));
         return true;
     }
 

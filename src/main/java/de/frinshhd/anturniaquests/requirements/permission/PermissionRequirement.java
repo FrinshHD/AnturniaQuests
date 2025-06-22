@@ -52,7 +52,7 @@ public class PermissionRequirement extends BasicRequirement {
         PermissionModel permissionModel = (PermissionModel) requirementModel;
 
         if (!player.hasPermission(permissionModel.getPermission())) {
-            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.missingRequirements.permission", new Translatable("permission", String.valueOf(permissionModel.getPermission()))));
+            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quests.missingRequirements.permission", new Translatable("permission", String.valueOf(permissionModel.getPermission()))));
         }
     }
 

@@ -49,7 +49,7 @@ public class ItemsRequirement extends BasicRequirement {
         int amountInInv = itemModel.getAmountInInventory(player);
 
         if (amountInInv < itemModel.getAmount()) {
-            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.missingRequirements.item", new Translatable("amountInInv", String.valueOf(amountInInv)), new Translatable("amount", String.valueOf(itemModel.getAmount())), new Translatable("itemName", itemModel.getDisplayName())));
+            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quests.missingRequirements.item", new Translatable("amountInInv", String.valueOf(amountInInv)), new Translatable("amount", String.valueOf(itemModel.getAmount())), new Translatable("itemName", itemModel.getDisplayName())));
         }
     }
 

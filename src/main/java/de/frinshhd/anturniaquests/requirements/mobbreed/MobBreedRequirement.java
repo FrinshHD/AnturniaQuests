@@ -66,7 +66,7 @@ public class MobBreedRequirement extends BasicRequirement implements Listener {
         MobBreedModel interaction = (MobBreedModel) requirementModel;
 
         if (getPlayerMobBreed(player.getUniqueId(), interaction.getEntity()) < interaction.getAmount()) {
-            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.missingRequirements.mobBreed",
+            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quests.missingRequirements.mobBreed",
                     new Translatable("entityName", interaction.getName()),
                     new Translatable("amountBred", String.valueOf(getPlayerMobBreed(player.getUniqueId(), interaction.getEntity()))),
                     new Translatable("amount", String.valueOf(interaction.getAmount()))));

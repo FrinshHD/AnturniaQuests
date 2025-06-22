@@ -61,7 +61,7 @@ public class PlacedBlocksRequirement extends BasicRequirement implements Listene
         PlacedBlocksModel placedBlocksModel = (PlacedBlocksModel) requirementModel;
 
         if (!hasPlayerPlacedBlocks(player.getUniqueId(), placedBlocksModel.getWorlds(), placedBlocksModel.getMaterial(), placedBlocksModel.getAmount())) {
-            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.missingRequirements.placedBlocks", new Translatable("material", placedBlocksModel.getDisplayName()), new Translatable("amountPlaced", String.valueOf(getPlayerPlacedBlocks(player.getUniqueId(), placedBlocksModel.getWorlds(), placedBlocksModel.getMaterial()))), new Translatable("amount", String.valueOf(placedBlocksModel.getAmount())), new Translatable("worlds", placedBlocksModel.getWorldFormated())));
+            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quests.missingRequirements.placedBlocks", new Translatable("material", placedBlocksModel.getDisplayName()), new Translatable("amountPlaced", String.valueOf(getPlayerPlacedBlocks(player.getUniqueId(), placedBlocksModel.getWorlds(), placedBlocksModel.getMaterial()))), new Translatable("amount", String.valueOf(placedBlocksModel.getAmount())), new Translatable("worlds", placedBlocksModel.getWorldFormated())));
         }
     }
 

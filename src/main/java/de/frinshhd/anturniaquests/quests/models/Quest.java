@@ -359,7 +359,7 @@ public class Quest {
         if (isOneTimeUse() && MysqlManager.getQuestPlayer(player.getUniqueId()).getFinishedQuests().containsKey(Main.getQuestsManager().getQuestID(this)) && MysqlManager.getQuestPlayer(player.getUniqueId()).getFinishedQuests().get(Main.getQuestsManager().getQuestID(this)) > 0) {
 
             if (message) {
-                ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.alreadyCompleted"));
+                ChatManager.sendMessage(player, TranslationManager.getInstance().build("quests.alreadyCompleted"));
             }
 
             SurvivalQuestSounds.questError(player);
@@ -372,7 +372,7 @@ public class Quest {
                 MysqlManager.getQuestPlayer(player.getUniqueId()).getCooldown().get(Main.getQuestsManager().getQuestID(this)) + getCooldown() >= System.currentTimeMillis()) {
 
             if (message) {
-                ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.cooldown", new Translatable("cooldown", String.valueOf((MysqlManager.getQuestPlayer(player.getUniqueId()).getCooldown().get(Main.getQuestsManager().getQuestID(this)) + getCooldown() - System.currentTimeMillis()) / 1000))));
+                ChatManager.sendMessage(player, TranslationManager.getInstance().build("quests.cooldown", new Translatable("cooldown", String.valueOf((MysqlManager.getQuestPlayer(player.getUniqueId()).getCooldown().get(Main.getQuestsManager().getQuestID(this)) + getCooldown() - System.currentTimeMillis()) / 1000))));
             }
 
             SurvivalQuestSounds.questError(player);
@@ -384,10 +384,10 @@ public class Quest {
         if (!checkCanCompleteQuest(player)) {
 
             if (message) {
-                ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.requiredQuests.base"));
+                ChatManager.sendMessage(player, TranslationManager.getInstance().build("quests.requiredQuests.base"));
 
                 for (Quest quest : getQuestsToCompletePlayer(player)) {
-                    ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.requiredQuests.quest", new Translatable("questName", quest.getFriendlyName())));
+                    ChatManager.sendMessage(player, TranslationManager.getInstance().build("quests.requiredQuests.quest", new Translatable("questName", quest.getFriendlyName())));
                 }
             }
 
@@ -397,7 +397,7 @@ public class Quest {
 
         if (!Main.getRequirementManager().check(player, getID())) {
             if (message) {
-                ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.missingRequirements"));
+                ChatManager.sendMessage(player, TranslationManager.getInstance().build("quests.missingRequirements"));
 
                 Main.getRequirementManager().sendPlayerMissing(player, getID());
             }
@@ -432,7 +432,7 @@ public class Quest {
     public void claim(Player player, boolean message) {
 
         if (message) {
-            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.complete", new Translatable("questName", getFriendlyName())));
+            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quests.complete", new Translatable("questName", getFriendlyName())));
         }
 
         SurvivalQuestSounds.questComplete(player);
@@ -443,7 +443,7 @@ public class Quest {
                 Main.getEconomy().depositPlayer(player, getRewards().getMoney());
 
                 if (message) {
-                    ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.addMoney", new Translatable("amount", String.valueOf(getRewards().getMoney()))));
+                    ChatManager.sendMessage(player, TranslationManager.getInstance().build("quests.addMoney", new Translatable("amount", String.valueOf(getRewards().getMoney()))));
                 }
             }
         }
@@ -453,7 +453,7 @@ public class Quest {
             QuestsManager.addItem(player, rewardItemModel.getItem(), rewardItemModel.getAmount());
 
             if (message) {
-                ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.addItem", new Translatable("amount", String.valueOf(rewardItemModel.getAmount())), new Translatable("itemName", rewardItemModel.getDisplayName())));
+                ChatManager.sendMessage(player, TranslationManager.getInstance().build("quests.addItem", new Translatable("amount", String.valueOf(rewardItemModel.getAmount())), new Translatable("itemName", rewardItemModel.getDisplayName())));
             }
         }
 
@@ -470,13 +470,13 @@ public class Quest {
             Main.getInstance().getServer().dispatchCommand(Main.getInstance().getServer().getConsoleSender(), commandString);
 
             if (message) {
-                ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.addCommand", new Translatable("commandName", command.getName())));
+                ChatManager.sendMessage(player, TranslationManager.getInstance().build("quests.addCommand", new Translatable("commandName", command.getName())));
             }
         }
 
         if (this.announce != null && this.announce) {
             Bukkit.getOnlinePlayers().forEach(players -> {
-                ChatManager.sendMessage(players, TranslationManager.getInstance().build("quest.announce", new Translatable("player", player.getName()), new Translatable("questName", getFriendlyName())));
+                ChatManager.sendMessage(players, TranslationManager.getInstance().build("quests.announce", new Translatable("player", player.getName()), new Translatable("questName", getFriendlyName())));
             });
         }
     }

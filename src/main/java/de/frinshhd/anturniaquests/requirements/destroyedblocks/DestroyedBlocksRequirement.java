@@ -61,7 +61,7 @@ public class DestroyedBlocksRequirement extends BasicRequirement implements List
         DestroyedBlocksModel destroyedBlocksModel = (DestroyedBlocksModel) requirementModel;
 
         if (!hasPlayerDestroyedBlocks(player.getUniqueId(), destroyedBlocksModel.getWorlds(), destroyedBlocksModel.getMaterial(), destroyedBlocksModel.getAmount())) {
-            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.missingRequirements.destroyedBlocks", new Translatable("material", destroyedBlocksModel.getDisplayName()), new Translatable("amountDestroyed", String.valueOf(getPlayerDestroyedBlocks(player.getUniqueId(), destroyedBlocksModel.getWorlds(), destroyedBlocksModel.getMaterial()))), new Translatable("amount", String.valueOf(destroyedBlocksModel.getAmount())), new Translatable("worlds", destroyedBlocksModel.getWorldFormated())));
+            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quests.missingRequirements.destroyedBlocks", new Translatable("material", destroyedBlocksModel.getDisplayName()), new Translatable("amountDestroyed", String.valueOf(getPlayerDestroyedBlocks(player.getUniqueId(), destroyedBlocksModel.getWorlds(), destroyedBlocksModel.getMaterial()))), new Translatable("amount", String.valueOf(destroyedBlocksModel.getAmount())), new Translatable("worlds", destroyedBlocksModel.getWorldFormated())));
         }
     }
 

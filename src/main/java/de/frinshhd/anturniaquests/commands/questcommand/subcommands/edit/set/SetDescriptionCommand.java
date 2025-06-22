@@ -32,7 +32,7 @@ public class SetDescriptionCommand extends BasicSubCommand {
         String questID = args[1];
 
         if (Main.getQuestsManager().getEditableQuest(questID) == null) {
-            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.dontExists", new Translatable("questID", questID)));
+            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quests.dontExists", new Translatable("questID", questID)));
             return true;
         }
 
@@ -49,7 +49,7 @@ public class SetDescriptionCommand extends BasicSubCommand {
         Main.getQuestsManager().saveQuestToYml(questID, quest);
 
         //Todo tell player that he changed the friendlyName of quest
-        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.command.edit.set.description", new Translatable("questID", questID), new Translatable("description", description.toString())));
+        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quests.command.edit.set.description", new Translatable("questID", questID), new Translatable("description", description.toString())));
         return true;
     }
 

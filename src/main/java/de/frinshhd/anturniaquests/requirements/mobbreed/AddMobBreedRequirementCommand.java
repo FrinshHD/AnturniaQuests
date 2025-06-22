@@ -34,7 +34,7 @@ public class AddMobBreedRequirementCommand extends BasicSubCommand {
         String questID = args[1];
 
         if (Main.getQuestsManager().getEditableQuest(questID) == null) {
-            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.dontExists", new Translatable("questID", questID)));
+            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quests.dontExists", new Translatable("questID", questID)));
             return true;
         }
 
@@ -69,7 +69,7 @@ public class AddMobBreedRequirementCommand extends BasicSubCommand {
 
         Main.getQuestsManager().saveQuestToYml(questID, quest);
 
-        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.command.edit.add.requirement.mobBreed", new Translatable("questID", questID), new Translatable("entityName", mobBreedModel.getName()), new Translatable("amount", String.valueOf(mobBreedModel.getAmount()))));
+        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quests.command.edit.add.requirement.mobBreed", new Translatable("questID", questID), new Translatable("entityName", mobBreedModel.getName()), new Translatable("amount", String.valueOf(mobBreedModel.getAmount()))));
         return true;
     }
 

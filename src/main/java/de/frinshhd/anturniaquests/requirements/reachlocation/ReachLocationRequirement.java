@@ -77,7 +77,7 @@ public class ReachLocationRequirement extends BasicRequirement implements Listen
         ReachLocationModel reachLocation = (ReachLocationModel) requirementModel;
 
         if (!hasPlayerReached(player.getUniqueId(), reachLocation.getAllLocationsBetween())) {
-            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.missingRequirements.reachLocation", new Translatable("location1", reachLocation.getLocationFormated(reachLocation.getLocation1())), new Translatable("location2", reachLocation.getLocationFormated(reachLocation.getLocation2())), new Translatable("world", reachLocation.getWorld().getName())));
+            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quests.missingRequirements.reachLocation", new Translatable("location1", reachLocation.getLocationFormated(reachLocation.getLocation1())), new Translatable("location2", reachLocation.getLocationFormated(reachLocation.getLocation2())), new Translatable("world", reachLocation.getWorld().getName())));
         }
     }
 

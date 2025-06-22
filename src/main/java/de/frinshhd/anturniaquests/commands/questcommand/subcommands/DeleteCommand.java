@@ -36,7 +36,7 @@ public class DeleteCommand extends BasicSubCommand {
         String questID = args[1];
 
         if (Main.getQuestsManager().getQuest(questID) == null) {
-            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.dontExists", new Translatable("questID", questID)));
+            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quests.dontExists", new Translatable("questID", questID)));
             return true;
         }
 
@@ -44,7 +44,7 @@ public class DeleteCommand extends BasicSubCommand {
             //delete logic
             Main.getQuestsManager().deleteQuest(questID);
 
-            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.command.delete", new Translatable("questID", questID)));
+            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quests.command.delete", new Translatable("questID", questID)));
 
             putLastExecution(sender, -1L);
 
@@ -52,7 +52,7 @@ public class DeleteCommand extends BasicSubCommand {
         }
 
         putLastExecution(sender, System.currentTimeMillis());
-        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.command.confirm", new Translatable("delay", "10")));
+        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quests.command.confirm", new Translatable("delay", "10")));
 
 
         return true;

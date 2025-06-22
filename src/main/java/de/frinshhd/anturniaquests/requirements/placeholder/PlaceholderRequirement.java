@@ -53,7 +53,7 @@ public class PlaceholderRequirement extends BasicRequirement {
         PlaceholderModel placeholderModel = (PlaceholderModel) requirementModel;
 
         if (compare(player, placeholderModel)) {
-            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.missingRequirements.placeholders", new Translatable("name", String.valueOf(placeholderModel.getName()))));
+            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quests.missingRequirements.placeholders", new Translatable("name", String.valueOf(placeholderModel.getName()))));
         }
     }
 

@@ -73,7 +73,7 @@ public class PlaceBlockRequirement extends BasicRequirement implements Listener 
         PlaceBlockModel placeBlockModel = (PlaceBlockModel) requirementModel;
 
         if (!hasPlayerInteracted(player.getUniqueId(), placeBlockModel.getLocation(), placeBlockModel.getMaterial())) {
-            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.missingRequirements.placeBlock", new Translatable("location", placeBlockModel.location.toString().substring(1, placeBlockModel.location.toString().length() - 1))));
+            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quests.missingRequirements.placeBlock", new Translatable("location", placeBlockModel.location.toString().substring(1, placeBlockModel.location.toString().length() - 1))));
         }
     }
 

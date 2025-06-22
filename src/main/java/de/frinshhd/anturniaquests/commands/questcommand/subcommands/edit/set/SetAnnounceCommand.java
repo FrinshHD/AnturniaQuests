@@ -32,7 +32,7 @@ public class SetAnnounceCommand extends BasicSubCommand {
         String questID = args[1];
 
         if (Main.getQuestsManager().getEditableQuest(questID) == null) {
-            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.dontExists", new Translatable("questID", questID)));
+            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quests.dontExists", new Translatable("questID", questID)));
             return true;
         }
 
@@ -44,7 +44,7 @@ public class SetAnnounceCommand extends BasicSubCommand {
 
         Main.getQuestsManager().saveQuestToYml(questID, quest);
 
-        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.command.edit.set.announce", new Translatable("questID", questID), new Translatable("announce", String.valueOf(Boolean.parseBoolean(announce)))));
+        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quests.command.edit.set.announce", new Translatable("questID", questID), new Translatable("announce", String.valueOf(Boolean.parseBoolean(announce)))));
         return true;
     }
 

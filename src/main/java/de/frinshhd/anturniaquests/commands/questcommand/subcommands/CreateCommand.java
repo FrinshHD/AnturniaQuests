@@ -32,12 +32,12 @@ public class CreateCommand extends BasicSubCommand {
         String questID = args[1];
 
         if (Main.getQuestsManager().getQuest(questID) != null) {
-            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.exists", new Translatable("questID", questID)));
+            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quests.exists", new Translatable("questID", questID)));
             return true;
         }
 
         Main.getQuestsManager().saveQuestToYml(questID, new Quest());
-        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.command.create", new Translatable("questID", questID)));
+        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quests.command.create", new Translatable("questID", questID)));
 
         return true;
     }

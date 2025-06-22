@@ -65,18 +65,18 @@ public class ResetCommand extends BasicSubCommand {
                 //reset logic
                 resetQuest(targetUUID, null);
 
-                ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.command.reset.all",
+                ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quests.command.reset.all",
                         new Translatable("playerName", target.getName())));
                 putLastExecution(sender, -1L);
             } else {
                 putLastExecution(sender, System.currentTimeMillis());
-                ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.command.confirm", new Translatable("delay", "10")));
+                ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quests.command.confirm", new Translatable("delay", "10")));
             }
         } else {
             //reset quest with id
             resetQuest(targetUUID, questID);
 
-            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.command.reset",
+            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quests.command.reset",
                     new Translatable("playerName", target.getName()),
                     new Translatable("questName", Main.getQuestsManager().getQuest(questID).getFriendlyName())));
         }

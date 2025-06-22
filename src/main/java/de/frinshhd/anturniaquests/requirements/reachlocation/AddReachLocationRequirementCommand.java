@@ -35,7 +35,7 @@ public class AddReachLocationRequirementCommand extends BasicSubCommand {
         String questID = args[1];
 
         if (Main.getQuestsManager().getEditableQuest(questID) == null) {
-            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.dontExists", new Translatable("questID", questID)));
+            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quests.dontExists", new Translatable("questID", questID)));
             return true;
         }
 
@@ -92,7 +92,7 @@ public class AddReachLocationRequirementCommand extends BasicSubCommand {
 
         Main.getQuestsManager().saveQuestToYml(questID, quest);
 
-        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.command.edit.add.requirement.reachLocation", new Translatable("questID", questID), new Translatable("location1", reachLocationModel.getLocation1().toString().substring(1, reachLocationModel.getLocation1().toString().length() - 1)), new Translatable("location2", reachLocationModel.getLocation2().toString().substring(1, reachLocationModel.getLocation2().toString().length() - 1))));
+        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quests.command.edit.add.requirement.reachLocation", new Translatable("questID", questID), new Translatable("location1", reachLocationModel.getLocation1().toString().substring(1, reachLocationModel.getLocation1().toString().length() - 1)), new Translatable("location2", reachLocationModel.getLocation2().toString().substring(1, reachLocationModel.getLocation2().toString().length() - 1))));
         return true;
     }
 

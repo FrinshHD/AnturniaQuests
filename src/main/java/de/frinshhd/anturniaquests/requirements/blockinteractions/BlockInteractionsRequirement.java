@@ -74,7 +74,7 @@ public class BlockInteractionsRequirement extends BasicRequirement implements Li
         BlockInteractionsModel interaction = (BlockInteractionsModel) requirementModel;
 
         if (!hasPlayerInteracted(player.getUniqueId(), interaction.getLocation())) {
-            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.missingRequirements.blockInteraction", new Translatable("location", interaction.location.toString().substring(1, interaction.location.toString().length() - 1))));
+            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quests.missingRequirements.blockInteraction", new Translatable("location", interaction.location.toString().substring(1, interaction.location.toString().length() - 1))));
         }
     }
 

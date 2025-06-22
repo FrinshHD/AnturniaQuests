@@ -66,7 +66,7 @@ public class HelpCommand extends BasicSubCommand {
                                 .append("\n");
                     } else {
                         message.append(
-                                        TranslationManager.getInstance().build("help.command",
+                                        TranslationManager.getInstance().build("help.command.withDescription",
                                                 new Translatable("command", "/" + commandLabel + " " + subCommand.getCommand()),
                                                 new Translatable("description", subCommand.getDescription())))
                                 .append("\n");
@@ -91,7 +91,7 @@ public class HelpCommand extends BasicSubCommand {
                     .append("\n");
         } else {
             message.append(
-                            TranslationManager.getInstance().build("help.command",
+                            TranslationManager.getInstance().build("help.command.withDescription",
                                     new Translatable("command", "/" + commandLabel),
                                     new Translatable("description", Main.getCommandManager().getCommand(getMainCommand()).getDescription())))
                     .append("\n");
@@ -112,7 +112,7 @@ public class HelpCommand extends BasicSubCommand {
                             .append("\n");
                 } else {
                     message.append(
-                                    TranslationManager.getInstance().build("help.command",
+                                    TranslationManager.getInstance().build("help.command.withDescription",
                                             new Translatable("command", "/" + commandLabel + " " + subCommand.getCommand()),
                                             new Translatable("description", subCommand.getDescription())))
                             .append("\n");

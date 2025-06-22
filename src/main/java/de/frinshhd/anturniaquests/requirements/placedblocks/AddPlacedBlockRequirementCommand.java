@@ -36,7 +36,7 @@ public class AddPlacedBlockRequirementCommand extends BasicSubCommand {
         String questID = args[1];
 
         if (Main.getQuestsManager().getEditableQuest(questID) == null) {
-            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.dontExists", new Translatable("questID", questID)));
+            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quests.dontExists", new Translatable("questID", questID)));
             return true;
         }
 
@@ -81,7 +81,7 @@ public class AddPlacedBlockRequirementCommand extends BasicSubCommand {
 
         Main.getQuestsManager().saveQuestToYml(questID, quest);
 
-        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.command.edit.add.requirement.placedBlocks", new Translatable("questID", questID), new Translatable("amount", String.valueOf(placedBlocksModel.getAmount())), new Translatable("material", placedBlocksModel.getDisplayName())));
+        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quests.command.edit.add.requirement.placedBlocks", new Translatable("questID", questID), new Translatable("amount", String.valueOf(placedBlocksModel.getAmount())), new Translatable("material", placedBlocksModel.getDisplayName())));
         return true;
     }
 

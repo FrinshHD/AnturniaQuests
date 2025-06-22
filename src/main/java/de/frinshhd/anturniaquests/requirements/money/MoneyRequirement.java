@@ -54,7 +54,7 @@ public class MoneyRequirement extends BasicRequirement {
         MoneyModel moneyModel = (MoneyModel) requirementModel;
 
         if (!hasPlayerMoney(player.getUniqueId(), moneyModel.getAmount())) {
-            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quest.missingRequirements.money", new Translatable("amount", String.valueOf(moneyModel.getAmount()))));
+            ChatManager.sendMessage(player, TranslationManager.getInstance().build("quests.missingRequirements.money", new Translatable("amount", String.valueOf(moneyModel.getAmount()))));
         }
     }
 

@@ -35,7 +35,7 @@ public class AddCommandRewardCommand extends BasicSubCommand {
         String questID = args[1];
 
         if (Main.getQuestsManager().getEditableQuest(questID) == null) {
-            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.dontExists", new Translatable("questID", questID)));
+            ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quests.dontExists", new Translatable("questID", questID)));
             return true;
         }
 
@@ -70,7 +70,7 @@ public class AddCommandRewardCommand extends BasicSubCommand {
 
         Main.getQuestsManager().saveQuestToYml(questID, quest);
 
-        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quest.command.edit.add.reward.command", new Translatable("questID", questID), new Translatable("commandName", command.getName())));
+        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quests.command.edit.add.reward.command", new Translatable("questID", questID), new Translatable("commandName", command.getName())));
         return true;
     }
 
