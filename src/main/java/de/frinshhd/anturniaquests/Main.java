@@ -112,7 +112,7 @@ public final class Main extends JavaPlugin {
         new File("plugins/AnturniaQuests").mkdir();
 
         List<String> files = new ArrayList<>();
-        files.addAll(List.of("categories.yml", "config.yml", "quests.yml", "storylines.yml", "messages.properties"));
+        files.addAll(List.of("categories.yml", "config.yml", "quests.yml", "storylines.yml"));
 
         for (String fileRaw : files) {
             File file = new File("plugins/AnturniaQuests/" + fileRaw);
