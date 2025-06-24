@@ -61,7 +61,7 @@ quests:
           mobBreed: "&7You &asuccessfully &7added the requirement mobBreed &2%amount% %entityName% &7to quest &2%questID%."
           money: "&7You &asuccessfully &7added the requirement money $&2%amount% &7to quest &2%questID%."
           permission: "&7You &asuccessfully &7added the requirement permission &2%permission% &7to quest &2%questID%."
-          placeholder: "&7You &asuccessfully &7added the requirement placeholder &2%placeholderName% &7to quest &2%questID%."
+          placeholder: "&7You &asuccessfully &7added the requirement placeholder &2%name% &7to quest &2%questID%."
       remove:
         announce: "&7You &asuccessfully &7removed the announcement of quest &2%questID%."
         category: "&7You &asuccessfully &7removed the category of quest &2%questID%."
