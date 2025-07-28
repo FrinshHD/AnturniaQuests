@@ -16,8 +16,7 @@ Get the latest dev version here: https://jenkins.codearray.dev/
 **Features:**
 
 - **Custom Quests:** Effortlessly create your own quests through an intuitive configuration file.
-- **Storylines:** Send your players on stories from npc to npc. This feature requires either **FancyNpcs** or *
-  *Cititzens** installed!
+- **Storylines:** Send your players on stories from npc to npc. This feature requires either **FancyNpcs** or **Cititzens** installed!
 - **Rewards:** Define unique rewards for completed quests, ranging from items to experience points and currencies.
 - **Categories:** Organize quests into different categories for improved visibility.
 - **Menu System:** Players can view their available quests in-game and track their progress.
