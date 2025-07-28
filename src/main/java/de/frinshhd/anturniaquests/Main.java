@@ -9,6 +9,7 @@ import de.frinshhd.anturniaquests.requirements.RequirementManager;
 import de.frinshhd.anturniaquests.storylines.StorylinesManager;
 import de.frinshhd.anturniaquests.utils.DynamicListeners;
 import de.frinshhd.anturniaquests.utils.DynamicPlaceholderExpansion;
+import de.frinshhd.anturniaquests.utils.PlayerHashMap;
 import de.frinshhd.anturniaquests.utils.SpigotMCCommunication;
 import de.frinshhd.anturniaquests.utils.translations.TranslationManager;
 import net.milkbowl.vault.economy.Economy;
@@ -25,13 +26,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 public final class Main extends JavaPlugin {
 
-    private static final HashMap<Player, PlayerMenuUtility> playerMenuUtilityMap = new HashMap<>();
+    private static final PlayerHashMap<UUID, PlayerMenuUtility> playerMenuUtilityMap = new PlayerHashMap<>();
     public static String version;
 
     private static boolean storylinesEnabled;
@@ -82,15 +83,15 @@ public final class Main extends JavaPlugin {
 
     public static PlayerMenuUtility getPlayerMenuUtility(Player p) {
         PlayerMenuUtility playerMenuUtility;
-        if (!(playerMenuUtilityMap.containsKey(p))) { //See if the player has a playermenuutility "saved" for them
+        if (!(playerMenuUtilityMap.containsKey(p.getUniqueId()))) { //See if the player has a playermenuutility "saved" for them
 
             //This player doesn't. Make one for them add add it to the hashmap
             playerMenuUtility = new PlayerMenuUtility(p);
-            playerMenuUtilityMap.put(p, playerMenuUtility);
+            playerMenuUtilityMap.put(p.getUniqueId(), playerMenuUtility);
 
             return playerMenuUtility;
         } else {
-            return playerMenuUtilityMap.get(p); //Return the object by using the provided player
+            return playerMenuUtilityMap.get(p.getUniqueId()); //Return the object by using the provided player
         }
     }
 
