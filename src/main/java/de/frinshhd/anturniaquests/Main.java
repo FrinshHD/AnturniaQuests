@@ -32,7 +32,7 @@ import java.util.UUID;
 
 public final class Main extends JavaPlugin {
 
-    private static final PlayerHashMap<UUID, PlayerMenuUtility> playerMenuUtilityMap = new PlayerHashMap<>();
+    private static PlayerHashMap<UUID, PlayerMenuUtility> playerMenuUtilityMap;
     public static String version;
 
     private static boolean storylinesEnabled;
@@ -134,6 +134,8 @@ public final class Main extends JavaPlugin {
         setupEconomy();
 
         INSTANCE = this;
+
+        playerMenuUtilityMap = new PlayerHashMap<>();
 
 
         SpigotMCCommunication.init();
