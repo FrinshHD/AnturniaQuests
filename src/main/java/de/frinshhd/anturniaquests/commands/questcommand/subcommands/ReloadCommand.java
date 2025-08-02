@@ -23,7 +23,7 @@ public class ReloadCommand extends BasicSubCommand {
         }
 
         Main.reload();
-        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quests.reload"));
+        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("plugin.reload"));
         return true;
     }
 

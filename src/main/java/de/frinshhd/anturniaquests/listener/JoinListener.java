@@ -17,7 +17,7 @@ public class JoinListener implements Listener {
         Player player = event.getPlayer();
         if (player.hasPermission("anturniaquests.admin.updateNotify") && Main.version != null) {
             if (!Main.version.equals(Main.getInstance().getDescription().getVersion())) {
-                ChatManager.sendMessage(player, TranslationManager.getInstance().build("updateAvailable", new Translatable("newVersion", Main.version), new Translatable("currentVersion", Main.getInstance().getDescription().getVersion())));
+                ChatManager.sendMessage(player, TranslationManager.getInstance().build("plugin.updateAvailable", new Translatable("newVersion", Main.version), new Translatable("currentVersion", Main.getInstance().getDescription().getVersion())));
             }
         }
 

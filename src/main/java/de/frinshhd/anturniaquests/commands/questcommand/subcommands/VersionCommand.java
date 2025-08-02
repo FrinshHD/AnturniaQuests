@@ -23,7 +23,7 @@ public class VersionCommand extends BasicSubCommand {
             return false;
         }
 
-        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("quests.currentVersion", new Translatable("version", Main.getInstance().getDescription().getVersion())));
+        ChatManager.sendMessage(sender, TranslationManager.getInstance().build("plugin.currentVersion", new Translatable("version", Main.getInstance().getDescription().getVersion())));
         return true;
     }
 

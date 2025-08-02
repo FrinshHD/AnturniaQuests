@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import de.frinshhd.anturniaquests.Main;
 import de.frinshhd.anturniaquests.utils.ItemTags;
 import de.frinshhd.anturniaquests.utils.LoreBuilder;
+import de.frinshhd.anturniaquests.utils.translations.TranslationManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -57,7 +58,7 @@ public class Category {
         ItemStack item = new ItemStack(getMaterial());
         ItemMeta itemMeta = item.getItemMeta();
 
-        itemMeta.setDisplayName(ChatColor.DARK_GREEN + getFriendlyName());
+        itemMeta.setDisplayName(TranslationManager.getInstance().build("inventory.heading.color") + getFriendlyName());
 
         ArrayList<String> lore = new ArrayList<>();
 
